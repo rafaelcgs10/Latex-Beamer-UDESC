@@ -2,13 +2,66 @@ Apache Subversion - SVN
 
 Introdução
 História:
+No começo do ano 2000, a CollabNet, Inc. (http://www.collab.net) começou a procurar desenvolvedores 
+para desenvolver um substituto para o CVS. A CollabNet já tinha uma suite colaborativa chamada CollabNet 
+Enterprise Edition (CEE) cujo um de seus componentes era o controle de versão. Apesar de o CEE usar o CVS como 
+seu sistema de controle de versão inicial, as limitações do CVS ficaram evidentes desde o princípio, e a 
+CollabNet sabia que eventualmente teria que procurar por algo melhor. Infelizmente, o CVS havia se firmado 
+como um padrão de fact no mundo open source principalmente porque não havia nada melhor, pelo menos sob 
+licença livre. Então a CollabNet decidiu desenvolver um novo sistema de controle de versão a partir do zero, 
+mantendo as idéias básicas do CVS, mas sem os bugs e seus inconvenientes.
 Motivação:
+A equipe do projeto original determinou alguns objetivos simples. Eles não queriam romper com a metodologia 
+existente para controle de versão, eles apenas queriam corrigir o CVS. Eles decidiram que o Subversion deveria 
+ser compatível com as características do CVS, e manter o mesmo modelo de desenvolvimento, mas não 
+reproduzir as falhas mais óbvias do CVS. E mesmo que o novo sistema não fosse um substituto definitivo para o 
+CVS, ele deveria ser suficientemente semelhante a este para que qualquer usuário do CVS pudesse migrar de 
+sistema com pouco esforço.
 Quem usa:
 É amplamente utilizado pela comunidade de Software Livre.
 Utilizado pela Google, Apache Foundation e pela Apple.
 
 
 Características em particular.
+Versionamento de diretórios
+O CVS apenas rastreia o histórico de arquivos individuais, já o Subversion implementa um 
+sistema de arquivos “virtual” sob controle de versão que rastreia modificações a toda a 
+árvore de diretório ao longo do tempo. Os arquivos e os diretórios são versionados.
+
+Histórico de versões efetivo
+Como o CVS é limitado apenas ao versionamento de arquivos, operações como cópia e 
+renomeação—que podem ocorrer com arquivos também, mas que são realmente alterações no 
+conteúdo de algum diretório continente—não são suportadas no CVS. Adicionalmente, no 
+CVS você não pode substituir um arquivo versionado por alguma outra coisa com o mesmo 
+nome sem que o novo item deixe de herdar o histórico do arquivo antigo—que talvez seja 
+até algo com o qual não mantenha nenhuma correlação. Com o Subversion, você pode 
+adicionar, excluir, copiar, e renomear ambos os arquivos ou diretórios. E cada novo 
+arquivo adicionado começa com um histórico próprio e completamente novo.
+
+Commits atômicos
+Um conjunto de modificações ou é inteiramente registrado no repositório, ou não é 
+registrado de forma nenhuma. Isto possibilita aos desenvolvedores criarem e 
+registrarem alterações como blocos lógicos, e também evita problemas que possam ocorrer 
+quando apenas uma parte de um conjunto de alterações seja enviada com sucesso ao repositório.
+
+Versionamento de metadados
+Cada arquivo e diretório tem um conjunto de propriedades—chaves e seus valores—associados 
+consigo. Você pode criar e armazenar quaisquer pares chave/valor que quiser. As 
+propriedades são versionadas ao longo do tempo, tal como os conteúdos de arquivo.
+
+Manipulação consistente de dados
+O Subversion exprime as diferenças de arquivo usando um algoritmo diferenciado, o qual 
+funciona de maneira idêntica tanto em arquivos texto (compreensível para humanos) quanto em 
+arquivos binários (incompreensível para humanos). Ambos os tipos de arquivos são igualmente 
+armazenados de forma compactada no repositório, e as diferenças são enviadas em ambas as 
+direções pela rede.
+
+Ramificações e rotulagem eficiente
+O custo de se fazer ramificações (branching) e de rotulagem (tagging) não precisa ser proporcional ao tamanho do projeto. O Subversion cria ramos e rótulos simplesmente copiando o projeto, usando um mecanismo semelhante a um hard-link. Assim essas operações levam apenas uma pequena e constante quantidade de tempo.
+
+Hackability
+O Subversion não tem qualquer bagagem histórica; ele é implementado como um conjunto de bibliotecas C compartilhadas com APIs bem definidas. Isto torna o Subversion extremamente manutenível e usável por outras aplicações e linguagens.
+
 Repositṕrio: É centralizado. Os arquivos são armazenados em uma estrutura de árvore, a qual é típica em sistemas de arquivos.
 O SVN memoriza as alterações, não só arquivo propriamente dito.
 Confiabilidade: Commit é uma operação átomica, então se um commit é interrompido, não há risco de corroper os arquivos ou gerar inconsistência.
