@@ -1,0 +1,42 @@
+Apache Subversion - SVN
+
+Introdução
+História:
+Motivação:
+Quem usa:
+É amplamente utilizado pela comunidade de Software Livre.
+Utilizado pela Google, Apache Foundation e pela Apple.
+
+
+Características em particular.
+Repositṕrio: É centralizado. Os arquivos são armazenados em uma estrutura de árvore, a qual é típica em sistemas de arquivos.
+O SVN memoriza as alterações, não só arquivo propriamente dito.
+Confiabilidade: Commit é uma operação átomica, então se um commit é interrompido, não há risco de corroper os arquivos ou gerar inconsistência.
+Não utiliza a solução Lock-Modify-Unlck e sim a Copy-Modify-Merge. O que evita problemas administrativos, a 
+serialização do desenvolvimento e alguns problemas de incompatibilidade semântica. Ainda sim existe a possibilidade de dar lock em
+um arquivo, pois é necessário em arquivos binários, quando não existe como rastrear de maneira eficiente as mudanças no conteúdo.
+Velocidade: Fazer um Branche é uma operação barata. Os custos são proporcionais a mudança, não ao tamanho do arquivo.
+Comparativo com o git.
+
+Conceitos Básicos:
+Repository (Repositório)
+É onde fica todos os arquivos do projeto e os arquivos de gerenciamento do SVN. Por padrão um repositório tem quatro pastas:
+trunk, branches, tags e .svn.
+A pasta .svn é onde são armazenados os arquivos de gerenciamento do svn.
+Trunk (Tronco): É a linha principal de desenvolvimento. Geralmente o desenvolvimento de novas funcionalidade não acontece no trunk.
+No trunk somente são guardados funcionalidades já finalizadas.
+Branches (Ramos): É um linha de desenvolvimento separada, que pode começar como uma copia do trunk ou de outro branche.
+Eventualmente pode existir o interesse de fundir um ramo com o tronco, ou o ramo com outro ramo.
+Tags
+Revisão: É um estado na árvore de arquivos. Cada commit adiciona um novo estado associado à um número, incrementado de um em relação à 
+revisão anterior.
+
+Comandos Básicos:
+Suponto que o repositório central já está pronto par ao uso...
+Adicionar arquivos: svn add arquivo.c
+Commitar arquivos: svn commit -m "Fisrt commit"
+
+Merge
+Merge reintegrate
+Update
+Resolve
