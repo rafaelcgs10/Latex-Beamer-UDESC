@@ -1,1 +1,1 @@
-rm udesc.aux udesc.toc udesc.nav udesc.out *.bib udesc.snm udesc.log *.blg
+rm svn.aux svn.toc svn.nav svn.out *.bib svn.snm svn.log *.blg
