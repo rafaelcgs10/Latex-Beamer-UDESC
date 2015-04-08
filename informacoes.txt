@@ -143,7 +143,6 @@ imaginar que travando os arquivos, cada um está começando uma tarefa isolada
 segura, e assim não se preocupar em discutir as incompatibilidades que virão com suas 
 mudanças. Locking freqüentemente se torna um substituto para a comunicação real.
 
-
 A Solução Copy-Modify-Merge
 
 O Subversion, CVS, e muitos outros sistemas de controle de versão usam um modelo de copy-modify-merge (copiar-modificar-fundir) 
