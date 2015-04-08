@@ -168,24 +168,47 @@ Universidade do Estado de Santa Catarina}
 \end{frame}
 
 \begin{frame}
-\frametitle{Modificando Arquivos}
-\begin{itemize}
-\item O problema do compartilhamento de arquivo
-\item A soluaa\c{c}\~ao Alocar-Modifica-Desalocar
-\item A solu\c{c}\~ao Copiar-Modifica-Unificar
-\end{itemize}
-\begin{columns}
-\begin{column}{.5\textwidth}
-\begin{figure}
-\includegraphics[width=0.8\textwidth]{figures/lockmodifyunlock}
-\end{figure}
-\end{column}
-\begin{column}{.5\textwidth}
-\begin{figure}
-\includegraphics[width=0.8\textwidth]{figures/copymodifymerge}
-\end{figure}
-\end{column}
-\end{columns}
+    \frametitle{Modificando Arquivos}
+        \begin{columns}
+        \begin{column}{.5\textwidth}
+            \begin{block}{O problema do compartilhamento de arquivo}
+                \begin{figure}
+                    \includegraphics[width=0.8\textwidth]{figures/lockmodifyunlock}
+                \end{figure}
+            \begin{itemize}
+            \item Serializa\c{c}\~ao
+            \item Imcompatibilidade
+            \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \begin{block}{A solu\c{c}\~ao Alocar-Modifica-Desalocar}
+                \begin{figure}
+                    \includegraphics[width=0.8\textwidth]{figures/copymodifymerge}
+                \end{figure}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modificando Arquivos}
+        \begin{columns}
+        \begin{column}{.5\textwidth}
+            \begin{block}{O problema do compartilhamento de arquivo}
+                \begin{figure}
+                    \includegraphics[width=0.8\textwidth]{figures/lockmodifyunlock}
+                \end{figure}
+            \end{block}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \begin{block}{A solu\c{c}\~ao Alocar-Modifica-Desalocar}
+                \begin{figure}
+                    \includegraphics[width=0.8\textwidth]{figures/copymodifymerge}
+                \end{figure}
+            \end{block}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -205,13 +228,13 @@ Universidade do Estado de Santa Catarina}
             \begin{figure}
                 \includegraphics[width = 1.1\textwidth]{figures/branche}
             \end{figure}
-	%\end{column}
-	%\begin{column}{.5\textwidth}
-		\begin{block}{Tags}
-                    \begin{itemize}
-                        \item Etiquetas de revis\~oes
-                    \end{itemize}
-                \end{block}
+    %\end{column}
+    %\begin{column}{.5\textwidth}
+            \begin{block}{Tags}
+                \begin{itemize}
+                    \item Etiquetas de revis\~oes
+                \end{itemize}
+            \end{block}
         \end{column}
 
         %\end{column}
@@ -232,13 +255,13 @@ Universidade do Estado de Santa Catarina}
 %\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
 %\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
 
-\begin{bash}{}
-    \$ svn checkout
-\end{bash}
+    \begin{bash}{}
+        \$ svn checkout
+    \end{bash}
 
-\begin{block}{Outro}
-    Teste
-\end{block}
+    \begin{block}{Outro}
+        Teste
+    \end{block}
 \end{frame}
 
 \section{Conclus\~ao}
