@@ -169,31 +169,45 @@ Universidade do Estado de Santa Catarina}
 
 \begin{frame}
     \frametitle{Modificando Arquivos}
+    \begin{block}{O problema do compartilhamento de arquivo}
         \begin{columns}
-        \begin{column}{.5\textwidth}
-            \begin{block}{O problema do compartilhamento de arquivo}
+            \begin{column}{.5\textwidth}
+                \begin{itemize}
+                    \item Sobrescrever
+                \end{itemize}
+            \end{column}
+            \begin{column}{.5\textwidth}
                 \begin{figure}
-                    \includegraphics[width=0.8\textwidth]{figures/lockmodifyunlock}
+                    \includegraphics[width=0.9\textwidth]{figures/problem}
                 \end{figure}
-            \begin{itemize}
-            \item Serializa\c{c}\~ao
-            \item Imcompatibilidade
-            \end{itemize}
-            \end{block}
-        \end{column}
-        \begin{column}{.5\textwidth}
-            \begin{block}{A solu\c{c}\~ao Alocar-Modifica-Desalocar}
-                \begin{figure}
-                    \includegraphics[width=0.8\textwidth]{figures/copymodifymerge}
-                \end{figure}
-            \end{block}
-        \end{column}
-    \end{columns}
+            \end{column}
+        \end{columns}
+    \end{block}
 \end{frame}
 
 \begin{frame}
     \frametitle{Modificando Arquivos}
+    \begin{block}{A solu\c{c}\~ao Alocar-Modifica-Desalocar}
         \begin{columns}
+            \begin{column}{.5\textwidth}
+                \begin{itemize}
+                    \item Inconsist\^encias
+                    \item Serializa\c{c}\~ao
+                    \item Administra\c{c}\~ao
+                \end{itemize}
+            \end{column}
+            \begin{column}{.5\textwidth}
+                \begin{figure}
+                    \includegraphics[width=0.9\textwidth]{figures/lockmodifyunlock}
+                \end{figure}
+            \end{column}
+        \end{columns}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modificando Arquivos}
+    \begin{columns}
         \begin{column}{.5\textwidth}
             \begin{block}{O problema do compartilhamento de arquivo}
                 \begin{figure}
