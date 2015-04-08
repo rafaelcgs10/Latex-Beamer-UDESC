@@ -76,10 +76,20 @@ Repository (Repositório)
 É onde fica todos os arquivos do projeto e os arquivos de gerenciamento do SVN. Por padrão um repositório tem quatro pastas:
 trunk, branches, tags e .svn.
 A pasta .svn é onde são armazenados os arquivos de gerenciamento do svn.
+
 Trunk (Tronco): É a linha principal de desenvolvimento. Geralmente o desenvolvimento de novas funcionalidade não acontece no trunk.
 No trunk somente são guardados funcionalidades já finalizadas.
+
 Branches (Ramos): É um linha de desenvolvimento separada, que pode começar como uma copia do trunk ou de outro branche.
+Cheap Copy: Somente cria novos dados quando necessario.
 Eventualmente pode existir o interesse de fundir um ramo com o tronco, ou o ramo com outro ramo.
+You should remember two important lessons from this section. First, Subversion has no internal concept of a branch—it knows only how to make copies. 
+When you copy a directory, the resultant directory is only a “branch” because you attach that meaning to it. You may think of the directory differently, or 
+treat it differently, but to Subversion it's just an ordinary directory that happens to carry some extra historical information.
+Second, because of this copy mechanism, Subversion's branches exist as normal filesystem directories in the repository. This is different from other version 
+control systems, where branches are typically defined by adding extra-dimensional “labels” to collections of files. The location of your branch directory doesn't 
+matter to Subversion. Most teams follow a convention of putting all branches into a /branches directory, but you're free to invent any policy you wish.
+
 Tags
 Revisão: É um estado na árvore de arquivos. Cada commit adiciona um novo estado associado à um número, incrementado de um em relação à 
 revisão anterior.
@@ -93,3 +103,6 @@ Merge
 Merge reintegrate
 Update
 Resolve
+
+Referencias
+https://svnbook-pt-br.googlecode.com/svn/snapshots/1.4/svn.basic.html
