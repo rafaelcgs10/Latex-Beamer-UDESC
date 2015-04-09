@@ -270,9 +270,9 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
     \begin{verbatim}
-    \$ svn checkout https://subversion.assembla.com/svn/teste-soft --username=rafaelcgs10
+    svn checkout https://subversion.assembla.com/svn/teste-soft --username=rafaelcgs10
     ... arquivos baixados ...
-    \$ svn info
+     svn info
 
     Working Copy Root Path: /home/rafa/teste-svn/teste-soft
     URL: https://subversion.assembla.com/svn/teste-soft
@@ -289,9 +289,42 @@ Universidade do Estado de Santa Catarina}
     }
     \end{bash}
 
-    \begin{block}{Outro}
-        Teste
-    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Visualizando arquivos}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    pwd
+    ~/teste-soft/trunk
+
+    svn list
+    branches/
+    readme.textile
+    source/
+    tags/
+    trunk/
+
+    cd trunk/
+
+    svn list
+    README
+    frutas/
+
+    cd frutas/
+
+    svn list
+    banana.c
+    melao.c
+    uva.c
+    \end{verbatim}
+    }
+    \end{bash}
+
 \end{frame}
 
 \section{Conclus\~ao}
