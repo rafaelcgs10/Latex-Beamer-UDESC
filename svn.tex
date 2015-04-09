@@ -258,18 +258,35 @@ Universidade do Estado de Santa Catarina}
 
 \section{Comandos B\'asicos}
 
-\begin{frame}
-    \frametitle{Checkout}
-
-    This style file gives your slides some nice Radboud branding.
-    When you know how to work with the Beamer package it is easy to use.
-    Just add:\\ ~~~$\backslash$usepackage$\{$ru$\}$ \\ at the top of your file.
+\begin{frame}[fragile]
+    \frametitle{Come\c{c}ando uma Working Copy}
+    \begin{itemize}
+        \item Assembla: www.assembla.com
+    \end{itemize}
 
 %\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
 %\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
 
     \begin{bash}{}
-        \$ svn checkout
+        {\tiny
+    \begin{verbatim}
+    \$ svn checkout https://subversion.assembla.com/svn/teste-soft --username=rafaelcgs10
+    ... arquivos baixados ...
+    \$ svn info
+
+    Working Copy Root Path: /home/rafa/teste-svn/teste-soft
+    URL: https://subversion.assembla.com/svn/teste-soft
+    Relative URL: ^/
+    Raiz do Repositório: https://subversion.assembla.com/svn/teste-soft
+    UUID do repositório: 8d1ad2a0-f3b6-4a4c-8996-bb2a8e12f73e
+    Revisão: 20
+    Tipo de Nó: diretório
+    Agendado: normal
+    Autor da Última Mudança: rafaelcgs10
+    Revisão da Última Mudança: 20
+    Data da Última Mudança: 2015-03-31 09:18:57 -0300 (Ter, 31 Mar 2015)
+    \end{verbatim}
+    }
     \end{bash}
 
     \begin{block}{Outro}

@@ -165,7 +165,8 @@ Revisão: É um estado na árvore de arquivos. Cada commit adiciona um novo esta
 revisão anterior.
 
 Comandos Básicos:
-Suponto que o repositório central já está pronto par ao uso...
+Suponto que o repositório central já está pronto par ao uso... www.assembla.com
+Baixar uma copia do repositorio: svn checkout url
 Adicionar arquivos: svn add arquivo.c
 Commitar arquivos: svn commit -m "Fisrt commit"
 
