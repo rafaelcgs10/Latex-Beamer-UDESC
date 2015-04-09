@@ -41,11 +41,12 @@
 
 % General blocks: 
 \setbeamertemplate{blocks}[rounded]
-\newenvironment{bash}[1]{%
-\setbeamercolor{block body}{bg=black, fg=white}
-\setbeamertemplate{blocks}[default]
-\setbeamercolor{block title}{bg=white}
-\begin{block}{#1}}{\end{block}}
+
+\newenvironment{bash}[1]{
+\setbeamercolor{block body example}{bg=black, fg=white}
+\setbeamertemplate{blocks example}[default]
+\setbeamercolor{block title example}{bg=white}
+\begin{exampleblock}{#1}}{\end{exampleblock}}
 % Title page:
 \setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
 
