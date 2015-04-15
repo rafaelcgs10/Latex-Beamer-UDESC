@@ -170,10 +170,11 @@ Baixar uma copia do repositorio: svn checkout url
 Adicionar arquivos: svn add arquivo.c
 Commitar arquivos: svn commit -m "Fisrt commit"
 
-Merge
-Merge reintegrate
-Update
-Resolve
+Merge: Junta duas linhas de desenvolvimento. Pode acontecer conflito. Nesses casos existem 3 opções. Ficar com a copia atual, ficar com a copia de terceiros ou juntas mesclar
+arquivos e resolver manualmente.
+Merge reintegrate: Deve acontecer sem problemas se o merge ja foi feito no branche.
+Update: Atualiza a copia local com a do servidor
+Resolve: Sinaliza como o clonflito foi resolvido.
 
 Referencias
 https://svnbook-pt-br.googlecode.com/svn/snapshots/1.4/svn.basic.html

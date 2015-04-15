@@ -274,7 +274,7 @@ Universidade do Estado de Santa Catarina}
     ... arquivos baixados ...
      svn info
 
-    Working Copy Root Path: /home/rafa/teste-svn/teste-soft
+    Working Copy Root Path: /home/user/teste-svn/teste-soft
     URL: https://subversion.assembla.com/svn/teste-soft
     Relative URL: ^/
     Raiz do Repositório: https://subversion.assembla.com/svn/teste-soft
@@ -327,14 +327,196 @@ Universidade do Estado de Santa Catarina}
 
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Criando um Branche}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    cd ..
+    cd ..
+    pwd
+    ~/teste-soft
+
+    svn copy trunk/ branches/copia-rafael
+    A         branches/copia-rafael
+
+    svn commit -m "branche do rafael criado"
+
+    Adicionando    branches/copia-rafael
+
+    Committed revision 22.
+    \end{verbatim}
+    }
+    \end{bash}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Trabalhando na Branche}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    cd branches
+    cd copia-rafael
+    cd frutas
+
+    ls
+    banana.c melao.c uva.c
+
+    echo A pera é uma fruta verde > pera.c
+
+    svn add pera.c
+    A       pera.c
+
+    svn commit -m "Arquivo pera.c adicionado"
+    Adicionando    pera.c
+    Transmitindo dados do arquivo .
+    Committed revision 23.
+    \end{verbatim}
+    }
+    \end{bash}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Reintegrando o Branche no Trunk}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    pwd
+    ~/teste-soft/trunk/frutas
+
+    svn merge --reintegrate ^/branches/copia-rafael/frutas
+    --- Merging differences between repository URLs into '.':
+       C pera.c
+       Tree conflict on 'pera.c'
+          > local file obstruction, incoming file add upon merge
+          Select: (r) mark resolved, (p) postpone, (q) quit resolution, (h) help: 
+          p
+
+    --- Recording mergeinfo for merge between repository URLs into '.':
+     U   .
+     Summary of conflicts:
+       Tree conflicts: 1
+
+    svn status
+     M      .
+           C pera.c
+                 >   local file obstruction, incoming file add upon merge
+                 Summary of conflicts:
+                   Tree conflicts: 1
+
+    svn resolve --accept=working pera.c
+    Estado de conflito resolvido para 'pera.c'
+
+    svn commit -m "Conflito resolvido"
+    Enviando       .
+
+    Committed revision 25.
+    \end{verbatim}
+    }
+    \end{bash}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Atualizando o Branche e Resolvendo Conflito}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    pwd
+    ~/teste-soft/branches/frutas
+
+    svn up
+    Updating '.':
+    Na revisão 29.
+
+    svn merge ^/trunk/frutas
+    --- Merging r27 through r29 into '.':
+    C    pera.c
+    --- Recording mergeinfo for merge of r27 through r29 into '.':
+     U   .
+     Conflict discovered in file 'pera.c'.
+     Select: (p) postpone, (df) show diff, (e) edit file, (m) merge,
+             (mc) my side of conflict, (tc) their side of conflict,
+                     (s) show all options: p
+
+    cat pera.c
+    <<<<<<< .working
+    A pera é uma fruta verde
+    =======
+    A pera é um fruta doce
+    >>>>>>> .merge-right.r29
+
+    echo A pera é uma fruta verde e doce > pera.c
+
+    svn resolve --accept=working pera.c
+    Estado de conflito resolvido para 'pera.c'
+
+    Enviando       .
+    Enviando       pera.c
+    Transmitindo dados do arquivo .
+    Committed revision 30.
+
+    svn commit -m "Conflito resolvido"
+    Enviando       .
+    Enviando       pera.c
+    Transmitindo dados do arquivo .
+    Committed revision 30.
+    \end{verbatim}
+    }
+    \end{bash}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Reintegrando o Branche}
+
+%\setbeamercolor{block title}{use=structure,fg=white,bg=purple!75!black}
+%\setbeamercolor{block body}{use=structure,fg=white,bg=black!20!black}
+    \begin{bash}{}
+    {\tiny
+    \begin{verbatim}
+    pwd
+    ~/teste-soft/trunk/frutas
+    
+    svn merge --reintegrate ^/branches/copia-rafael/frutas
+    --- Merging differences between repository URLs into '.':
+    U    pera.c
+     U   .
+     --- Recording mergeinfo for merge between repository URLs into '.':
+      G   .
+
+    cat pera.c
+    A pera é uma fruta verde e doce
+    \end{verbatim}
+    }
+    \end{bash}
+
+\end{frame}
 \section{Conclus\~ao}
 
 \begin{frame}
     \frametitle{Conclus\~ao}
 
     \begin{itemize}
-        \item Easy to use
-        \item Good results
+        \item SVN \'e fac\'il de usar
+        \item A solu\c{c}\~ao Copiar-Modificar-Unificar resolve bem o problema de conflitos
+        \item Deve atender bem a maioria das necessidades dos engenheiros de software
+        \item Tem suas limita\c{c}\~oes: N\~ao \'e poss\'ivel commitar localmente
     \end{itemize}
 \end{frame}
 
