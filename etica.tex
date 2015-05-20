@@ -13,7 +13,7 @@
     Rafael Castro, Lucas Nadolny, Eduardo Holfelmann\\\medskip
     {\small \url{rafaelcgs10@gmail.com}} \\
     {\small \url{lucasnv4@gmail.com}} \\
-    {\small \url{eduardohofelmann@gmail.com}}}
+{\small \url{eduardohofelmann@gmail.com}}}
 
 \institute[UDESC]{
     Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -43,9 +43,7 @@ Universidade do Estado de Santa Catarina}
         \item Ci\^encia Po\'etica = Romantistmo do pai + Era das inova\c{c}\~oes
         \item Imersa na matem\'atica
     \end{itemize}
-
     \begin{columns}
-
         \begin{column}{.555555\textwidth}
             \begin{exampleblock}{}
                 {\large ``A aplicação dedicada e 
@@ -87,28 +85,54 @@ Universidade do Estado de Santa Catarina}
 \end{frame}
 
 \begin{frame}
-    \frametitle{lan Turing}
+    \frametitle{Alan Turing}
     \begin{itemize}
-        \item Comunidade de Software Livre
-        \item Grupo Apache
-        \item Google
-        \item Apple
+        \item M\'aquinas autom\'aticas (ou M\'aquinas de Turign)
+            \begin{itemize}
+                \item Prop\'osito de mostrar que certos problemas s\~ao indecid\'iveis
+                \item Modelo matem\'atico \'util para provas
+                \item Uma defini\c{c}\~ao formal de algoritmo
+            \end{itemize}
+        \item Trabalhou na quebra do c\'odigo do enigma
+            \begin{itemize}
+                \item Bombe Machine e Colossus n\~ao eram m\'aquinas de prop\'osito geral
+            \end{itemize}
     \end{itemize}
+    \begin{figure}
+        \includegraphics[width = 0.2\textwidth]{figures/alan}
+    \end{figure}
+
 \end{frame}
 
-\section{Caracter\'isticas em Particular}
 \begin{frame}
-    \frametitle{Pontos Importantes}
-    \begin{itemize}
-        \item Versionamento de diretórios
-        \item Histórico de versões efetivo
-        \item Manipulação consistente de dados
-        \item Commit \'atomico
-        \item Versionamento de metadados
-        \item Ramificações e rotulagem eficiente
-        \item Hackability
-    \end{itemize}
+    \frametitle{John von Neumann}
+    \begin{columns}
+        \begin{column}
+            \begin{itemize}
+                \item Trabalhou no ENIAC e EDVAC
+                \item Arquitetura de von Neumann
+            \end{itemize}
+        \end{column}
+        \begin{column}
+            \begin{figure}
+                \includegraphics[width = 0.3\textwidth]{figures/von}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    \begin{columns}
+        \begin{column}
+            \begin{figure}
+                \includegraphics[width = 0.8\textwidth]{figures/arvon}
+            \end{figure}
+        \end{column}
+        \begin{column}
+            \begin{figure}
+                \includegraphics[width = 0.8\textwidth]{figures/ut}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
+
 
 
 \begin{frame}
@@ -299,23 +323,23 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    svn checkout https://subversion.assembla.com/svn/teste-soft --username=rafaelcgs10
-    ... arquivos baixados ...
-     svn info
+            svn checkout https://subversion.assembla.com/svn/teste-soft --username=rafaelcgs10
+            ... arquivos baixados ...
+            svn info
 
-    Working Copy Root Path: /home/user/teste-svn/teste-soft
-    URL: https://subversion.assembla.com/svn/teste-soft
-    Relative URL: ^/
-    Raiz do Repositório: https://subversion.assembla.com/svn/teste-soft
-    UUID do repositório: 8d1ad2a0-f3b6-4a4c-8996-bb2a8e12f73e
-    Revisão: 20
-    Tipo de Nó: diretório
-    Agendado: normal
-    Autor da Última Mudança: rafaelcgs10
-    Revisão da Última Mudança: 20
-    Data da Última Mudança: 2015-03-31 09:18:57 -0300 (Ter, 31 Mar 2015)
-    \end{verbatim}
-}
+            Working Copy Root Path: /home/user/teste-svn/teste-soft
+            URL: https://subversion.assembla.com/svn/teste-soft
+            Relative URL: ^/
+            Raiz do Repositório: https://subversion.assembla.com/svn/teste-soft
+            UUID do repositório: 8d1ad2a0-f3b6-4a4c-8996-bb2a8e12f73e
+            Revisão: 20
+            Tipo de Nó: diretório
+            Agendado: normal
+            Autor da Última Mudança: rafaelcgs10
+            Revisão da Última Mudança: 20
+            Data da Última Mudança: 2015-03-31 09:18:57 -0300 (Ter, 31 Mar 2015)
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -328,30 +352,30 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    pwd
-    ~/teste-soft
+            pwd
+            ~/teste-soft
 
-    svn list
-    branches/
-    readme.textile
-    source/
-    tags/
-    trunk/
+            svn list
+            branches/
+            readme.textile
+            source/
+            tags/
+            trunk/
 
-    cd trunk/
+            cd trunk/
 
-    svn list
-    README
-    frutas/
+            svn list
+            README
+            frutas/
 
-    cd frutas/
+            cd frutas/
 
-    svn list
-    banana.c
-    melao.c
-    uva.c
-    \end{verbatim}
-}
+            svn list
+            banana.c
+            melao.c
+            uva.c
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -364,21 +388,21 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    cd ..
-    cd ..
-    pwd
-    ~/teste-soft
+            cd ..
+            cd ..
+            pwd
+            ~/teste-soft
 
-    svn copy trunk/ branches/copia-rafael
-    A         branches/copia-rafael
+            svn copy trunk/ branches/copia-rafael
+            A         branches/copia-rafael
 
-    svn commit -m "branche do rafael criado"
+            svn commit -m "branche do rafael criado"
 
-    Adicionando    branches/copia-rafael
+            Adicionando    branches/copia-rafael
 
-    Committed revision 22.
-    \end{verbatim}
-}
+            Committed revision 22.
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -392,24 +416,24 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    cd branches
-    cd copia-rafael
-    cd frutas
+            cd branches
+            cd copia-rafael
+            cd frutas
 
-    ls
-    banana.c melao.c uva.c
+            ls
+            banana.c melao.c uva.c
 
-    echo A pera é uma fruta verde > pera.c
+            echo A pera é uma fruta verde > pera.c
 
-    svn add pera.c
-    A       pera.c
+            svn add pera.c
+            A       pera.c
 
-    svn commit -m "Arquivo pera.c adicionado"
-    Adicionando    pera.c
-    Transmitindo dados do arquivo .
-    Committed revision 23.
-    \end{verbatim}
-}
+            svn commit -m "Arquivo pera.c adicionado"
+            Adicionando    pera.c
+            Transmitindo dados do arquivo .
+            Committed revision 23.
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -422,38 +446,38 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    pwd
-    ~/teste-soft/trunk/frutas
+            pwd
+            ~/teste-soft/trunk/frutas
 
-    svn merge --reintegrate ^/branches/copia-rafael/frutas
-    --- Merging differences between repository URLs into '.':
-       C pera.c
-       Tree conflict on 'pera.c'
-          > local file obstruction, incoming file add upon merge
-          Select: (r) mark resolved, (p) postpone, (q) quit resolution, (h) help: 
-          p
+            svn merge --reintegrate ^/branches/copia-rafael/frutas
+            --- Merging differences between repository URLs into '.':
+            C pera.c
+            Tree conflict on 'pera.c'
+            > local file obstruction, incoming file add upon merge
+            Select: (r) mark resolved, (p) postpone, (q) quit resolution, (h) help: 
+            p
 
-    --- Recording mergeinfo for merge between repository URLs into '.':
-     U   .
-     Summary of conflicts:
-       Tree conflicts: 1
+            --- Recording mergeinfo for merge between repository URLs into '.':
+            U   .
+            Summary of conflicts:
+            Tree conflicts: 1
 
-    svn status
-     M      .
-           C pera.c
-                 >   local file obstruction, incoming file add upon merge
-                 Summary of conflicts:
-                   Tree conflicts: 1
+            svn status
+            M      .
+            C pera.c
+            >   local file obstruction, incoming file add upon merge
+            Summary of conflicts:
+            Tree conflicts: 1
 
-    svn resolve --accept=working pera.c
-    Estado de conflito resolvido para 'pera.c'
+            svn resolve --accept=working pera.c
+            Estado de conflito resolvido para 'pera.c'
 
-    svn commit -m "Conflito resolvido"
-    Enviando       .
+            svn commit -m "Conflito resolvido"
+            Enviando       .
 
-    Committed revision 25.
-    \end{verbatim}
-}
+            Committed revision 25.
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -466,25 +490,25 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    pwd
-    ~/teste-soft/branches/frutas
+            pwd
+            ~/teste-soft/branches/frutas
 
-    svn up
-    Updating '.':
-    Na revisão 29.
+            svn up
+            Updating '.':
+            Na revisão 29.
 
-    svn merge ^/trunk/frutas
-    --- Merging r27 through r29 into '.':
-    C    pera.c
-    --- Recording mergeinfo for merge of r27 through r29 into '.':
-     U   .
-     Conflict discovered in file 'pera.c'.
-     Select: (p) postpone, (df) show diff, (e) edit file, (m) merge,
-             (mc) my side of conflict, (tc) their side of conflict,
-                     (s) show all options: p
+            svn merge ^/trunk/frutas
+            --- Merging r27 through r29 into '.':
+            C    pera.c
+            --- Recording mergeinfo for merge of r27 through r29 into '.':
+            U   .
+            Conflict discovered in file 'pera.c'.
+            Select: (p) postpone, (df) show diff, (e) edit file, (m) merge,
+            (mc) my side of conflict, (tc) their side of conflict,
+            (s) show all options: p
 
-    \end{verbatim}
-}
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -498,30 +522,30 @@ Universidade do Estado de Santa Catarina}
         {\tiny
             \begin{verbatim}
 
-    cat pera.c
-    <<<<<<< .working
-    A pera é uma fruta verde
-    =======
-    A pera é um fruta doce
-    >>>>>>> .merge-right.r29
+            cat pera.c
+            <<<<<<< .working
+            A pera é uma fruta verde
+            =======
+            A pera é um fruta doce
+            >>>>>>> .merge-right.r29
 
-    echo A pera é uma fruta verde e doce > pera.c
+            echo A pera é uma fruta verde e doce > pera.c
 
-    svn resolve --accept=working pera.c
-    Estado de conflito resolvido para 'pera.c'
+            svn resolve --accept=working pera.c
+            Estado de conflito resolvido para 'pera.c'
 
-    Enviando       .
-    Enviando       pera.c
-    Transmitindo dados do arquivo .
-    Committed revision 30.
+            Enviando       .
+            Enviando       pera.c
+            Transmitindo dados do arquivo .
+            Committed revision 30.
 
-    svn commit -m "Conflito resolvido"
-    Enviando       .
-    Enviando       pera.c
-    Transmitindo dados do arquivo .
-    Committed revision 30.
-    \end{verbatim}
-}
+            svn commit -m "Conflito resolvido"
+            Enviando       .
+            Enviando       pera.c
+            Transmitindo dados do arquivo .
+            Committed revision 30.
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
@@ -533,20 +557,20 @@ Universidade do Estado de Santa Catarina}
     \begin{bash}{}
         {\tiny
             \begin{verbatim}
-    pwd
-    ~/teste-soft/trunk/frutas
+            pwd
+            ~/teste-soft/trunk/frutas
 
-    svn merge --reintegrate ^/branches/copia-rafael/frutas
-    --- Merging differences between repository URLs into '.':
-    U    pera.c
-     U   .
-     --- Recording mergeinfo for merge between repository URLs into '.':
-      G   .
+            svn merge --reintegrate ^/branches/copia-rafael/frutas
+            --- Merging differences between repository URLs into '.':
+            U    pera.c
+            U   .
+            --- Recording mergeinfo for merge between repository URLs into '.':
+            G   .
 
-    cat pera.c
-    A pera é uma fruta verde e doce
-    \end{verbatim}
-}
+            cat pera.c
+            A pera é uma fruta verde e doce
+            \end{verbatim}
+        }
     \end{bash}
 
 \end{frame}
