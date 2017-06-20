@@ -5,14 +5,15 @@
 \usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[portuges]{babel}
+\usepackage{minted}
 
+\usemintedstyle[haskell]{bw}
 
-\title[Modelo Slides Udesc]{Modelo de slides UDESC}
+\title[Vis\~ao Categ\'orica do Sistema de Tipos de Haskell]{Vis\~ao Categ\'orica do Sistema de Tipos de Haskell}
 
-\author[Rafael Castro, Renan S. Silva]{
-  Rafael Castro, Renan S. Silva\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}} \\ 
-    {\small \url{uber.renan@gmail.com}}}
+\author[Rafael Castro Gon\c{c}alves Silva]{
+  Rafael Castro Gon\c{c}alves Silva\\\medskip
+    {\small \url{rafaelcgs10@gmail.com}}}
 
   \institute[UDESC]{
     Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -32,17 +33,82 @@
     \begin{itemize}
       \item Correspond\^encia Curry-Howard-Lambek
       \item An\'alise do Sistema de Tipos de Haskell
+      \item Conclus\~oes
     \end{itemize}
   \end{frame}
 
   \section{Correspond\^encia Curry-Howard-Lambek}
   \begin{frame}
-    \frametitle{Fragmento da Dedu\c{c}\~ao natural}
-
+    \frametitle{C\'alculo Lambda Simplesmente Tipado}
   \end{frame}
-  \section{An\'alise do Sistema de Tipos de Haskell}
+
   \begin{frame}
+    \frametitle{Fragmento da Dedu\c{c}\~ao Natural}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Isomorfismo de Curry-Howard}
+    \begin{itemize}
+      \item H\'a um isomorfismo entre o Fragmento da Dedu\c{c}\~ao Natural Intuicionista e o C\'alculo Lambda Simplesmente Tipado.
+    \pause
+      \item A prova de Curry-Howard \'e uma indu\c{c}\~ao estruturada.
+        \begin{itemize}
+          \item Proposi\c{c}\~oes $\leftrightarrow$ tipos e termos $\leftrightarrow$ provas.
+          \item Normaliza\c{c}\~ao de termos $\leftrightarrow$ simplifica\c{c}\~ao de provas.
+        \end{itemize}
+      \item 
+\begin{align*}
+    \text{F\'ormulas} & \leftrightarrow \text{Tipos}\\
+    \text{Provas} & \leftrightarrow \text{Termos}\\
+    \text{Redu\c{c}\~ao-}\beta & \leftrightarrow \text{Simplifica\c{c}\~ao de provas}\\
+    \text{Provabilidade} & \leftrightarrow \textit{Inhabitation}\\
+    \text{Teorema} & \leftrightarrow \text{Tipo habitado}
+\end{align*}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Curry-Howard-Lambek}
+    \begin{itemize}
+      \item Existe uma interpreta\c{c}\~ao categ\'orica para TA e ND: ambos os sistemas
+        s\~ao categorias cartesianas fechadas.
+        \pause
+      \item Em particular, \'e poss\'ivel demonstrar que qualquer lambda-teoria determina uma CCC e, inversamente,
+        uma CCC qualquer gera um c\'alculo lambda tipado.
+        \pause
+      \item Dedu\c{c}\~ao Natural Intuicionista \'e uma CCC:\\
+        proposi\c{c}\~oes s\~ao objetos e sequentes s\~ao morfismos.
+        \pause
+      \item C\'alculo Lambda Simplesmente Tipado \'e uma CCC:\\
+        tipos s\~ao objetos e fun\c{c}\~oes s\~ao morfismos.
+    \end{itemize}
+  \end{frame}
+
+
+  \section{An\'alise do Sistema de Tipos de Haskell}
+  \begin{frame}[fragile]
     \frametitle{Vis\~ao L\'ogica do Sistema de Tipos de Haskell}
+    \begin{itemize}
+      \item $A \rightarrow B$ \'e um procedimento que produz uma constru\c{c}\~ao $B$ se fornecido uma constru\c{c}\~ao
+        $A$. Portanto em Haskell
+\begin{minted}{haskell}
+  const :: a -> b -> a
+  const x _ = x
+\end{minted}
+\'e o procedimento da proposi\c{c}\~ao $\tau \rightarrow \sigma \rightarrow \tau$.
+      \item Em Haskell existe o termo \mintinline{haskell}{undefined :: a}, que serve
+        para representar uma computa\c{c}\~ao com erro ou um loop infinito. Funciona como um termo
+        ``coringa'', pois seu tipo unifica para qualquer outro.
+    \end{itemize}
+\end{frame}
+
+  \begin{frame}
+    \frametitle{Vis\~ao Categ\'orica do Sistema de Tipos de Haskell}
+  \end{frame}
+
+  \section{Conclus\~oes}
+  \begin{frame}
+    \frametitle{Conclus\~oes}
   \end{frame}
 
 \end{document}

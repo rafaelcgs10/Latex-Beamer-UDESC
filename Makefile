@@ -2,10 +2,10 @@ FILENAME=main
 COMP=pdflatex
 
 pdf:
-	$(COMP) ${FILENAME}
+	$(COMP) -shell-escape ${FILENAME}
 	bibtex  ${FILENAME}||true
-	$(COMP) ${FILENAME}
-	$(COMP) ${FILENAME}
+	$(COMP) -shell-escape ${FILENAME}
+	$(COMP) -shell-escape ${FILENAME}
 
 read:
 	evince ${FILENAME}.pdf &
