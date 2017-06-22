@@ -5,8 +5,19 @@
 \usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[portuges]{babel}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{amsmath, amsthm, amsfonts, amssymb}
 \usepackage{minted}
 
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows,calc, shapes,fit, positioning} 
 \usemintedstyle[haskell]{bw}
 
 \title[Vis\~ao Categ\'orica do Sistema de Tipos de Haskell]{Vis\~ao Categ\'orica do Sistema de Tipos de Haskell}
@@ -148,13 +159,134 @@ o teorema anterior \'e quebrado, pois
   map (const 1) (tail_seq [1 `div` 0]) = |$\bot$|
   tail_seq (map (const 1) [1 `div` 0]) = [].
 \end{minted}
-
-
       \end{itemize}
   \end{frame}
 
-  \begin{frame}
+  \begin{frame}[fragile]
     \frametitle{Vis\~ao Categ\'orica do Sistema de Tipos de Haskell}
+    \begin{block}{\small{Segundo a \textit{Wiki} do Haskell:}}
+Os objetos de \textbf{Hask} s\~ao tipos de Haskell e os morfismos dos objetos
+  \mintinline{haskell}{A} a \mintinline{haskell}{B} s\~ao fun\c{c}\~oes de Haskell do tipo \mintinline{haskell}{A ->  B}.
+  O morfismo identidade do objeto \mintinline{haskell}{A} \'e \mintinline{haskell}{id :: A -> A},
+  e a composi\c{c}\~ao dos morfismos \mintinline{haskell}{f} e \mintinline{haskell}{g} \'e \mintinline{haskell}{f . g = x -> f (g x)}.  
+(Tradu\c{c}\~ao do autor) 
+\end{block}
+\pause
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  undef1 :: a -> b
+  undef1 = undefined
+
+  undef2 :: a -> b
+  undef2 = \_ -> undefined
+\end{minted}
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  seq undef1 1 = |$\bot$|
+  seq undef2 1 = 1
+\end{minted}
+\mintinline{haskell}{undef1 . id = undef2} $\Longrightarrow$
+\mintinline[escapeinside=||,mathescape=true]{haskell}{undef1 . id |$\not =$| undef1}.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Categoria \textbf{PHask}}
+
+\begin{enumerate}[(a)]
+  \item $Obj_{PHask}$ \'e o conjunto de todos os tipos de Haskell. 
+  \item $Mor_{PHask}$ \'e o conjunto de todas as fun\c{c}\~oes em Haskell (tip\'aveis)
+    que s\~ao totais. Al\'em disso, um morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{f : A |$\rightarrow$| B}
+    representa a classe de equival\^encia de fun\c{c}\~oes do tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{A} ao tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{B} que tem o
+    mesmo mapeamento.
+  \item $\partial_0$ e $\partial_1$ s\~ao as fun\c{c}\~oes que levam, respectivamente, uma fun\c{c}\~ao ao seu tipo de
+    origem e destino.
+  \item A composi\c{c}\~ao \'e dada pela fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{(.) :: (b -> c) -> (a -> b) -> a -> c} e a prova da associatividade
+    \'e a mesma utilizada em \textbf{Set}.
+  \item O morfimso identidade \'e gerado pelas fun\c{c}\~oes identidade \mintinline[escapeinside=||,mathescape=true]{haskell}{id :: a -> a}, que pelo polimorfismo garante que todo objeto (tipo)
+    tem um morfismo (fun\c{c}\~ao) identidade. Observa-se que \textbf{PHask}, diferente de \textbf{Hask},
+    n\~ao acontece 
+    \mintinline[escapeinside=||,mathescape=true]{haskell}{undef1 . id |$\not =$| undef1}.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A categoria \textbf{PHask} \'e uma categoria cartesiana fechada}
+
+\begin{enumerate}
+  \item O objeto terminal \'e o tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{()}.
+  \item Utiliza-se o dado tupla padr\~ao: o produto \'e dado pelos morfismos das fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{fst :: (a, b) -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{snd :: (a, b) -> b}, e  
+pelo tipo: \mintinline[escapeinside=||,mathescape=true]{haskell}{ data (a,b) = (,) { fst :: a, snd :: b}.}
+Assim, para qualquer tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{r} e para quaisquer fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{f :: r -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{g :: r -> b}
+deve existir uma \'unica fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{u :: r -> (a,b)} capaz de fazer o diagrama abaixo comutar.\\
+
+    \begin{minipage}{.43\textwidth}
+\begin{figure}[H]
+    \centering
+        \begin{tikzpicture}[line width=1pt,>=latex]
+            %\draw[help lines, color=gray!30, dashed] (-4, -4) grid (4,4);
+            \node (C) {\mintinline{haskell}{r}};
+            \node [below left =2cm of C] (A) {\mintinline{haskell}{a}};
+            \node [below right =2cm of C] (B) {\mintinline{haskell}{b}};
+            \node [below =1.35 cm of C] (AxB) {\mintinline{haskell}{(a, b)}};
+            
+            \node[shape=rectangle,draw=black,minimum size=1.9cm,fit={(AxB) (B) (A) (C)}] {};
+
+            \draw[->] (AxB) -- node[above] {\mintinline{haskell}{fst}} (A);
+            \draw[->] (AxB) -- node[above] {\mintinline{haskell}{snd}} (B);
+            \draw[->] (C) -- node[above right] {\mintinline{haskell}{g}} (B);
+            \draw[->] (C) -- node[above left] {\mintinline{haskell}{f}} (A);
+            \draw[->] (C) edge [dashed] node[right] {\mintinline{haskell}{u}} (AxB);
+        \end{tikzpicture}
+    \label{comuproHaskell}
+\end{figure}
+    \end{minipage}
+    \begin{minipage}{.43\textwidth}
+    A melhor fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{u} que garante a comutatividade desse diagrama somente pode ser:
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  u :: r -> (a, b)
+  u r = (f r, g r).
+\end{minted}
+\end{minipage}
+\end{enumerate}
+\end{frame}
+
+  \begin{frame}[fragile]
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+  \item O objeto exponencial em Haskell \'e formado pelo objeto \mintinline[escapeinside=||,mathescape=true]{haskell}{b -> c} e pelo morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{eval}, onde \mintinline[escapeinside=||,mathescape=true]{haskell}{b} e \mintinline[escapeinside=||,mathescape=true]{haskell}{c} s\~ao tipos quaisquer 
+    e \mintinline[escapeinside=||,mathescape=true]{haskell}{eval} \'e gerado pela fun\c{c}\~ao
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  eval :: (b -> c, c) -> c
+  eval (f, x) = f x,
+\end{minted}
+pois para todo tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{a}
+e fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{g :: (a, b) -> c},
+existe um \'unico morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{curry g},
+onde 
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  curry :: ((a, b) -> c) -> a -> b -> c
+  curry f = \x -> \y -> f (x, y),
+\end{minted}
+que faz o diagrama abaixo comutar.
+\begin{figure}[H]
+    \centering
+        \begin{tikzpicture}[line width=1pt,>=latex]
+            %\draw[help lines, color=gray!30, dashed] (-4, -4) grid (4,4);
+          \node (C) {\mintinline{haskell}{a}};
+            \node [below = 1cm of C] (BA) {\mintinline{haskell}{b -> c}};
+            \node [right = 3.5cm of BA] (BAxA) {\mintinline{haskell}{(b -> c, b)}};
+            \node [above = 1cm of BAxA] (CxA) {\mintinline{haskell}{(a, b)}};
+            \node [right = 1.5cm of BAxA] (B) {\mintinline{haskell}{c}};
+            \node [below = 0.1cm of BAxA] (X) {};
+            
+            \node[shape=rectangle,draw=black,minimum size=2cm,fit={(C) (BA) (BAxA) (CxA) (B) (X)}] {};
+
+            \draw[->] (C) edge [dashed] node[right] {\mintinline{haskell}{curry g}} (BA);
+            \draw[->] (CxA) edge node[left] {\mintinline{haskell}{(curry g, id)}} (BAxA);
+            \draw[->] (CxA) edge node[above right] {\mintinline{haskell}{g}} (B);
+            \draw[->] (BAxA) edge node[below] {\mintinline{haskell}{eval}} (B);
+        \end{tikzpicture}
+    \label{comuexp}
+\end{figure}
+\end{enumerate}
   \end{frame}
 
   \section{Conclus\~oes}
