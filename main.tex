@@ -49,14 +49,14 @@
   \end{frame}
 
   \section{Correspond\^encia Curry-Howard-Lambek}
-  \begin{frame}
-    \frametitle{C\'alculo Lambda Simplesmente Tipado}
-  \end{frame}
-
-  \begin{frame}
-    \frametitle{Fragmento da Dedu\c{c}\~ao Natural}
-  \end{frame}
-
+%  \begin{frame}
+%    \frametitle{C\'alculo Lambda Simplesmente Tipado}
+%  \end{frame}
+%
+%  \begin{frame}
+%    \frametitle{Fragmento da Dedu\c{c}\~ao Natural}
+%  \end{frame}
+%
   \begin{frame}
     \frametitle{Isomorfismo de Curry-Howard}
     \begin{itemize}
@@ -289,9 +289,56 @@ que faz o diagrama abaixo comutar.
 \end{enumerate}
   \end{frame}
 
+  \begin{frame}[fragile]
+    \frametitle{Vis\~ao Categ\'orica de Classes de Tipos}
+    \begin{itemize}
+      \item As classes de tipos do Haskell s\~ao utilizadas para definir algumas
+        estruturas matem\'aticas, como rela\c{c}\~oes (por exemplo: equival\^encia e ordem), semigrupos,
+        monoides, funtores e m\^onadas.
+        \pause
+      \item A classe \mintinline{haskell}{Functor} indica, por seu nome, representar as estruturas categ\'oricas
+dos funtores, portanto
+deve ser um mapeamento entre categorias, o qual preserva origem e destino dos morfismos, identidade dos 
+objetos e a composi\c{c}\~ao
+        \pause
+      \item Um construtor de tipos \'e uma fun\c{c}\~ao que recebe tipos como argumentos e retorna algum tipo, por exemplo
+o construtor \mintinline{haskell}{Either} recebe dois tipos \mintinline{haskell}{a, b} e retorna o tipo
+\mintinline{haskell}{Either a b}.
+\item 
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  class Functor (f :: * -> *) where
+  fmap :: (a -> b) -> f a -> f b.
+\end{minted}
+
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitle{Vis\~ao Categ\'orica de Classes de Tipos}
+    \begin{itemize}
+      \item A assinatura de \mintinline{haskell}{fmap} garante a preserva\c{c}\~ao da origem e do destino, por\'em
+a identidade e a composi\c{c}\~ao n\~ao s\~ao asseguradas.
+Seria necess\'ario que 
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+  fmap id = id
+  fmap (f . g) = fmap f . fmap g
+\end{minted}
+
+    \end{itemize}
+  \end{frame}
+
   \section{Conclus\~oes}
   \begin{frame}
     \frametitle{Conclus\~oes}
+    \begin{itemize}
+      \item Curry-Howard-Lambek \'e utilizado no sistema de tipos de Haskell, n\~ao somente para definir
+        algumas classes de tipos, mas tamb\'em para garantir o bom comportamento do sistema.
+      \item Foi identificado alguns problemas em Haskell, em particular a aus\^encia de uma sem\^antica operacional 
+        que seria fundamental para definir uma categoria dos tipos e fun\c{c}\~oes.
+      \item Como alternativa foi constru\'ido a categoria \textbf{PHask} a partir de um subconjunto
+        de Haskell com apenas fun\c{c}\~oes totais.
+    \end{itemize}
   \end{frame}
+
 
 \end{document}
