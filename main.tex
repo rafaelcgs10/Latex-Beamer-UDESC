@@ -9,10 +9,10 @@
 
 \title[Construtivismo Matemático e suas aplicações na computação]{Construtivismo Matemático \\e suas aplicações na computação}
 
-\author[Rafael Castro, Renan S. Silva]{
-    Rafael Castro, Renan S. Silva\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}} \\ 
-    {\small \url{uber.renan@gmail.com}}}
+\author[Rafael Castro G. Silva]{
+    Rafael Castro G. Silva\\\medskip
+    {\small \url{rafaelcgs10@gmail.com}}
+    }
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -26,11 +26,65 @@
 
 \end{frame}
 
-\section{Introdução: Origem e motivação}
+\section{Introdução}
 \begin{frame}
-    \frametitle{Origem}
-
+    \frametitle{Uma pequena revisão de lógica clássica}
+    O que significa afirmar que $P \vee Q$ é verdade?\\
+    \vspace{1cm}
+    O que significa afirmar que $P \vee \neg P$ é verdade?\\
+    \vspace{0.5cm}
+    Para toda afirmação $P$, ou $P$ ou $\neg P$ é verdade.\\ (\textit{Law of excluded middle})\\ 
+    \pause
+    \vspace{1cm}
+    E quando não há prova de $P$ ou de $\neg P$?\\
+    \vspace{0.5cm}
+    Todo inteiro par maior que 2 pode ser escrito como a soma de dois números primos.
+    (\textit{Goldach Conjecture})
 \end{frame}
 
-\section{Introdução: Origem e motivação}
+\begin{frame}
+    \frametitle{Motivação ao construtivismo}
+    Gödel e talz...
+\end{frame}
+
+\begin{frame}
+    \frametitle{A interpretação clássica dos conectivos lógicos}
+    Tabela verdade!\\
+    \pause
+    \vspace{0.5cm}
+    $P \vee Q$ é interpretado como $\neg(\neg P \wedge \neg Q)$:\\ é uma
+    contradição $P$ e $Q$ serem falsos.\\
+    \vspace{0.5cm}
+    O que leva a interpretação idealizada da existência:\\
+    $\exists x P(x)$ significa $\neg \forall x \neg P(x)$:\\ é uma
+    contradição $P(x)$ ser falso para todo $x$.\\
+    \vspace{0.5cm}
+    \pause
+    \huge{e assim se fez toda a matemática}.
+\end{frame}
+\section{Construtivismo}
+\begin{frame}
+    \frametitle{A interpretação construtivista dos conectivos lógicos}
+    Interpretação BHK (Brouwer, Heyting e Kolmogorv):\\
+    \begin{itemize}
+        \item $\vee$ - para provar $P \vee Q$ é necessário ter uma prova de $P$ ou uma prova de $Q$.
+        \item $\wedge$ - para provar $P \wedge Q$ é necessário ter uma prova de $P$ e uma prova de $Q$.
+        \item $\rightarrow$ - para provar $P \rightarrow Q$ é necessário ter uma algoritmo que converte uma prova de $P$ em uma prova de $Q$.
+        \item $\neg$ - para provar $\neg P$ é necessário mostrar que $P$ implica
+            numa contradição $(0 = 1)$.
+        \item $\exists$ - para provar $\exists x P(x)$ é necessário ter uma construção de um objeto $x$ e provar que $P(x)$ é verdade.
+        \item $\forall$ - para provar $\forall x \in S\: P(x)$ é necessário ter um algoritmo que aplicado a qualquer objeto $x$ e a prova de que $x \in S$, prova que $P(x)$ é verdade.
+    \end{itemize}
+\end{frame}
+
+\section{Sistemas de Tipos}
+\begin{frame}
+    \frametitle{ST}
+    Curry-Howard ... Cálculo Lambda Tipado ... Dedução Natural
+\end{frame}
+
+\section{Assistentes de Provas}
+\begin{frame}
+    \frametitle{Coq}
+\end{frame}
 \end{document}
