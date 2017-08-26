@@ -45,11 +45,6 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Motivação ao construtivismo}
-    Gödel e talz...
-\end{frame}
-
-\begin{frame}
     \frametitle{A interpretação clássica dos conectivos lógicos}
     Tabela verdade!\\
     \pause
@@ -57,13 +52,38 @@
     $P \vee Q$ é interpretado como $\neg(\neg P \wedge \neg Q)$:\\ é uma
     contradição $P$ e $Q$ serem falsos.\\
     \vspace{0.5cm}
-    O que leva a interpretação idealizada da existência:\\
+    O que leva a interpretação idealizada (platônica) da existência:\\
     $\exists x P(x)$ significa $\neg \forall x \neg P(x)$:\\ é uma
     contradição $P(x)$ ser falso para todo $x$.\\
     \vspace{0.5cm}
     \pause
     \huge{e assim se fez toda a matemática}.
 \end{frame}
+
+\begin{frame}{Primeiro Teorema da Incompletude}
+    \begin{itemize}
+        \item A Aritmética de Peano é incompleta, ou seja, existe um fórmula $\varphi$ indecidível tal que:\\
+        $PA \not \vdash \varphi$ e $PA \not \vdash \neg \varphi$
+        \item A ideia da prova consiste na construção de uma frase com auto-referência, como paradoxo do mentiroso:\\
+        ``Esta frase é falsa''
+        \item Em analogia, objetiva-se construir uma frase (ou proposição) em $PA$ que diga:\\
+        ``Esta proposição e sua negação não podem ser provadas''
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Lógica clássica VS Lógica construtivista}
+    E quando não há prova de $P$ ou prova de $\neg P$ o que podemos dizer sobre $P \vee \neg P$?\\
+    \begin{itemize}
+    \item   Clássica: Verdade
+    \vspace{0.5cm}
+    \item Construtivista: Não provável
+    \end{itemize}
+    \vspace{0.5cm}
+    Na lógica clássica dizemos que proposições são verdadeiras ou falsas. Na construtivista dizemos que proposições
+    são prováveis ou não prováveis.
+\end{frame}
+
 \section{Construtivismo}
 \begin{frame}
     \frametitle{A interpretação construtivista dos conectivos lógicos}
