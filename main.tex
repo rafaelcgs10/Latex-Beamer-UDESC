@@ -5,6 +5,8 @@
 %\usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[latin1]{inputenc}
+\usepackage{minted}
+\usemintedstyle[haskell]{bw}
 
 
 \title[Construtivismo Matemático e suas aplicações na computação]{Construtivismo Matemático \\e suas aplicações na computação}
@@ -83,13 +85,21 @@
 \end{frame}
 
 \section{Sistemas de Tipos}
-\begin{frame}
+\begin{frame}[fragile]
     \frametitle{Sistemas de Tipos}
-    O que são sistemas de tipos?\\
-    \vspace{0.5cm}
+    Qual é a graça de sistemas de tipos?
     \pause
-    GRAÇA: polimorfismo.
-    lightweight formal methods
+    \begin{itemize}
+  \item GRAÇA 1: polimorfismo.
+    \vspace{0.5cm}
+     \begin{minted}{haskell}
+    len :: [a] -> Int 
+    len [] = 0
+    len (x:xs) = 1 + len xs
+      \end{minted}
+    \pause
+  \item GRAÇA 2: \textit{Lightweight Formal Methods}.
+    \end{itemize}
 \end{frame}
 
 \section{Assistentes de Provas}
