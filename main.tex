@@ -38,14 +38,18 @@
 
 \begin{frame}
     \frametitle{Uma pequena revisão de lógica clássica}
-    O que significa afirmar que $P \vee Q$ é verdade?\\
+    O que significa afirmar que $P \vee Q$ é verdade?
+
     \vspace{1cm}
-    O que significa afirmar que $P \vee \neg P$ é verdade?\\
+    O que significa afirmar que $P \vee \neg P$ é verdade?
+
     \vspace{0.5cm}
-    Para toda afirmação $P$, ou $P$ ou $\neg P$ é verdade.\\ (\textit{Law of excluded middle})\\ 
+    Para toda afirmação $P$, ou $P$ ou $\neg P$ é verdade.\\ (\textit{Law of excluded middle})
+
     \pause
     \vspace{1cm}
-    E quando não há prova de $P$ ou de $\neg P$?\\
+    E quando não há prova de $P$ ou de $\neg P$?
+
     \vspace{0.5cm}
     Todo inteiro par maior que 2 pode ser escrito como a soma de dois números primos.
     (\textit{Goldach Conjecture})
@@ -53,15 +57,21 @@
 
 \begin{frame}
     \frametitle{A interpretação clássica dos conectivos lógicos}
-    Tabela verdade!\\
+    Tabela verdade!
+
     \pause
     \vspace{0.4cm}
-    $P \vee Q$ é interpretado como $\neg(\neg P \wedge \neg Q)$:\\ é uma
-    contradição $P$ e $Q$ serem falsos.\\
+    $P \vee Q$ é interpretado como $\neg(\neg P \wedge \neg Q)$:
+
+    é uma contradição $P$ e $Q$ serem falsos.
+
     \vspace{0.4cm}
-    O que leva a interpretação idealizada (platônica) da existência:\\
-    $\exists x P(x)$ significa $\neg \forall x \neg P(x)$:\\ é uma
-    contradição $P(x)$ ser falso para todo $x$.\\
+    O que leva a interpretação idealizada (platônica) da existência:
+
+    $\exists x P(x)$ significa $\neg \forall x \neg P(x)$:
+
+    é uma contradição $P(x)$ ser falso para todo $x$.
+
     \vspace{0.4cm}
     \pause
     \huge{e assim se fez toda a matemática}.
@@ -131,6 +141,13 @@
 
 \begin{frame}
     \frametitle{Intuicionismo}
+    Vertente do construtivismo: não aceita LEM.
+
+    \vspace{0.9cm}
+    \Large{Matemática é uma criação da mente humana e um objeto existe se, e somente se, pode ser construido.}
+
+    \vspace{0.9cm}
+    Lógica e matemática não revelam verdades objetivas sobre objetos matemáticos.
 \end{frame}
 
 \begin{frame}
@@ -145,6 +162,15 @@
         \item $\exists$ - para provar $\exists x P(x)$ é necessário ter uma construção de um objeto $x$ e provar que $P(x)$ é verdade.
         \item $\forall$ - para provar $\forall x \in S\: P(x)$ é necessário ter um algoritmo que aplicado a qualquer objeto $x$ e a prova de que $x \in S$, prova que $P(x)$ é verdade.
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Prova por contradição no construtivismo}
+    Matemáticos chamam duas coisas de ``prova por contradição'':
+    \begin{enumerate}
+        \item Assuma que $P$ é falso... blah blah blah, contradição. Portanto, $P$ é verdade. ($(\forall P. \neg \neg P \rightarrow P) \equiv$ (LEM))
+        \item Assuma que $P$ é verdade... blah blah blah, contradição. Portanto, $P$ é falso. ($P  \rightarrow \bot \equiv$ $\neg P$)
+    \end{enumerate}
 \end{frame}
 
 \section{Aplicações}
@@ -162,13 +188,23 @@
       \end{minted}
     \pause
   \item GRAÇA 2: \textit{Lightweight Formal Methods}.
-    \end{itemize}
+     \begin{minted}{haskell}
+    map :: (a - > b) -> [a] -> [b] 
+    map f [] = []
+    map f (x:xs) = f x : map f xs
+
+    map (+1) ['a', 'b']
+      \end{minted}
+     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Coq}
-    Ferramentas que auxiliam o desenvolvimento de provas formais.\\
+    \begin{itemize}
+        \item Ferramentas que auxiliam o desenvolvimento de provas formais.
+
     \vspace{0.5cm}
-    Verificam a consistência lógica de uma prova matemática escrita em linguagem.
+        \item Verificam a consistência lógica de uma prova matemática.
+    \end{itemize}
 \end{frame}
 \end{document}
