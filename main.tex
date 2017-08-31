@@ -6,6 +6,7 @@
 \usepackage{booktabs}
 \usepackage[latin1]{inputenc}
 \usepackage{minted}
+\usepackage{bussproofs}
 \usemintedstyle[haskell]{bw}
 
 
@@ -109,8 +110,34 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Curry-Howard}
-    Curry-Howard ... Cálculo Lambda Tipado ... Dedução Natural
+    \frametitle{Isomorfismo de Curry-Howard}
+    \begin{itemize}
+      \item Existe um isomorfismo entre Cálculo Lambda Simplesmente Tipado e Dedução Natural Intuicionista.
+      \item Proposições são tipos e provas são programas.
+    \end{itemize}
+
+    \begin{block}{Exemplo curry-howard}
+
+    \begin{columns}
+    \begin{column}{.555555\textwidth}
+      \begin{prooftree}
+          \RightLabel{$(ax)$}
+          \AxiomC{$\sigma \vdash \sigma$}
+          \RightLabel{$(\rightarrow_I)$}
+          \UnaryInfC{$ \vdash \sigma \rightarrow \sigma$}
+      \end{prooftree}
+    \end{column}
+    \begin{column}{.555555\textwidth}
+      \begin{prooftree}
+          \AxiomC{$x:a \vdash x:a$}
+          \RightLabel{$(abs)$}
+          \UnaryInfC{$ \vdash (\lambda x . x):{a \rightarrow a}$}
+      \end{prooftree}
+    \end{column}
+    \end{columns}
+
+    \end{block}
+
 \end{frame}
 
 \section{Construtivismo}
