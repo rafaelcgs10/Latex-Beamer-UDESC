@@ -10,14 +10,14 @@
 \usemintedstyle[haskell]{bw}
 
 
-\title[Construtivismo Matemático e suas aplicações na computação]{Construtivismo Matemático \\e suas aplicações na computação}
+\title[Normatização de Citação e Referências]{Normatização de Citação e Referências \\ em Artigos versus Monografias da UDESC}
 
-\author[Rafael Castro G. Silva]{
-    Rafael Castro G. Silva\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}}
-    }
+\author[Rafael Castro, Teodoro Borges]{
+    Rafael Castro, Teodoro Borges\\\medskip
+    {\small \url{rafaelcgs10@gmail.com}} \\
+{\small \url{teodoroborges@hotmail.com}}}
 
-    \institute[UDESC]{
+\institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
             Centro de Ci\^encias e Tecnol\'ogicas\\
             Universidade do Estado de Santa Catarina}
@@ -28,241 +28,50 @@
     \titlepage
 
 \end{frame}
-
-\section{Motivação}
-\begin{frame}[noframenumbering]
-    \frametitle{Motivação}
-     \begin{figure}
-      \includegraphics[width = 0.9\textwidth]{undecidebles.jpg}
-     \end{figure}
-\end{frame}
-
+\section{Evento}
 \begin{frame}
-    \frametitle{Uma pequena revisão de lógica clássica}
-    O que significa afirmar que $P \vee Q$ é verdade?
+    \frametitle{Evento}
+    45th ACM SIGPLAN Symposium on Principles of Programming Languages (POPL 2018)
+    Grupo SIGPLAN: Special Interest Group on Programming Languages: 
 
-    \vspace{1cm}
-    O que significa afirmar que $P \vee \neg P$ é verdade?
-
-    \vspace{0.5cm}
-    Para toda afirmação $P$, ou $P$ ou $\neg P$ é verdade.\\ (\textit{Law of excluded middle})
-
-    \pause
-    \vspace{1cm}
-    E quando não há prova de $P$ ou de $\neg P$?
-
-    \vspace{0.5cm}
-    Todo inteiro par maior que 2 pode ser escrito como a soma de dois números primos.
-    (\textit{Goldach Conjecture})
+    Explora ferramentas e conceitos de linguagens de programação, focando no design, implementação, prática e teoria.
 \end{frame}
 
+\section{Citações}
 \begin{frame}
-    \frametitle{A interpretação clássica dos conectivos lógicos}
-    Tabela verdade!
-
-    \pause
-    \vspace{0.4cm}
-    $P \vee Q$ é interpretado como $\neg(\neg P \wedge \neg Q)$:
-
-    é uma contradição $P$ e $Q$ serem falsos.
-
-    \vspace{0.4cm}
-    O que leva a interpretação idealizada (platônica) da existência:
-
-    $\exists x P(x)$ significa $\neg \forall x \neg P(x)$:
-
-    é uma contradição $P(x)$ ser falso para todo $x$.
-
-    \vspace{0.4cm}
-    \pause
-    \huge{e assim se fez toda a matemática}.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Sistema Formal}
-    \begin{itemize}
-      \item Conjunto de símbolos.
-      \item Uma gramática, que define termos bem definidos a partir dos símbolos.
-      \item Aparato de dedução: regras que determinam algum tipo de consequência entre os termos bem formados.
-      \item Semântica para os termos.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Aritmética de Peano}
-    \begin{enumerate}
-        \setcounter{enumi}{-1}
-        \item $0$ é um número natural
-        \item definição da relação de igualdade (reflexiva, transitiva simétrica, fechada)...
-        \setcounter{enumi}{4}
-        \item Se $n$ é um número natural, então $S(n)$ é um número natural.
-        \item $S(n) = 0$ é falso para todo $n$.
-        \item Para todo $n, m$ naturais, se $S(m) = S(n)$,
-
-            então $n = m$ ($S$ é injetora).
-    \end{enumerate}
-    Adição:
-
-    $plus\: 0\: m = m$
-
-    $plus\: S(n)\: m = S(plus\: n\: m)$
-\end{frame}
-
-\begin{frame}
-    \frametitle{Programa de Hilbert}
-    \begin{itemize}
-      \item Formalizar a matemática: escrever toda a matemática como um sistema formal.
-      \item Completude: Provar que todas as afirmações (e negações) verdadeiras matemáticas podem ser provadas nesse sistema formal.
-      \item Consistência: Provar que uma verdade jamais deriva uma falsidade.
-      \item Decibilidade: Um algoritmo que seja capaz provar todas as verdades e falsidades.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Primeiro Teorema da Incompletude}
-    \begin{itemize}
-        \item A Aritmética de Peano é incompleta, ou seja, existe um fórmula $\varphi$ indecidível tal que:\\
-        $PA \not \vdash \varphi$ e $PA \not \vdash \neg \varphi$
-        \item A ideia da prova consiste na construção de uma frase com auto-referência, como paradoxo do mentiroso:\\
-        ``Esta frase é falsa''
-        \item Em analogia, objetiva-se construir uma frase (ou proposição) em $PA$ que diga:\\
-        ``Esta proposição e sua negação não podem ser provadas''
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Isomorfismo de Curry-Howard}
-    \begin{itemize}
-      \item Existe um isomorfismo entre Cálculo Lambda Simplesmente Tipado e Dedução Natural Intuicionista.
-      \item Proposições são tipos e provas são programas.
-    \end{itemize}
-
-    \begin{block}{Exemplo curry-howard}
-
+    \frametitle{Citações}
     \begin{columns}
-    \begin{column}{.555555\textwidth}
-      \begin{prooftree}
-          \RightLabel{$(ax)$}
-          \AxiomC{$\sigma \vdash \sigma$}
-          \RightLabel{$(\rightarrow_I)$}
-          \UnaryInfC{$ \vdash \sigma \rightarrow \sigma$}
-      \end{prooftree}
-    \end{column}
-    \begin{column}{.555555\textwidth}
-      \begin{prooftree}
-          \AxiomC{$x:a \vdash x:a$}
-          \RightLabel{$(abs)$}
-          \UnaryInfC{$ \vdash (\lambda x . x):{a \rightarrow a}$}
-      \end{prooftree}
-    \end{column}
+        \begin{column}{.57\textwidth}
+                UDESC: ABNT NBR 10520  
+            \begin{itemize}
+                \item Sistema autor-data:\\
+                    ex: (HOWARD , 1980).
+                \item Quando o autor faz parte da frase:\\
+                    Gale (2014) afirma que a fundação da cidade foi feita pelo..."
+            \end{itemize}
+        \end{column}
+        \begin{column}{.57\textwidth}
+                POPL: ACM Reference format
+            \begin{itemize}
+                \item Sistema numérico:. \\
+                    ex: [1]
+                \item Quando o autor faz parte da frase:\\
+                    So we see that Burando et al. [1]...
+            \end{itemize}
+        \end{column}
     \end{columns}
-
-    \end{block}
-
 \end{frame}
 
-\section{Construtivismo}
-\begin{frame}[noframenumbering]
-    \frametitle{Construtivismo}
-     \begin{figure}
-      \includegraphics[width = 0.4\textwidth]{plato_aris.jpg}
-     \end{figure}
-\end{frame}
-
+\section{Referências}
 \begin{frame}
-    \frametitle{Lógica clássica VS Lógica construtivista}
-    \vspace{0.5cm}
-    Law of Excluded Middle: $\forall P, P \vee \neg P$ (LEM)\\
+    \frametitle{Citações}
+    Doctoral dissertation:
 
-    E quando não há prova de $P$ e não há prova de $\neg P$ o que podemos dizer sobre $P \vee \neg P$?\\
-    \begin{itemize}
-    \item   Clássica: Verdade
-    \vspace{0.5cm}
-    \item Construtivista: Não provável
-    \end{itemize}
-    \vspace{0.5cm}
-    Na lógica clássica dizemos que proposições são verdadeiras ou falsas. Na construtivista dizemos que proposições
-    são prováveis ou não prováveis.\\
-    \vspace{0.5cm}
-    \large{Construtivismo é sobre não aceitar LEM.}
+[1] Kenneth L. Clarkson. 1985. Algorithms for Closest-Point Problems (Computational Geometry). Ph.D. Dissertation. Stanford University, Palo Alto, CA. UMI Order Number: AAT 8506171.
+
+Master's Thesis:
+
+[1] David A. Anisi. 2003. Optimal Motion Control of a Ground Vehicle. Master's thesis. Royal Institute of Technology (KTH), Stockholm, Sweden.
 \end{frame}
 
-\begin{frame}
-    \frametitle{Intuicionismo}
-    Vertente do construtivismo: não aceita LEM.
-
-    \vspace{0.9cm}
-    \Large{Matemática é uma criação da mente humana e um objeto existe se, e somente se, pode ser construido.}
-
-    \vspace{0.9cm}
-    Lógica e matemática não revelam verdades objetivas sobre objetos matemáticos.
-\end{frame}
-
-\begin{frame}
-    \frametitle{A interpretação intuicionista dos conectivos lógicos}
-    Interpretação BHK (Brouwer, Heyting e Kolmogorv):\\
-    \begin{itemize}
-        \item $\vee$ - para provar $P \vee Q$ é necessário ter uma prova de $P$ ou uma prova de $Q$.
-        \item $\wedge$ - para provar $P \wedge Q$ é necessário ter uma prova de $P$ e uma prova de $Q$.
-        \item $\rightarrow$ - para provar $P \rightarrow Q$ é necessário ter uma algoritmo que converte uma prova de $P$ em uma prova de $Q$.
-        \item $\neg$ - para provar $\neg P$ é necessário mostrar que $P$ implica
-            numa contradição $(0 = 1)$.
-        \item $\exists$ - para provar $\exists x P(x)$ é necessário ter uma construção de um objeto $x$ e provar que $P(x)$ é verdade.
-        \item $\forall$ - para provar $\forall x \in S\: P(x)$ é necessário ter um algoritmo que aplicado a qualquer objeto $x$ e a prova de que $x \in S$, prova que $P(x)$ é verdade.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Prova por contradição no construtivismo}
-    Matemáticos chamam duas coisas de ``prova por contradição'':
-    \begin{enumerate}
-        \item Assuma que $P$ é falso... blah blah blah, contradição. Portanto, $P$ é verdade. ($(\forall P. \neg \neg P \rightarrow P) \equiv$ (LEM))
-        \item Assuma que $P$ é verdade... blah blah blah, contradição. Portanto, $P$ é falso. ($P  \rightarrow \bot \equiv$ $\neg P$)
-    \end{enumerate}
-\end{frame}
-
-\section{Aplicações}
-\begin{frame}[fragile]
-    \frametitle{Sistemas de Tipos}
-    Qual é a graça de sistemas de tipos?
-    \pause
-    \begin{itemize}
-  \item GRAÇA 1: polimorfismo.
-    \vspace{0.5cm}
-     \begin{minted}{haskell}
-    len :: [a] -> Int 
-    len [] = 0
-    len (x:xs) = 1 + len xs
-      \end{minted}
-    \pause
-  \item GRAÇA 2: \textit{Lightweight Formal Methods}.
-     \begin{minted}{haskell}
-    map :: (a - > b) -> [a] -> [b] 
-    map f [] = []
-    map f (x:xs) = f x : map f xs
-
-    map (+1) ['a', 'b']
-      \end{minted}
-     \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Coq}
-    \begin{itemize}
-        \item Ferramentas que auxiliam o desenvolvimento de provas formais.
-
-    \vspace{0.5cm}
-        \item Verificam a consistência lógica de uma prova matemática.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[noframenumbering]
-    \frametitle{Referências}
-    \begin{itemize}
-        \item Constructive Mathematics (Stanford Encyclopedia of Philosophy)
-
-        \item Five Stages of Accepting Constructive Mathematics by Andrej Bauer.
-
-        \item Propositions as types by Philip Wadler.
-    \end{itemize}
-\end{frame}
 \end{document}
