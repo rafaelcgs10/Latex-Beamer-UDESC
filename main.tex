@@ -7,12 +7,12 @@
 \usepackage[portuges]{babel}
 
 
-\title[Modelo Slides Udesc]{Modelo de slides UDESC}
+\title[On Understanding Types, Data Abstraction and Polymorphism]{On Understanding Types, Data Abstraction\\ and Polymorphism}
 
-\author[Rafael Castro, Renan S. Silva]{
-    Rafael Castro, Renan S. Silva\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}} \\ 
-    {\small \url{uber.renan@gmail.com}}}
+\author[Rafael Castro]{
+    Rafael Castro G. Silva\\\medskip
+    {\small \url{rafaelcgs10@gmail.com}}
+    }
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -26,12 +26,74 @@
 
 \end{frame}
 
-\section{Classificação de Sistemas de Tipos}
+\section{Classificação de sistemas de tipos}
 \begin{frame}[plain]
 \frametitle{Classificação de Sistemas de Tipos}
     \begin{figure}
-      \includegraphics[width = 0.75\textwidth]{typesystems.jpeg}
+        \includegraphics[width = 0.65\textwidth]{typesystems.jpeg}
+      \caption{Classificação Sistemas de Tipos. Retirado de [1].}
+  \centering
     \end{figure}
 \end{frame}
 
+\section{Sistemas de tipos monomórficos}
+\begin{frame}
+\frametitle{Primeira Ordem}
+    \begin{align*}
+      FunType & := ConstType \rightarrow FunType \\
+      ConstType & := Int, Float, String...
+    \end{align*}
+  \begin{itemize}
+    \item Funções não são dados.
+    \item Linguagens: Fortran, Java $<$ 8, Python $<$ 2, Ruby...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ordem Superior}
+    \begin{align*}
+      Type & := Type \rightarrow Type | ConstType\\
+      ConstType & := Int, Float, String...
+    \end{align*}
+  \begin{itemize}
+    \item Funções são dados.
+    \item Linguagens: Algol 68, C, Pascal, Java $\geq$ 8, Python $\geq$ 2, Haskell...
+  \end{itemize}
+\end{frame}
+
+\section{Sistemas de tipos polimórficos}
+\begin{frame}
+  \frametitle{Polimorfismo ML (Simple Universal)}
+    \begin{align*}
+      PolyType & := \forall VarType . PolyType | Type \\
+      Type & := Type \rightarrow Type | ConstType | VarType\\
+      ConstType & := Int, Float, String...\\
+      VarType & := a, b, c...
+    \end{align*}
+  \begin{itemize}
+    \item Funções são polimórficas: uma função assume vários tipos.
+    \item Funções de ordem superior tratam argumentos de maneira monomórfica.
+    \item Linguagens: ML, OCaml, Haskell...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Segunda Ordem (Universal)}
+    \begin{align*}
+      Poly & := \forall VarType . Type | Type \rightarrow Type | ConstType | VarType\\
+      ConstType & := Int, Float, String...\\
+      VarType & := a, b, c...
+    \end{align*}
+  \begin{itemize}
+    \item Funções são polimórficas: uma função assume vários tipos.
+    \item Funções de ordem superior tratam argumentos de maneira polimórficas.
+    \item Linguagens: Haskell...
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Referências}
+  [1] On Understanding Types, Data Abstraction and Polymorphism, Luca Cardelli and Peter Wegner.
+\end{frame}
 \end{document}
