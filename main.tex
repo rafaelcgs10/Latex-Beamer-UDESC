@@ -7,7 +7,7 @@
 \usepackage[portuges]{babel}
 
 
-\title[On Understanding Types, Data Abstraction and Polymorphism]{On Understanding Types, Data Abstraction\\ and Polymorphism}
+\title[Prova de \textit{completeness} de um algoritmo de inferência para recursão polimórfica]{Prova de \textit{completeness} de um algoritmo de inferência para recursão polimórfica}
 
 \author[Rafael Castro]{
     Rafael Castro G. Silva\\\medskip
@@ -26,93 +26,57 @@
 
 \end{frame}
 
-\section{Classificação de sistemas de tipos}
+\section{Área}
 \begin{frame}
-\frametitle{Introdução}
-O artigo ``On Understanding Types, Data Abstraction and Polymorphism'' apresenta uma classificação
-de sistemas de tipos. E como monomorfismo, polimorfismo (paramétrico e subtipagem) e dados abstratos são classificados. 
-\end{frame}
-
-
-\begin{frame}[plain]
-\frametitle{Classificação de Sistemas de Tipos}
-    \begin{figure}
-        \includegraphics[width = 0.65\textwidth]{typesystems.jpeg}
-      \caption{Classificação Sistemas de Tipos. Retirado de [1].}
-  \centering
-    \end{figure}
-\end{frame}
-
-\section{Sistemas de tipos monomórficos}
-\begin{frame}
-\frametitle{Primeira Ordem}
-    \begin{align*}
-      FunType & := ConstType \rightarrow FunType \\
-      ConstType & := Int, Float, String...
-    \end{align*}
-  \begin{itemize}
-    \item Funções não são dados.
-    \item Linguagens: Java $<$ 8, Python $<$ 2, Ruby...
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Ordem Superior}
-    \begin{align*}
-      Type & := Type \rightarrow Type | ConstType\\
-      ConstType & := Int, Float, String...
-    \end{align*}
-  \begin{itemize}
-    \item Funções são dados.
-    \item Linguagens: Algol 68, Fortran, C, Pascal, Java $\geq$ 8, Python $\geq$ 2, Haskell...
-  \end{itemize}
-\end{frame}
-
-\section{Sistemas de tipos polimórficos}
-\begin{frame}
-  \frametitle{Polimorfismo ML (Simple Universal)}
-    \begin{align*}
-      PolyType & := \forall VarType . PolyType | Type \\
-      Type & := Type \rightarrow Type | ConstType | VarType\\
-      ConstType & := Int, Float, String...\\
-      VarType & := a, b, c...
-    \end{align*}
-  \begin{itemize}
-    \item Funções são polimórficas: uma função assume vários tipos.
-    \item Funções de ordem superior tratam argumentos de maneira monomórfica.
-    \item Linguagens: ML, OCaml, Haskell...
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Segunda Ordem (Universal)}
-    \begin{align*}
-      Poly & := \forall VarType . Type | Type \rightarrow Type | ConstType | VarType\\
-      ConstType & := Int, Float, String...\\
-      VarType & := a, b, c...
-    \end{align*}
-  \begin{itemize}
-    \item Funções são polimórficas: uma função assume vários tipos.
-    \item Funções de ordem superior tratam argumentos de maneira polimórficas.
-    \item Linguagens: Haskell...
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Considerações finais}
+\frametitle{Área: Sistema de Tipos}
     \begin{itemize}
-        \item Polimorfismo (subtipagem e paramétrico) e dados abstrados podem ser formalizados pela
-            Teoria dos Tipos.
-        \item A classificação das linguagens é boa do ponto de vista teórico, mas não é ideal
-            para classificar as linguagens reais.
-        \item Linguagens reais, geralmente, não são implementadas usando tais formalizações.
+        \item Sistemas de Tipos são uma disciplina de métodos formais (engenharia de software), que
+            buscam garantir certas propriedades de programas.
+        \item Os desafios da área são: propor sistemas de tipos, programação genérica (generalização de dados e funções),
+            garantia de propriedades (verificação), criar algoritmos de inferência e provar propriedades de sistemas de tipos...
     \end{itemize}
 \end{frame}
 
-\end{document}
+\section{Tema}
+\begin{frame}
+\frametitle{Tema: Provar propriedades de sistemas de tipos}
+    \begin{itemize}
+        \item Provar propriedades de sistemas de tipos: provar \textit{soundness} e \textit{completeness}.
+    \end{itemize}
+\end{frame}
+
+\section{Objetivo e escopo}
+\begin{frame}
+\frametitle{Objetivo e escopo}
+    \begin{itemize}
+        \item Algoritmo de inferência para recursão polimórfica criado pelo prof. Cristiano Vasconcellos e prof. Carlos Camarão.
+        \item A inferência da recursão polimórfica é provado equivalente ao problema da semi-unificação.
+        \item O problema da semi-unificação é indecidível.
+        \item Provar que o algoritmo proposto é \textit{completeness}, no entanto a limitação da sintaxe da linguagem impede a criação
+            de um caso que entre em \textit{loop} (hipótese).
+        \item Provar que o algoritmo proposto não é \textit{completeness} e encontrar um caso que entre em \textit{loop}.
+    \end{itemize}
+\end{frame}
+
+\section{Método}
+\begin{frame}
+\frametitle{Método: Prova matemática em Coq}
+    \begin{itemize}
+        \item Assistentes de provas são programas que verificam a consistência de uma prova.
+        \item Assistente Coq.
+        \item Prova matemática de \textit{completeness} (ou não) em Coq.
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Referências}
-  [1] On Understanding Types, Data Abstraction and Polymorphism, Luca Cardelli and Peter Wegner.
+\frametitle{Plano e espectativas}
+    \begin{itemize}
+        \item 1ª semestre: aprender Coq (o suficiente), escrever sobre sistemas de tipos e Coq.
+        \item 2ª semetre: estudar a recursão polimórfica e escrever.
+        \item 3ª semestre: concluir a prova e escrever.
+        \item 4ª semestre: escrever.
+    \end{itemize}
 \end{frame}
+
+
 \end{document}
