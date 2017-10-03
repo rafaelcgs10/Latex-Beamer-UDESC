@@ -21,12 +21,12 @@
 \usemintedstyle[haskell]{bw}
 
 
-\title[Modelo Slides Udesc]{Modelo de slides UDESC}
+\title[Análise do Sistema de Tipos de Haskell]{Análise do Sistema de Tipos de Haskell}
 
-\author[Rafael Castro, Renan S. Silva]{
-    Rafael Castro, Renan S. Silva\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}} \\ 
-    {\small \url{uber.renan@gmail.com}}}
+\author[Rafael , Karina , Cristiano]{
+    Rafael Castro, Karina G. Roggia, Cristiano D. Vasconcellos\\\medskip
+    {\small \url{rafaelcgs10@gmail.com}}
+    }
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -44,128 +44,44 @@
     \frametitle{Sum\'ario}
 
     \begin{itemize}
-      \item Correspond\^encia Curry-Howard-Lambek
-      \item An\'alise do Sistema de Tipos de Haskell
+      \item Introdução
+      \item An\'alise Lógica do Sistema de Tipos de Haskell
+      \item An\'alise Categórica do Sistema de Tipos de Haskell
       \item Conclus\~oes
     \end{itemize}
   \end{frame}
 
-  \section{Correspond\^encia Curry-Howard-Lambek}
-%  \begin{frame}
-%    \frametitle{C\'alculo Lambda Simplesmente Tipado}
-%  \end{frame}
-%
-%  \begin{frame}
-%    \frametitle{Fragmento da Dedu\c{c}\~ao Natural}
-%  \end{frame}
-%
+  \section{Introdução}
   \begin{frame}
-    \frametitle{Isomorfismo de Curry-Howard}
-    \begin{itemize}
-      \item H\'a um isomorfismo entre o Fragmento da Dedu\c{c}\~ao Natural Intuicionista e o C\'alculo Lambda Simplesmente Tipado.
-    \pause
-      \item A prova de Curry-Howard \'e uma indu\c{c}\~ao estruturada.
-        \begin{itemize}
-          \item Proposi\c{c}\~oes $\leftrightarrow$ tipos e termos $\leftrightarrow$ provas.
-          \item Normaliza\c{c}\~ao de termos $\leftrightarrow$ simplifica\c{c}\~ao de provas.
-        \end{itemize}
-      \item 
-\begin{align*}
-    \text{F\'ormulas} & \leftrightarrow \text{Tipos}\\
-    \text{Provas} & \leftrightarrow \text{Termos}\\
-    \text{Redu\c{c}\~ao-}\beta & \leftrightarrow \text{Simplifica\c{c}\~ao de provas}\\
-    \text{Provabilidade} & \leftrightarrow \textit{Inhabitation}\\
-    \text{Teorema} & \leftrightarrow \text{Tipo habitado}
-\end{align*}
-    \end{itemize}
+    \frametitle{Introdução}
+      \begin{itemize}
+          \item Frequentemente Haskell é apontado como linguagem de programação cujo sistema de tipos é
+              baseado em lógica e Teoria das Categorias.
+          \item Proposições como tipos (Isomorfismo de Curry-Howard) estabelece uma relação entre provas em
+              sistemas de tipos e provas em lógica construtivista.
+          \item A relação é estendida para Teoria das Categorias por meio das Categorias Cartesianas Fechadas, 
+              o que resulta em Curry-Howard-Lambek.
+      \end{itemize}
+      Objetivo deste trabalho é apresentar uma análise matematicamente coerente sobre tais alegações.
   \end{frame}
 
-  \begin{frame}
-    \frametitle{Curry-Howard-Lambek}
-    \begin{itemize}
-      \item Existe uma interpreta\c{c}\~ao categ\'orica para TA e ND: ambos os sistemas
-        s\~ao categorias cartesianas fechadas.
-        \pause
-      \item Em particular, \'e poss\'ivel demonstrar que qualquer lambda-teoria determina uma CCC e, inversamente,
-        uma CCC qualquer gera um c\'alculo lambda tipado.
-        \pause
-      \item Dedu\c{c}\~ao Natural Intuicionista \'e uma CCC:\\
-        proposi\c{c}\~oes s\~ao objetos e sequentes s\~ao morfismos.
-        \pause
-      \item C\'alculo Lambda Simplesmente Tipado \'e uma CCC:\\
-        tipos s\~ao objetos e fun\c{c}\~oes s\~ao morfismos.
-    \end{itemize}
-  \end{frame}
-
-
-  \section{An\'alise do Sistema de Tipos de Haskell}
+  \section{An\'alise Lógica}
   \begin{frame}[fragile]
-    \frametitle{Vis\~ao L\'ogica do Sistema de Tipos de Haskell}
+    \frametitle{Análise L\'ogica do Sistema de Tipos de Haskell}
     \begin{itemize}
       \item Em Haskell existe o termo \mintinline{haskell}{undefined :: a}, que serve
         para representar uma computa\c{c}\~ao com erro ou um loop infinito. Funciona como um termo
         ``coringa'', pois seu tipo unifica para qualquer outro. Qualquer tipo \'e habitado por ele.
-        \pause
       \item A l\'ogica isomorfa ao sistema de tipos de Haskell tem todas as proposi\c{c}\~oes como teoremas.
-        \pause
       \item Haskell n\~ao tem o tipo $\bot$, pois n\~ao h\'a tipo n\~ao habitado.
-        \pause
-      \item Portanto, o sistema de tipos de Haskell \'e n\~ao trivial.
+      \item Portanto, o sistema de tipos de Haskell é trivial.
 
     \end{itemize}
 \end{frame}
 
-  \begin{frame}[fragile]
-    \frametitle{\textit{Theorems for free!} em Haskell}
-    \begin{itemize}
-      \item \textit{Theorems for free!} \'e sobre a possibilidade de derivar teoremas a partir
-        de fun\c{c}\~oes polim\'orficas (param\'etricas). - Tamb\'em referenciado como Teorema
-        da Abstra\c{c}\~ao de Reynolds.
-        \pause
-      \item Por exemplo, se fornecida uma fun\c{c}\~ao
-      \begin{minted}{haskell}
-        f :: [a] -> [a]
-      \end{minted}
-    deduz-se: para todos os tipos \mintinline{haskell}{a} e \mintinline{haskell}{b}, para
-      toda lista \mintinline{haskell}{xs :: [a]}, e para toda fun\c{c}\~ao total \mintinline{haskell}{g :: a -> b},
-        tem-se a igualdade
-      \begin{minted}[escapeinside=||,mathescape=true]{haskell}
-        map g (f xs) = f (map g xs) ou
-      \end{minted}
-      \begin{minted}[escapeinside=||,mathescape=true]{haskell}
-        (map g) |$\circ$| f = f |$\circ$| (map g).
-      \end{minted}
-
-    \end{itemize}
-  \end{frame}
-
-  \begin{frame}[fragile]
-    \frametitle{\textit{Theorems for free!} em Haskell}
-    \begin{itemize}
-      \item H\'a, em Haskell, a fun\c{c}\~ao \mintinline{haskell}{seq :: a -> b -> b} que serve para a introduzir 
-        avalia\c{c}\~ao estrita: o primeiro argumento \'e avaliado de maneira estrita e o segundo \'e retornado.
-      \begin{minted}[escapeinside=||,mathescape=true]{haskell}
-        seq |$\bot$| b =  |$\bot$|
-        seq _ b = b
-      \end{minted}
-      \pause
-        \item
-          Com \mintinline{haskell}{seq} \'e poss\'ivel definir a fun\c{c}\~ao 
-\begin{minted}{haskell}
-  tail_seq :: [a] -> [a]
-  tail_seq (x:xs) = seq x xs,
-\end{minted}
-ent\~ao tomando \mintinline{haskell}{tail_seq} como \mintinline{haskell}{f} e \mintinline{haskell}{const 1} como \mintinline{haskell}{g},
-o teorema anterior \'e quebrado, pois
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  map (const 1) (tail_seq [1 `div` 0]) = |$\bot$|
-  tail_seq (map (const 1) [1 `div` 0]) = [].
-\end{minted}
-      \end{itemize}
-  \end{frame}
-
-  \begin{frame}[fragile]
-    \frametitle{Vis\~ao Categ\'orica do Sistema de Tipos de Haskell}
+  \section{An\'alise Categórica}
+\begin{frame}[fragile]
+    \frametitle{Análise Categ\'orica do Sistema de Tipos de Haskell}
     \begin{block}{\small{Segundo a \textit{Wiki} do Haskell:}}
 Os objetos de \textbf{Hask} s\~ao tipos de Haskell e os morfismos dos objetos
   \mintinline{haskell}{A} a \mintinline{haskell}{B} s\~ao fun\c{c}\~oes de Haskell do tipo \mintinline{haskell}{A ->  B}.
@@ -292,17 +208,15 @@ que faz o diagrama abaixo comutar.
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitle{Vis\~ao Categ\'orica de Classes de Tipos}
+    \frametitle{Análise Categ\'orica de Classes de Tipos}
     \begin{itemize}
       \item As classes de tipos do Haskell s\~ao utilizadas para definir algumas
         estruturas matem\'aticas, como rela\c{c}\~oes (por exemplo: equival\^encia e ordem), semigrupos,
         monoides, funtores e m\^onadas.
-        \pause
       \item A classe \mintinline{haskell}{Functor} indica, por seu nome, representar as estruturas categ\'oricas
 dos funtores, portanto
 deve ser um mapeamento entre categorias, o qual preserva origem e destino dos morfismos, identidade dos 
 objetos e a composi\c{c}\~ao
-        \pause
       \item Um construtor de tipos \'e uma fun\c{c}\~ao que recebe tipos como argumentos e retorna algum tipo, por exemplo
 o construtor \mintinline{haskell}{Either} recebe dois tipos \mintinline{haskell}{a, b} e retorna o tipo
 \mintinline{haskell}{Either a b}.
@@ -316,7 +230,7 @@ o construtor \mintinline{haskell}{Either} recebe dois tipos \mintinline{haskell}
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitle{Vis\~ao Categ\'orica de Classes de Tipos}
+    \frametitle{Análise Categ\'orica de Classes de Tipos}
     \begin{itemize}
       \item A assinatura de \mintinline{haskell}{fmap} garante a preserva\c{c}\~ao da origem e do destino, por\'em
 a identidade e a composi\c{c}\~ao n\~ao s\~ao asseguradas.
