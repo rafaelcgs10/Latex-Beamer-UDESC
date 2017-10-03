@@ -1,5 +1,5 @@
 FILENAME=main
-COMP=pdflatex
+COMP=pdflatex  -shell-escape
 
 pdf:
 	$(COMP) ${FILENAME}
