@@ -55,12 +55,12 @@
   \begin{frame}
     \frametitle{Introdução}
       \begin{itemize}
-          \item Frequentemente Haskell é apontado como linguagem de programação cujo sistema de tipos é
-              baseado em lógica e Teoria das Categorias.
           \item Proposições como tipos (Isomorfismo de Curry-Howard) estabelece uma relação entre provas em
               sistemas de tipos e provas em lógica construtivista.
           \item A relação é estendida para Teoria das Categorias por meio das Categorias Cartesianas Fechadas, 
               o que resulta em Curry-Howard-Lambek.
+          \item Frequentemente Haskell é apontado como linguagem de programação cujo sistema de tipos é
+              baseado em lógica e Teoria das Categorias.
       \end{itemize}
       Objetivo deste trabalho é apresentar uma análise matematicamente coerente sobre tais alegações.
   \end{frame}
@@ -118,7 +118,7 @@ Os objetos de \textbf{Hask} s\~ao tipos de Haskell e os morfismos dos objetos
     origem e destino.
   \item A composi\c{c}\~ao \'e dada pela fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{(.) :: (b -> c) -> (a -> b) -> a -> c} e a prova da associatividade
     \'e a mesma utilizada em \textbf{Set}.
-  \item O morfimso identidade \'e gerado pelas fun\c{c}\~oes identidade \mintinline[escapeinside=||,mathescape=true]{haskell}{id :: a -> a}, que pelo polimorfismo garante que todo objeto (tipo)
+  \item O morfismo identidade \'e gerado pelas fun\c{c}\~oes identidade \mintinline[escapeinside=||,mathescape=true]{haskell}{id :: a -> a}, que pelo polimorfismo garante que todo objeto (tipo)
     tem um morfismo (fun\c{c}\~ao) identidade. Observa-se que \textbf{PHask}, diferente de \textbf{Hask},
     n\~ao acontece 
     \mintinline[escapeinside=||,mathescape=true]{haskell}{undef1 . id |$\not =$| undef1}.
