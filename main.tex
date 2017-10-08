@@ -20,6 +20,7 @@
 
 \usemintedstyle[haskell]{bw}
 
+\date{09/10/2017}
 
 \title[Análise do Sistema de Tipos de Haskell]{Análise do Sistema de Tipos de Haskell}
 
@@ -73,8 +74,8 @@
         para representar uma computa\c{c}\~ao com erro ou um loop infinito. Funciona como um termo
         ``coringa'', pois seu tipo unifica para qualquer outro. Qualquer tipo \'e habitado por ele.
       \item A l\'ogica isomorfa ao sistema de tipos de Haskell tem todas as proposi\c{c}\~oes como teoremas.
-      \item Haskell n\~ao tem o tipo $\bot$, pois n\~ao h\'a tipo n\~ao habitado.
       \item Portanto, o sistema de tipos de Haskell é trivial.
+      \item Haskell n\~ao tem o tipo $\bot$, pois n\~ao h\'a tipo n\~ao habitado.
 
     \end{itemize}
 \end{frame}
@@ -130,7 +131,7 @@ Os objetos de \textbf{Hask} s\~ao tipos de Haskell e os morfismos dos objetos
 
 \begin{enumerate}
   \item O objeto terminal \'e o tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{()}.
-  \item Utiliza-se o dado tupla padr\~ao: o produto \'e dado pelos morfismos das fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{fst :: (a, b) -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{snd :: (a, b) -> b}, e  
+  \item Utiliza-se o dado tupla padr\~ao: o produto binário \'e dado pelos morfismos das fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{fst :: (a, b) -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{snd :: (a, b) -> b}, e  
 pelo tipo: \mintinline[escapeinside=||,mathescape=true]{haskell}{ data (a,b) = (,) { fst :: a, snd :: b}.}
 Assim, para qualquer tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{r} e para quaisquer fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{f :: r -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{g :: r -> b}
 deve existir uma \'unica fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{u :: r -> (a,b)} capaz de fazer o diagrama abaixo comutar.\\
@@ -169,10 +170,10 @@ deve existir uma \'unica fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=tru
   \begin{frame}[fragile]
     \begin{enumerate}
         \setcounter{enumi}{2}
-  \item O objeto exponencial em Haskell \'e formado pelo objeto \mintinline[escapeinside=||,mathescape=true]{haskell}{b -> c} e pelo morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{eval}, onde \mintinline[escapeinside=||,mathescape=true]{haskell}{b} e \mintinline[escapeinside=||,mathescape=true]{haskell}{c} s\~ao tipos quaisquer 
+      \item O objeto exponencial em \textbf{PHask} \'e formado pelo objeto \mintinline[escapeinside=||,mathescape=true]{haskell}{b -> c} e pelo morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{eval}, onde \mintinline[escapeinside=||,mathescape=true]{haskell}{b} e \mintinline[escapeinside=||,mathescape=true]{haskell}{c} s\~ao tipos quaisquer 
     e \mintinline[escapeinside=||,mathescape=true]{haskell}{eval} \'e gerado pela fun\c{c}\~ao
 \begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  eval :: (b -> c, c) -> c
+  eval :: (b -> c, b) -> c
   eval (f, x) = f x,
 \end{minted}
 pois para todo tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{a}
