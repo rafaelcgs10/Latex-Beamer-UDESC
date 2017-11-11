@@ -1,3 +1,4 @@
+
 \documentclass{beamer}
 
 \usepackage{graphicx,hyperref,udesc,url}
@@ -5,29 +6,15 @@
 %\usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[portuges]{babel}
-\usetikzlibrary{matrix}
-\usetikzlibrary{arrows,calc, shapes,fit, positioning} 
-\usepackage{amsthm}
-\usepackage{tikz}
-\usepackage{pdflscape}
-\usepackage{listings}
-\usepackage{graphicx}
-\usepackage{rotating}
-\usepackage{float}
-\usepackage{wrapfig}
-\usepackage{amsmath, amsthm, amsfonts, amssymb}
-\usepackage{minted}
 
-\usemintedstyle[haskell]{bw}
-
-\date{09/10/2017}
 
 \title[Assistente de Provas Coq]{Assistente de Provas Coq}
 
-\author[Rafael]{
+\author[Rafael Castro]{
     Rafael Castro\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}}
-    }
+    {\small \url{rafaelcgs10@gmail.com}}}
+
+\date{17 de Novembro de 2017}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -36,226 +23,43 @@
 
 \begin{document}
 
-  \begin{frame}
-    \titlepage
+\begin{frame}
+\titlepage
 
-  \end{frame}
-
-  \begin{frame}
-    \frametitle{Sum\'ario}
-
-    \begin{itemize}
-      \item Introdução
-      \item An\'alise Lógica do Sistema de Tipos de Haskell
-      \item An\'alise Categórica do Sistema de Tipos de Haskell
-      \item Conclus\~oes
-    \end{itemize}
-  \end{frame}
-
-  \section{Introdução}
-  \begin{frame}
-    \frametitle{Introdução}
-      \begin{itemize}
-          \item Proposições como tipos (Isomorfismo de Curry-Howard) estabelece uma relação entre provas em
-              sistemas de tipos e provas em lógica construtivista.
-          \item A relação é estendida para Teoria das Categorias por meio das Categorias Cartesianas Fechadas, 
-              o que resulta em Curry-Howard-Lambek.
-          \item Frequentemente Haskell é apontado como linguagem de programação cujo sistema de tipos é
-              baseado em lógica e Teoria das Categorias.
-      \end{itemize}
-      Objetivo deste trabalho é apresentar uma análise matematicamente coerente sobre tais alegações.
-  \end{frame}
-
-  \section{An\'alise Lógica}
-  \begin{frame}[fragile]
-    \frametitle{Análise L\'ogica do Sistema de Tipos de Haskell}
-    \begin{itemize}
-      \item Em Haskell existe o termo \mintinline{haskell}{undefined :: a}, que serve
-        para representar uma computa\c{c}\~ao com erro ou um loop infinito. Funciona como um termo
-        ``coringa'', pois seu tipo unifica para qualquer outro. Qualquer tipo \'e habitado por ele.
-      \item A l\'ogica isomorfa ao sistema de tipos de Haskell tem todas as proposi\c{c}\~oes como teoremas.
-      \item Portanto, o sistema de tipos de Haskell é trivial.
-      \item Haskell n\~ao tem o tipo $\bot$, pois n\~ao h\'a tipo n\~ao habitado.
-
-    \end{itemize}
 \end{frame}
 
-  \section{An\'alise Categórica}
-\begin{frame}[fragile]
-    \frametitle{Análise Categ\'orica do Sistema de Tipos de Haskell}
-    \begin{block}{\small{Segundo a \textit{Wiki} do Haskell:}}
-Os objetos de \textbf{Hask} s\~ao tipos de Haskell e os morfismos dos objetos
-  \mintinline{haskell}{A} a \mintinline{haskell}{B} s\~ao fun\c{c}\~oes de Haskell do tipo \mintinline{haskell}{A ->  B}.
-  O morfismo identidade do objeto \mintinline{haskell}{A} \'e \mintinline{haskell}{id :: A -> A},
-  e a composi\c{c}\~ao dos morfismos \mintinline{haskell}{f} e \mintinline{haskell}{g} \'e \mintinline{haskell}{f . g = x -> f (g x)}.  
-(Tradu\c{c}\~ao do autor) 
-\end{block}
-\pause
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  undef1 :: a -> b
-  undef1 = undefined
+\section{Introdução}
+\begin{frame}
+\frametitle{O que são assistentes de provas?}
 
-  undef2 :: a -> b
-  undef2 = \_ -> undefined
-\end{minted}
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  seq undef1 1 = |$\bot$|
-  seq undef2 1 = 1
-\end{minted}
-\mintinline{haskell}{undef1 . id = undef2} $\Longrightarrow$
-\mintinline[escapeinside=||,mathescape=true]{haskell}{undef1 . id |$\not =$| undef1}.
+\begin{itemize}
+\item Alguma data: O Castro fez o modelo;
+\item 11/11/2016: O Renan tirou as coisas velhas e fez um make file supimpa.
+\item Alguma data: O Castro criou um modelo 2.0
+\item 01/02/2017:  O Castro adicionou a opção de outra logo para grupo de pesquisa, corrigiu bug dos acentos e deu merge do modelo 2.0 no master.
+\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Categoria \textbf{PHask}}
+\section{Coq }
+\begin{frame}
+\frametitle{Isto é um título}
 
-\begin{enumerate}[(a)]
-  \item $Obj_{PHask}$ \'e o conjunto de todos os tipos de Haskell. 
-  \item $Mor_{PHask}$ \'e o conjunto de todas as fun\c{c}\~oes em Haskell (tip\'aveis)
-    que s\~ao totais. Al\'em disso, um morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{f : A |$\rightarrow$| B}
-    representa a classe de equival\^encia de fun\c{c}\~oes do tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{A} ao tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{B} que tem o
-    mesmo mapeamento.
-  \item $\partial_0$ e $\partial_1$ s\~ao as fun\c{c}\~oes que levam, respectivamente, uma fun\c{c}\~ao ao seu tipo de
-    origem e destino.
-  \item A composi\c{c}\~ao \'e dada pela fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{(.) :: (b -> c) -> (a -> b) -> a -> c} e a prova da associatividade
-    \'e a mesma utilizada em \textbf{Set}.
-  \item O morfismo identidade \'e gerado pelas fun\c{c}\~oes identidade \mintinline[escapeinside=||,mathescape=true]{haskell}{id :: a -> a}, que pelo polimorfismo garante que todo objeto (tipo)
-    tem um morfismo (fun\c{c}\~ao) identidade. Observa-se que \textbf{PHask}, diferente de \textbf{Hask},
-    n\~ao acontece 
-    \mintinline[escapeinside=||,mathescape=true]{haskell}{undef1 . id |$\not =$| undef1}.
-\end{enumerate}
+TEXTO
+\begin{itemize}
+\item PogChamp;
+\item Kappa;
+\item KTHXBYE;
+\item COMO FAS PRA ENTRAR NO BONED DO ROLE?
+\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{A categoria \textbf{PHask} \'e uma categoria cartesiana fechada}
+\section{Isto é mais uma seção}
+\begin{frame}
+\frametitle{Isto é um título}
 
-\begin{enumerate}
-  \item O objeto terminal \'e o tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{()}.
-  \item Utiliza-se o dado tupla padr\~ao: o produto binário \'e dado pelos morfismos das fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{fst :: (a, b) -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{snd :: (a, b) -> b}, e  
-pelo tipo: \mintinline[escapeinside=||,mathescape=true]{haskell}{ data (a,b) = (,) { fst :: a, snd :: b}.}
-Assim, para qualquer tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{r} e para quaisquer fun\c{c}\~oes \mintinline[escapeinside=||,mathescape=true]{haskell}{f :: r -> a} e \mintinline[escapeinside=||,mathescape=true]{haskell}{g :: r -> b}
-deve existir uma \'unica fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{u :: r -> (a,b)} capaz de fazer o diagrama abaixo comutar.\\
-
-    \begin{minipage}{.43\textwidth}
-\begin{figure}[H]
-    \centering
-        \begin{tikzpicture}[line width=1pt,>=latex]
-            %\draw[help lines, color=gray!30, dashed] (-4, -4) grid (4,4);
-            \node (C) {\mintinline{haskell}{r}};
-            \node [below left =2cm of C] (A) {\mintinline{haskell}{a}};
-            \node [below right =2cm of C] (B) {\mintinline{haskell}{b}};
-            \node [below =1.35 cm of C] (AxB) {\mintinline{haskell}{(a, b)}};
-            
-            \node[shape=rectangle,draw=black,minimum size=1.9cm,fit={(AxB) (B) (A) (C)}] {};
-
-            \draw[->] (AxB) -- node[above] {\mintinline{haskell}{fst}} (A);
-            \draw[->] (AxB) -- node[above] {\mintinline{haskell}{snd}} (B);
-            \draw[->] (C) -- node[above right] {\mintinline{haskell}{g}} (B);
-            \draw[->] (C) -- node[above left] {\mintinline{haskell}{f}} (A);
-            \draw[->] (C) edge [dashed] node[right] {\mintinline{haskell}{u}} (AxB);
-        \end{tikzpicture}
-    \label{comuproHaskell}
-\end{figure}
-    \end{minipage}
-    \begin{minipage}{.43\textwidth}
-    A melhor fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{u} que garante a comutatividade desse diagrama somente pode ser:
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  u :: r -> (a, b)
-  u r = (f r, g r).
-\end{minted}
-\end{minipage}
-\end{enumerate}
+FIM
 \end{frame}
-
-  \begin{frame}[fragile]
-    \begin{enumerate}
-        \setcounter{enumi}{2}
-      \item O objeto exponencial em \textbf{PHask} \'e formado pelo objeto \mintinline[escapeinside=||,mathescape=true]{haskell}{b -> c} e pelo morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{eval}, onde \mintinline[escapeinside=||,mathescape=true]{haskell}{b} e \mintinline[escapeinside=||,mathescape=true]{haskell}{c} s\~ao tipos quaisquer 
-    e \mintinline[escapeinside=||,mathescape=true]{haskell}{eval} \'e gerado pela fun\c{c}\~ao
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  eval :: (b -> c, b) -> c
-  eval (f, x) = f x,
-\end{minted}
-pois para todo tipo \mintinline[escapeinside=||,mathescape=true]{haskell}{a}
-e fun\c{c}\~ao \mintinline[escapeinside=||,mathescape=true]{haskell}{g :: (a, b) -> c},
-existe um \'unico morfismo \mintinline[escapeinside=||,mathescape=true]{haskell}{curry g},
-onde 
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  curry :: ((a, b) -> c) -> a -> b -> c
-  curry f = \x -> \y -> f (x, y),
-\end{minted}
-que faz o diagrama abaixo comutar.
-\begin{figure}[H]
-    \centering
-        \begin{tikzpicture}[line width=1pt,>=latex]
-            %\draw[help lines, color=gray!30, dashed] (-4, -4) grid (4,4);
-          \node (C) {\mintinline{haskell}{a}};
-            \node [below = 1cm of C] (BA) {\mintinline{haskell}{b -> c}};
-            \node [right = 3.5cm of BA] (BAxA) {\mintinline{haskell}{(b -> c, b)}};
-            \node [above = 1cm of BAxA] (CxA) {\mintinline{haskell}{(a, b)}};
-            \node [right = 1.5cm of BAxA] (B) {\mintinline{haskell}{c}};
-            \node [below = 0.1cm of BAxA] (X) {};
-            
-            \node[shape=rectangle,draw=black,minimum size=2cm,fit={(C) (BA) (BAxA) (CxA) (B) (X)}] {};
-
-            \draw[->] (C) edge [dashed] node[right] {\mintinline{haskell}{curry g}} (BA);
-            \draw[->] (CxA) edge node[left] {\mintinline{haskell}{(curry g, id)}} (BAxA);
-            \draw[->] (CxA) edge node[above right] {\mintinline{haskell}{g}} (B);
-            \draw[->] (BAxA) edge node[below] {\mintinline{haskell}{eval}} (B);
-        \end{tikzpicture}
-    \label{comuexp}
-\end{figure}
-\end{enumerate}
-  \end{frame}
-
-  \begin{frame}[fragile]
-    \frametitle{Análise Categ\'orica de Classes de Tipos}
-    \begin{itemize}
-      \item As classes de tipos do Haskell s\~ao utilizadas para definir algumas
-        estruturas matem\'aticas, como rela\c{c}\~oes (por exemplo: equival\^encia e ordem), semigrupos,
-        monoides, funtores e m\^onadas.
-      \item A classe \mintinline{haskell}{Functor} indica, por seu nome, representar as estruturas categ\'oricas
-dos funtores, portanto
-deve ser um mapeamento entre categorias, o qual preserva origem e destino dos morfismos, identidade dos 
-objetos e a composi\c{c}\~ao
-      \item Um construtor de tipos \'e uma fun\c{c}\~ao que recebe tipos como argumentos e retorna algum tipo, por exemplo
-o construtor \mintinline{haskell}{Either} recebe dois tipos \mintinline{haskell}{a, b} e retorna o tipo
-\mintinline{haskell}{Either a b}.
-\item 
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  class Functor (f :: * -> *) where
-  fmap :: (a -> b) -> f a -> f b.
-\end{minted}
-
-    \end{itemize}
-  \end{frame}
-
-  \begin{frame}[fragile]
-    \frametitle{Análise Categ\'orica de Classes de Tipos}
-    \begin{itemize}
-      \item A assinatura de \mintinline{haskell}{fmap} garante a preserva\c{c}\~ao da origem e do destino, por\'em
-a identidade e a composi\c{c}\~ao n\~ao s\~ao asseguradas.
-Seria necess\'ario que 
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
-  fmap id = id
-  fmap (f . g) = fmap f . fmap g
-\end{minted}
-
-    \end{itemize}
-  \end{frame}
-
-  \section{Conclus\~oes}
-  \begin{frame}
-    \frametitle{Conclus\~oes}
-    \begin{itemize}
-      \item Curry-Howard-Lambek \'e utilizado no sistema de tipos de Haskell, n\~ao somente para definir
-        algumas classes de tipos, mas tamb\'em para garantir o bom comportamento do sistema.
-      \item Foi identificado alguns problemas em Haskell, em particular a aus\^encia de uma sem\^antica operacional 
-        que seria fundamental para definir uma categoria dos tipos e fun\c{c}\~oes.
-      \item Como alternativa foi constru\'ido a categoria \textbf{PHask} a partir de um subconjunto
-        de Haskell com apenas fun\c{c}\~oes totais.
-    \end{itemize}
-  \end{frame}
 
 
 \end{document}
+
