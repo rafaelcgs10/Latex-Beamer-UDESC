@@ -78,7 +78,50 @@
 \end{itemize}
 \end{frame}
 
-\section{Prova em Coq}
+\section{Apredendo Coq}
+\begin{frame}
+\frametitle{Software Foundations}
+            \centering
+    \includegraphics[width=1.0\textwidth]{sf.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Software Foundations}
+            \centering
+    \includegraphics[width=1.0\textwidth]{index.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Functional Programming in Coq}
+\begin{itemize}
+    \item Os paradigma de programação funcional é baseado no simples conceito: se uma função não tem efeito colateral, então
+        tudo o que precisamos saber sobre funções são os seus mapeamentos. - (e se ignorarmos outras propriedades como a eficiência!).
+    \item O termo funcional enfatiza que funções são \textit{first class values}, ou seja, elas podem ser passadas para funções e retornada por funções.
+    \item Polimorfismo, Tipos de Dados Algébricos e Tipos Recursivo (indutivos).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Functional Programming in Coq}
+\begin{itemize}
+   \item Prova por simplificação: consulta a definição do termo e o troca pelo seu resultado.
+   \item Prova por reescrita: utiliza alguma igualdade (nas suposições ou já provada) para reescrever algum termo em algum lugar.
+   \item Prova análise de caso: desconstroi um termo definido indutivamente e gera um subgoal para cada caso do termo.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Proof by Induction}
+\begin{itemize}
+   \item Prova por indução: siminar a por análise de caso, mas fornece a hipótese de indução.
+   \item Se $P$ é uma propridade que queremos provar para todos números naturais $n$, então prova-se:
+       \begin{enumerate}
+           \item $P(0)$.
+           \item se para qualquer $n'$, $P(n')$ é verdade, então $P(S n')$ é verdade.
+       \end{enumerate}
+\end{itemize}
+\end{frame}
+
 \begin{frame}
 \frametitle{Uma prova}
         \begin{figure}
@@ -168,6 +211,10 @@
         \end{figure}
 \end{frame}
 
+\begin{frame}
+\addtocounter{framenumber}{-1}
+\titlepage
+\end{frame}
 
 \end{document}
 
