@@ -30,144 +30,57 @@
 
 \section{Introdução}
 \begin{frame}
-\frametitle{O que são assistentes de provas?}
+\frametitle{Método básico STGP}
 \begin{itemize}
-    \item Assistentes de provas ou provadores interativos são programas para o desenvolvimento de provas
-          formais.
-    \item Fornecerem informações ao programador e verificam a consistência lógica da prova.\\
-          Portanto, erros são detectados de maneira imediata.
-    \item Provadores automáticos fazem todo o trabalho. Assistentes de provas podem utilizar provadores automáticos,
-          mas ainda necessitam do humano.
+    \item Programação Genética Fortemente Tipada
+    \item Utiliza tipos para reduzir o espaço de busca: em um caso,
+        o espaço de busca são $10^{27}$ possíveis, mas somente $10^{12}$
+        são programas bem tipados.
+    \item PolyGP utiliza Cálculo Lambda Tipado (sem abstração lambda).
+        Recursão limitada apenas para o nome da função a ser evoluída.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Para que servem os assistentes de provas?}
-\begin{itemize}
-        \begin{columns}
-            \begin{column}{0.35\textwidth}
-            \item Facilitam provar coisas: 
-            \end{column}
-            \begin{column}{0.41\textwidth}  %%<--- here
-        \begin{figure}
-            \includegraphics[width=1.0\textwidth]{map.png}
-        \end{figure}
-            \end{column}
-        \end{columns}
-    \item A verificação automática é útil para evitar o gasto dispendioso de verificar uma prova
-          escrita em linguagem humana.
-    \item É possível verificar programas. Programação certificada.
-    \item Uma ferramenta para Métodos Formais.
-\end{itemize}
+\frametitle{Contribuição: restrições sintáticas}
 \end{frame}
 
-\section{Coq }
+\section{Representação}
 \begin{frame}
-\frametitle{O que é Coq?}
-\begin{itemize}
-    \item Assistente de provas baseado no Cálculo de Construções (CoC) - Cálculo Lambda Tipado e Tunado. Estendido para
-        Cálculo de Construções Indutivas.
-    \item Lógica de ordem superior.
-    \item Programas verificados (ou provas) em Coq podem ser extraídos para outras linguagens como Haskell, OCaml e Scheme.
-    \item Programação com tipos dependentes.
-        \begin{enumerate}
-            \item Gallina: linguagem de programa\c{c}c\~ao funcional e linguagem de l\'ogica de ordem superior.
-            \item Vernecular: linguagem para enunciar teoremas, definir fun\c{c}\~oes ...
-            \item Tatic: linguagem para criar provas com a ajuda do assistente/verificador.
-        \end{enumerate}
-\end{itemize}
+\frametitle{Representação: Cálculo Lambda}
+    \begin{itemize}
+        \item Programas em Cálculo Lambda (sem abstração lambda).
+        \item Geração de Programas
+        \item \textit{Crossover} de Programas
+        \item Mutação de programas
+    \end{itemize}
 \end{frame}
 
-\section{Prova em Coq}
+\section{Algoritmo Evolucionário}
 \begin{frame}
-\frametitle{Uma prova}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova1.png}
-        \end{figure}
+\frametitle{Algoritmo Evolucionário}
 \end{frame}
 
 \begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova2.png}
-        \end{figure}
+\frametitle{Lidando com Computações Ruins}
+\end{frame}
+
+\section{Experimentos}
+\begin{frame}
+\frametitle{Problema map}
+funcao fitness!
 \end{frame}
 
 \begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova3.png}
-        \end{figure}
+\frametitle{Convergência do problema Map}
 \end{frame}
 
 \begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova4.png}
-        \end{figure}
+\frametitle{Desvio Padrão da convergência}
 \end{frame}
 
 \begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova5.png}
-        \end{figure}
+    \frametitle{Avaliações de \textit{fitness} para encontrar o ótimo}
+    Exemplo de resultado
 \end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova6.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova7.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova8.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova9.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova10.png}
-        \end{figure}
-\end{frame}
-
-
 \end{document}
-
