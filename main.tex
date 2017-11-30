@@ -10,7 +10,7 @@
 \usemintedstyle{bw}
 
 
-\title[STGP]{Programação Genética Fortemente Tipada\\ com Restrições Sintáticas}
+\title[PGFTcRS]{Programação Genética Fortemente Tipada\\ com Restrições Sintáticas}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
@@ -51,7 +51,11 @@ que evintam explorar programas que não são possíveis soluções.\\
 Por exemplo, a função \mintinline{haskell}{if c e1 e2}
 pode ter a exata mesma sub-árvore para \mintinline{haskell}{e1} e \mintinline{haskell}{e2}, ou seja,
 o valor de retorno do \mintinline{haskell}{then} é o mesmo do \mintinline{haskell}{else}. Portanto, pode-se
-considerar a restrição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}
+considerar a restrição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}.\\
+
+As restrições podem ser custosas computacionalmente, pois podem necessitar comparar partes de
+programas e aplicar durante todo o processo evolucionário causaria um considerável aumento de tempo da
+evolução.
 \end{frame}
 
 \section{Representação}
@@ -80,6 +84,11 @@ data Type = Dummy TVar | Generic TVar |
 \section{Algoritmo Evolucionário}
 \begin{frame}[fragile]
 \frametitle{Algoritmo Evolucionário}
+\begin{itemize}
+    \item População inicial \mintinline{haskell}{pop} de indivíduos únicos.
+    \item Os operadores de mutação e \textit{crossover} garantem a unicidade 
+        dos indivíduos durante toda a evolução.
+\end{itemize}
 Algoritmo evolucionário simplificado:
 \begin{minted}{haskell}
 evolution pop 0 = return $ pop 
