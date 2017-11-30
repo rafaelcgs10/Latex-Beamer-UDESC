@@ -1,11 +1,13 @@
-
 \documentclass{beamer}
 
 \usepackage{graphicx,hyperref,udesc,url}
 \usepackage[latin1]{inputenc}
 %\usepackage[T1]{fontenc}
 \usepackage{booktabs}
+\usepackage{minted}
 \usepackage[portuges]{babel}
+
+\usemintedstyle{bw}
 
 
 \title[STGP]{Programação Genética Fortemente Tipada\\ com Restrições Sintáticas}
@@ -42,11 +44,18 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Contribuição: restrições sintáticas}
+\frametitle{Objetivo: restrições sintáticas}
+O objetivo é verificar o impacto do uso de restrições sintáticas
+que evintam explorar programas que não são possíveis soluções.\\
+
+Por exemplo, a função \mintinline{haskell}{if c e1 e2}
+pode ter a exata mesma sub-árvore para \mintinline{haskell}{e1} e \mintinline{haskell}{e2}, ou seja,
+o valor de retorno do \mintinline{haskell}{then} é o mesmo do \mintinline{haskell}{else}. Portanto, pode-se
+considerar a restrição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}
 \end{frame}
 
 \section{Representação}
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Representação: Cálculo Lambda}
     \begin{itemize}
         \item Programas em Cálculo Lambda (sem abstração lambda).
@@ -54,37 +63,182 @@
         \item \textit{Crossover} de Programas
         \item Mutação de programas
     \end{itemize}
+\begin{minted}[fontsize=\small]{haskell}
+data Expr = NamedFunction Id [Id] Expr Type |
+            Lit Literal Type | Var Id Type |
+            Primi Id Type | App Expr Expr Type |
+            List [Expr] Type | ARG Type
+ \end{minted}
+
+ \begin{minted}[fontsize=\small]{haskell}
+data Type = Dummy TVar | Generic TVar |
+            Temporary TVar | TArrow Type Type |
+            TList Type | TConst TConst
+ \end{minted}
 \end{frame}
 
 \section{Algoritmo Evolucionário}
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Algoritmo Evolucionário}
+Algoritmo evolucionário simplificado:
+\begin{minted}{haskell}
+evolution pop 0 = return $ pop 
+evolution pop n = do
+                  evaluedPop <- evalPopulation count pop 
+                  popInter <- tourment popFitness
+                  popCrossed <- crossPop popInter
+                  popMutated <- mutationPop popCrossed
+                  r <- evolution popMutated (n - 1)
+                  return $ r
+\end{minted}
 \end{frame}
 
 \begin{frame}
 \frametitle{Lidando com Computações Ruins}
+\begin{itemize}
+    \item Durante a computação dos programas, duas situações ruins podem acontecer: o programa não terminar
+dentro do limite de chamadas recursivas (provavelmente um \textit{loop} sem fim) ou o programa realizar
+uma computação sem definição, como tirar a cabeça de uma lista vazia.
+    \item Em ambos os cenários 
+a computação é continuada para um valor arbitrário do tipo retorno esperado
+e é aplicado uma penalização no \textit{fitness}.
+\end{itemize}
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l|}
+\cline{2-6}
+                            & Int & Bool  & Char & {[}Int{]} & {[}Char{]} \\ \hline
+\multicolumn{1}{|l|}{Valor} & 100 & False & 'z'  & {[}100{]} & {[}'z'{]}  \\ \hline
+\end{tabular}
+\caption{Valores \textit{default} para computações ruins.}
+\label{errotable}
+\end{table}
 \end{frame}
 
 \section{Experimentos}
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Problema map}
-funcao fitness!
+Mapear uma função sobre uma lista:\\
+\begin{minted}{haskell}
+map c2i ['a'..'g'] = [0..6]
+\end{minted}
+\begin{minted}[escapeinside=||,mathescape=true]{haskell}
+ |T$\:=\:\{$|l::[a], |[]|::[a], f::G1->G2|$\}$|
+ \end{minted}
+ \begin{minted}[escapeinside=||,mathescape=true]{haskell}
+ |F$\:=\:\{$|head::[a]-> a, tail::[a]->[a],
+     (:)::a->[a]->[a], null::[a]->Bool,
+     map::(G1->G2)->[G1]->[G2],
+     if::Bool->a->a-> a, f::G1->G2|$\}$|
+ \end{minted}
+  \begin{minted}[escapeinside=||,mathescape=true]{haskell}
+ |R$\:=\:\{$|if c e1 e2 |\text{tal que}| e1 |$\not =$| e2,
+     head l |\text{tal que}| l |$\not =$| |[]|,
+     tail l |\text{tal que}| l |$\not =$| |[]| |$\}$|
+ \end{minted}
 \end{frame}
 
 \begin{frame}
-\frametitle{Convergência do problema Map}
+\frametitle{Função \textit{fitness} do problema map}
+\begin{align}
+\label{fitmap}
+f(l,\: l') = & -2\: \cdot \mid length(l) - length(l') \mid  \nonumber\\
+& + \sum_{e\: \in\: l} 10\:
+\cdot (2^{dist(e,\: l')})\\
+& -(10 + 2 \cdot \: length(l)) \cdot rtError \nonumber\\
+& -(10 + 2 \cdot \: length(l)) \cdot reError, \nonumber
+\end{align}
+onde ${dist(e,\: l')}$ é $\infty$ quando $e \not \in l'$, ou caso contrário é a distância de $e$ até o
+elemento de indíce $e$. $rtError$ e $reError$ representam, respectivamente, erros de computações
+indefinidas e computações que excederam o limite de chamadas recursivas, e tem valor $1$ quando acontecem
+e $0$ caso contrário.
+
+Fitness normalizado!!!
+\end{frame}
+
+\begin{frame}
+\frametitle{Parâmetros de teste do problema map}
+    \begin{itemize}
+        \item Populações de $250$, $500$ e $1000$ indivíduos.
+        \item Com e sem as restrições.
+        \item Taxa de mutação de $4\%$.
+        \item Número de gerações de $200$.
+        \item Limite de chamadas recursivas foi $9$.
+        \item Altura máxima das árvores foi $6$.
+        \item Geração da população pelo método \textit{grow}.
+        \item $50$ execuções de teste.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Convergência do problema map}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{fitness.pdf}
+    \caption{Média do fitness médio de 50 testes.}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Desvio Padrão da convergência}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{erro.pdf}
+    \caption{Desvio padrão do fitness médio de 50 testes.}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Boxplot da convergência}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{box.pdf}
+    \caption{Boxplot do \textit{fitness} da última geração.}
+    \label{fig:boxplotmap}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Taxa de acerto}
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l|l|}
+\cline{2-7}
+                                     & nores250 & nores500 & nores100 & res250  & res500  & res1000   \\ \hline
+\multicolumn{1}{|l|}{Acerto} & 24$\%$  & 42$\%$  & 78$\%$  & 78$\%$ & 96$\%$ & 100$\%$ \\ \hline
+\end{tabular}
+\caption{Taxa de acerto da solução ótima.}
+\label{taxal}
+\end{table}
+Exemplo de resultado:
+\begin{minted}[fontsize=\small]{haskell}
+map f l = if null l then [] else f (head l) : map f (tail l)
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Avaliações de \textit{fitness} para encontrar o ótimo}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{boxopts.pdf}
+    \caption{{Boxplot do número de avaliações de \textit{fitness} para encontrar a solução
+    ótima.}}
+\label{fig:boxplotmap}
+\end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Avaliações de \textit{fitness} para encontrar o ótimo}
-    Exemplo de resultado
+    \frametitle{Tempo médio de execução}
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l|l|}
+\cline{2-7}
+                            & nores250 & nores500 & nores1000 & res250 & res500 & res1000 \\ \hline
+\multicolumn{1}{|l|}{Média} & 6.01s    & 13,74s   & 31.58s    & 8,28s  & 20,9s  & 51,38s  \\ \hline
+\end{tabular}
+\caption{Média do tempo de execução.}
+\label{tem_map}
+\end{table}
 \end{frame}
 \end{document}
