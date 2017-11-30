@@ -63,9 +63,6 @@ evolução.
 \frametitle{Representação: Cálculo Lambda}
     \begin{itemize}
         \item Programas em Cálculo Lambda (sem abstração lambda).
-        \item Geração de Programas
-        \item \textit{Crossover} de Programas
-        \item Mutação de programas
     \end{itemize}
 \begin{minted}[fontsize=\small]{haskell}
 data Expr = NamedFunction Id [Id] Expr Type |
@@ -79,6 +76,32 @@ data Type = Dummy TVar | Generic TVar |
             Temporary TVar | TArrow Type Type |
             TList Type | TConst TConst
  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Geração de programas}
+    \begin{itemize}
+        \item blah
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Operador de \textit{crossover}}
+    \begin{itemize}
+        \item blah
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Operadores de mutação}
+    \begin{itemize}
+        \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatóriamente)
+            que não infrinja o tamanho máximo da árvore e que o tipo únifique com o tipo $\tau$.
+        \item \textit{Swap-sub-tree}: Se uma expressão tem duas sub-árvores cujos tipos unifiquem, 
+            ex: \mintinline{haskell}{(((Primi "fun") e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
+            o tipo de \mintinline{haskell}{e2}, então permuta-se (\textit{swap}) a posição das sub-árvores.
+        \item Os operadores de mutação não inserem indivíduos repetidos na população.
+    \end{itemize}
 \end{frame}
 
 \section{Algoritmo Evolucionário}
@@ -172,8 +195,8 @@ Fitness normalizado!!!
         \item Com e sem as restrições.
         \item Taxa de mutação de $4\%$.
         \item Número de gerações de $200$.
-        \item Limite de chamadas recursivas foi $9$.
-        \item Altura máxima das árvores foi $6$.
+        \item Limite de chamadas recursivas de $9$.
+        \item Altura máxima das árvores de $6$.
         \item Geração da população pelo método \textit{grow}.
         \item $50$ execuções de teste.
     \end{itemize}
@@ -249,5 +272,12 @@ map f l = if null l then [] else f (head l) : map f (tail l)
 \caption{Média do tempo de execução.}
 \label{tem_map}
 \end{table}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Considerações finais}
+    \begin{itemize}
+            \item blah
+    \end{itemize}
 \end{frame}
 \end{document}
