@@ -10,7 +10,7 @@
 \usemintedstyle{bw}
 
 
-\title[PGFTcRS]{Programação Genética Fortemente Tipada\\ com Restrições Sintáticas}
+\title[PGFTcCS]{Programação Genética Fortemente Tipada\\ com Condições Sintáticas}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
@@ -40,20 +40,22 @@
         são programas bem tipados.
     \item PolyGP utiliza Cálculo Lambda Tipado (sem abstração lambda).
         Recursão limitada apenas para o nome da função a ser evoluída.
+    \item O polimorfismo paramétrico (Damas-Milner) tem papel fundamental: como funções podem ser aplicadas à argumentos
+        de vários tipos, então há um grande reuso do material genético.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Objetivo: restrições sintáticas}
-O objetivo é verificar o impacto do uso de restrições sintáticas
+\frametitle{Objetivo: condições sintáticas}
+O objetivo é verificar o impacto do uso de condições sintáticas
 que evintam explorar programas que não são possíveis soluções.\\
 
 Por exemplo, a função \mintinline{haskell}{if c e1 e2}
 pode ter a exata mesma sub-árvore para \mintinline{haskell}{e1} e \mintinline{haskell}{e2}, ou seja,
 o valor de retorno do \mintinline{haskell}{then} é o mesmo do \mintinline{haskell}{else}. Portanto, pode-se
-considerar a restrição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}.\\
+considerar a condição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}.\\
 
-As restrições podem ser custosas computacionalmente, pois podem necessitar comparar partes de
+As condições podem ser custosas computacionalmente, pois podem necessitar comparar partes de
 programas e aplicar durante todo o processo evolucionário causaria um considerável aumento de tempo da
 evolução.
 \end{frame}
@@ -81,8 +83,20 @@ data Type = Dummy TVar | Generic TVar |
 \begin{frame}[fragile]
 \frametitle{Geração de programas}
     \begin{itemize}
-        \item blah
+        \item \small{O algoritmo de geraçao de programas funciona selecionando aleatoriamente funções primitivas (cujos os argumentos são 
+temporariamente completados com \mintinline{haskell}{ARG}s)
+            ou terminais, e aplicando as necessárias unificações e substituições de tipo.}
     \end{itemize}
+    \begin{enumerate}
+    \item \mintinline[fontsize=\small]{haskell}{ARG::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{if::Bool->[G2]->[G2]->[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) ARG::[G2])::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) []::[G2])::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) []::[G2]) []::[G2])::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null ARG::[T1])::Bool) []::[G2]) []::[G2])::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail ARG::[T1])::T1)::Bool) []::[G2]) []::[G2])::[G2]}.
+    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail l::[G1])::G1)::Bool) []::[G2]) []::[G2])::[G2]}.
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -95,10 +109,10 @@ data Type = Dummy TVar | Generic TVar |
 \begin{frame}[fragile]
 \frametitle{Operadores de mutação}
     \begin{itemize}
-        \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatóriamente)
-            que não infrinja o tamanho máximo da árvore e que o tipo únifique com o tipo $\tau$.
-        \item \textit{Swap-sub-tree}: Se uma expressão tem duas sub-árvores cujos tipos unifiquem, 
-            ex: \mintinline{haskell}{(((Primi "fun") e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
+        \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatoriamente)
+            que não infrinja o tamanho máximo da árvore e que o tipo unifique com o tipo $\tau$.
+        \item \textit{Swap-sub-tree}: Se uma expressão tem dois argumentos cujos tipos unifiquem, 
+            ex: \mintinline{haskell}{((fun e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
             o tipo de \mintinline{haskell}{e2}, então permuta-se (\textit{swap}) a posição das sub-árvores.
         \item Os operadores de mutação não inserem indivíduos repetidos na população.
     \end{itemize}
@@ -116,7 +130,7 @@ Algoritmo evolucionário simplificado:
 \begin{minted}{haskell}
 evolution pop 0 = return $ pop 
 evolution pop n = do
-                  evaluedPop <- evalPopulation count pop 
+                  evaluedPop <- evalPopulation pop 
                   popInter <- tourment popFitness
                   popCrossed <- crossPop popInter
                   popMutated <- mutationPop popCrossed
@@ -164,7 +178,7 @@ map c2i ['a'..'g'] = [0..6]
      if::Bool->a->a-> a, f::G1->G2|$\}$|
  \end{minted}
   \begin{minted}[escapeinside=||,mathescape=true]{haskell}
- |R$\:=\:\{$|if c e1 e2 |\text{tal que}| e1 |$\not =$| e2,
+ |CS$\:=\:\{$|if c e1 e2 |\text{tal que}| e1 |$\not =$| e2,
      head l |\text{tal que}| l |$\not =$| |[]|,
      tail l |\text{tal que}| l |$\not =$| |[]| |$\}$|
  \end{minted}
@@ -192,7 +206,7 @@ Fitness normalizado!!!
 \frametitle{Parâmetros de teste do problema map}
     \begin{itemize}
         \item Populações de $250$, $500$ e $1000$ indivíduos.
-        \item Com e sem as restrições.
+        \item Com e sem as condições.
         \item Taxa de mutação de $4\%$.
         \item Taca de \textit{crossover} de $100\%$.
         \item Número de gerações de $200$.
