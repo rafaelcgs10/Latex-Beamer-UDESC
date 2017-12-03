@@ -56,112 +56,90 @@ o valor de retorno do \mintinline{haskell}{then} é o mesmo do \mintinline{haskel
 considerar a condição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}.\\
 
 As condições podem ser custosas computacionalmente, pois podem necessitar comparar partes de
-programas e aplicar durante todo o processo evolucionário causaria um considerável aumento de tempo da
+programas e aplica-las durante todo o processo evolucionário causaria um considerável aumento de tempo da
 evolução.
 \end{frame}
 
-\section{Representação}
-\begin{frame}[fragile]
-\frametitle{Representação: Cálculo Lambda}
-    \begin{itemize}
-        \item Programas em Cálculo Lambda (sem abstração lambda).
-    \end{itemize}
-\begin{minted}[fontsize=\small]{haskell}
-data Expr = NamedFunction Id [Id] Expr Type |
-            Lit Literal Type | Var Id Type |
-            Primi Id Type | App Expr Expr Type |
-            List [Expr] Type | ARG Type
- \end{minted}
+% \section{Representação}
+% 
+% \begin{frame}[fragile]
+% \frametitle{Geração de programas}
+%     \begin{itemize}
+%         \item \small{O algoritmo de geraçao de programas funciona selecionando aleatoriamente funções primitivas (cujos os argumentos são 
+% temporariamente completados com \mintinline{haskell}{ARG}s)
+%             ou terminais, e aplicando as necessárias unificações e substituições de tipo.}
+%     \end{itemize}
+% \end{frame}
+% 
+% \begin{frame}[fragile]
+% \frametitle{Operador de \textit{crossover}}
+% O \textit{crossover} entre dois indivíduos é realizado da seguinte forma:
+% \begin{enumerate}
+%     \item Seleciona-se aleatoriamente um nó de aplicação no primeiro indivíduo.
+%     \item Procura-se um nó para troca no segundo indivíduo que respeita os seguinte critérios: 1)
+%     o tipo do retorno deve unificar com o nó selecionado no primeiro indivíduo e 2) a troca
+%     das sub-árvores deve respeitar a altura máxima em ambos os indivíduos.
+% \end{enumerate}
+% Trocar nós utilizado a unificação (ao invés da igualdade de tipos) favorece um maior fator de recombinação
+% e garante a propriedade de fechamento.
+% \end{frame}
+% 
+% \begin{frame}[fragile]
+% \frametitle{Operadores de mutação}
+%     \begin{itemize}
+%         \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatoriamente)
+%             que não infrinja o tamanho máximo da árvore e que o tipo unifique com o tipo $\tau$.
+%         \item \textit{Swap-sub-tree}: Se uma expressão tem dois argumentos cujos tipos unifiquem, 
+%             ex: \mintinline{haskell}{((fun e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
+%             o tipo de \mintinline{haskell}{e2}, então permuta-se (\textit{swap}) a posição das sub-árvores.
+%         \item Os operadores de mutação não inserem indivíduos repetidos na população.
+%     \end{itemize}
+% \end{frame}
+% 
+% \section{Algoritmo Evolucionário}
+% \begin{frame}[fragile]
+% \frametitle{Algoritmo Evolucionário}
+% \begin{itemize}
+%     \item População inicial \mintinline{haskell}{pop} de indivíduos únicos.
+%     \item Os operadores de mutação e \textit{crossover} garantem a unicidade 
+%         dos indivíduos durante toda a evolução.
+% \end{itemize}
+% Algoritmo evolucionário simplificado:
+% \begin{minted}{haskell}
+% evolution pop 0 = return $ pop 
+% evolution pop n = do
+%                   evaluedPop <- evalPopulation pop 
+%                   popInter <- tourment popFitness
+%                   popCrossed <- crossPop popInter
+%                   popMutated <- mutationPop popCrossed
+%                   r <- evolution popMutated (n - 1)
+%                   return $ r
+% \end{minted}
+% \end{frame}
+% 
+% \begin{frame}
+% \frametitle{Lidando com Computações Ruins}
+% \begin{itemize}
+%     \item Durante a computação dos programas, duas situações ruins podem acontecer: o programa não terminar
+% dentro do limite de chamadas recursivas (provavelmente um \textit{loop} sem fim) ou o programa realizar
+% uma computação sem definição, como tirar a cabeça de uma lista vazia.
+%     \item Em ambos os cenários 
+% a computação é continuada para um valor arbitrário do tipo retorno esperado
+% e é aplicado uma penalização no \textit{fitness}.
+% \end{itemize}
+% \begin{table}[H]
+% \centering
+% \begin{tabular}{l|l|l|l|l|l|}
+% \cline{2-6}
+%                             & Int & Bool  & Char & {[}Int{]} & {[}Char{]} \\ \hline
+% \multicolumn{1}{|l|}{Valor} & 100 & False & 'z'  & {[}100{]} & {[}'z'{]}  \\ \hline
+% \end{tabular}
+% \caption{Valores \textit{default} para computações ruins.}
+% \label{errotable}
+% \end{table}
+% \end{frame}
 
- \begin{minted}[fontsize=\small]{haskell}
-data Type = Dummy TVar | Generic TVar |
-            Temporary TVar | TArrow Type Type |
-            TList Type | TConst TConst
- \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Geração de programas}
-    \begin{itemize}
-        \item \small{O algoritmo de geraçao de programas funciona selecionando aleatoriamente funções primitivas (cujos os argumentos são 
-temporariamente completados com \mintinline{haskell}{ARG}s)
-            ou terminais, e aplicando as necessárias unificações e substituições de tipo.}
-    \end{itemize}
-    \begin{enumerate}
-    \item \mintinline[fontsize=\small]{haskell}{ARG::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{if::Bool->[G2]->[G2]->[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) ARG::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null ARG::[T1])::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail ARG::[T1])::T1)::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail l::[G1])::G1)::Bool) []::[G2]) []::[G2])::[G2]}.
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Operador de \textit{crossover}}
-    \begin{itemize}
-        \item blah
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Operadores de mutação}
-    \begin{itemize}
-        \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatoriamente)
-            que não infrinja o tamanho máximo da árvore e que o tipo unifique com o tipo $\tau$.
-        \item \textit{Swap-sub-tree}: Se uma expressão tem dois argumentos cujos tipos unifiquem, 
-            ex: \mintinline{haskell}{((fun e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
-            o tipo de \mintinline{haskell}{e2}, então permuta-se (\textit{swap}) a posição das sub-árvores.
-        \item Os operadores de mutação não inserem indivíduos repetidos na população.
-    \end{itemize}
-\end{frame}
-
-\section{Algoritmo Evolucionário}
-\begin{frame}[fragile]
-\frametitle{Algoritmo Evolucionário}
-\begin{itemize}
-    \item População inicial \mintinline{haskell}{pop} de indivíduos únicos.
-    \item Os operadores de mutação e \textit{crossover} garantem a unicidade 
-        dos indivíduos durante toda a evolução.
-\end{itemize}
-Algoritmo evolucionário simplificado:
-\begin{minted}{haskell}
-evolution pop 0 = return $ pop 
-evolution pop n = do
-                  evaluedPop <- evalPopulation pop 
-                  popInter <- tourment popFitness
-                  popCrossed <- crossPop popInter
-                  popMutated <- mutationPop popCrossed
-                  r <- evolution popMutated (n - 1)
-                  return $ r
-\end{minted}
-\end{frame}
-
-\begin{frame}
-\frametitle{Lidando com Computações Ruins}
-\begin{itemize}
-    \item Durante a computação dos programas, duas situações ruins podem acontecer: o programa não terminar
-dentro do limite de chamadas recursivas (provavelmente um \textit{loop} sem fim) ou o programa realizar
-uma computação sem definição, como tirar a cabeça de uma lista vazia.
-    \item Em ambos os cenários 
-a computação é continuada para um valor arbitrário do tipo retorno esperado
-e é aplicado uma penalização no \textit{fitness}.
-\end{itemize}
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|l|l|l|}
-\cline{2-6}
-                            & Int & Bool  & Char & {[}Int{]} & {[}Char{]} \\ \hline
-\multicolumn{1}{|l|}{Valor} & 100 & False & 'z'  & {[}100{]} & {[}'z'{]}  \\ \hline
-\end{tabular}
-\caption{Valores \textit{default} para computações ruins.}
-\label{errotable}
-\end{table}
-\end{frame}
-
-\section{Experimentos}
+\section{Problema}
 \begin{frame}[fragile]
 \frametitle{Problema map}
 Mapear uma função sobre uma lista:\\
@@ -202,6 +180,7 @@ e $0$ caso contrário.
 Fitness normalizado!!!
 \end{frame}
 
+\section{Experimentos}
 \begin{frame}
 \frametitle{Parâmetros de teste do problema map}
     \begin{itemize}
@@ -243,6 +222,22 @@ Fitness normalizado!!!
     \caption{Boxplot do \textit{fitness} da última geração.}
     \label{fig:boxplotmap}
 \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Wilcoxon Pareado com cs1000}
+Wilcoxon Pareado com os valores das médias do \textit{fitness} da última
+geração dos $50$ testes
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l|}
+\cline{2-6}
+                        & nocs250             & nocs500             & nocs1000             & cs250          & cs500                \\ \hline
+\multicolumn{1}{|l|}{w} & $1.11\cdot 10^{-9}$ & $1.6 \cdot 10^{-9}$ & $2.32 \cdot 10^{-9}$ & $1.18 10^{-9}$ & $1.62 \cdot 10^{-7}$ \\ \hline
+\end{tabular}
+\caption{Valores do teste de Wilcoxon para média dos \textit{fitness} da útlima geração.}
+\label{wilcon}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -292,7 +287,12 @@ map f l = if null l then [] else f (head l) : map f (tail l)
 \begin{frame}
     \frametitle{Considerações finais}
     \begin{itemize}
-            \item blah
+        \item O método utilizado foi bem sucedido para resolver o problema map.
+        \item O uso das condições sintáticas teve impacto positivo na convergência, desvio padrão da convergência, taxa de acerto e número de avaliações
+            de \textit{fitness} para encontrar o ótimo.
+        \item Seria interessante obter informações sobre a diversidade da população.
+        \item Estou implementando a evolução da função fibonacci como segundo problema.
+        \item Algumas ideias: resolver problemas da maratona e evoluir funções clássicas.
     \end{itemize}
 \end{frame}
 \end{document}

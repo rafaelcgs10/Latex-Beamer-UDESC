@@ -11,5 +11,5 @@ read:
 	evince ${FILENAME}.pdf &
 
 clean:
-	rm -f ${FILENAME}.{ps,pdf,log,aux,out,dvi,bbl,blg}
+	rm -f ${FILENAME}.{ps,pdf,log,aux,out,dvi,bbl,blg,nav}
 
