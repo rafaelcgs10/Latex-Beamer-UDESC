@@ -50,20 +50,26 @@ como uma extensão do sistema Damas-Milner \parencite{da:82}.
 semi-unificação, de maneira independente, por \parencite{he:88} e \parencite{kf:88}
 \end{itemize}
 
+\begin{scprooftree}{0.7}
+    \AxiomC{$\Gamma \vdash e':\sigma$}
+    \AxiomC{$\Gamma, x : \sigma \vdash e:\tau$}
+    \LeftLabel{\texttt{let}}
+    \BinaryInfC{$\Gamma \vdash (let \:x \: =\: e'\: in\: e):\tau$}
+\end{scprooftree}
 \begin{figure}[h]
     \centering
 \begin{minipage}{.49\textwidth}
 \begin{scprooftree}{0.7}
-    \AxiomC{$\Gamma, x : \tau' \vdash e:\tau$}
     \AxiomC{$\Gamma, x : \tau' \:\vdash e':\tau'$}
+    \AxiomC{$\Gamma, x : \tau' \vdash e:\tau$}
     \LeftLabel{\texttt{letrec}}
     \BinaryInfC{$\Gamma \vdash (let \:x \: =\: e'\: in\: e):\tau$}
 \end{scprooftree}
 \end{minipage}
 \begin{minipage}{.49\textwidth}
 \begin{scprooftree}{0.7}
-    \AxiomC{$\Gamma, x : \sigma \vdash e:\tau$}
     \AxiomC{$\Gamma, x : \sigma \:\vdash e':\sigma$}
+    \AxiomC{$\Gamma, x : \sigma \vdash e:\tau$}
     \LeftLabel{\texttt{letrec+}}
     \BinaryInfC{$\Gamma \vdash (let \:x \: =\: e'\: in\: e):\tau$}
 \end{scprooftree}
