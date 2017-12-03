@@ -3,7 +3,7 @@ COMP=pdflatex  -shell-escape
 
 pdf:
 	$(COMP) ${FILENAME}
-	bibtex  ${FILENAME}||true
+	biber  ${FILENAME}
 	$(COMP) ${FILENAME}
 	$(COMP) ${FILENAME}
 

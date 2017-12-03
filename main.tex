@@ -3,14 +3,23 @@
 \usepackage{graphicx,hyperref,udesc,url}
 \usepackage[latin1]{inputenc}
 %\usepackage[T1]{fontenc}
+\usepackage[portuges]{babel}
 \usepackage{booktabs}
 \usepackage{minted}
-\usepackage[portuges]{babel}
+\usepackage[style=authoryear]{biblatex}
+\usepackage{bussproofs}
+
+\bibliography{main}
+
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
+
 
 \usemintedstyle{bw}
 
 
-\title[PGFTcCS]{Programação Genética Fortemente Tipada\\ com Condições Sintáticas}
+\title[R. Recursão Polimórfica]{Revisão Sobre Inferência de Tipos\\ em Recursão Polimórfica}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
@@ -32,267 +41,117 @@
 
 \section{Introdução}
 \begin{frame}
-\frametitle{Método básico STGP}
+\frametitle{Sistema Milner-Mycroft}
 \begin{itemize}
-    \item Programação Genética Fortemente Tipada
-    \item Utiliza tipos para reduzir o espaço de busca: em um caso,
-        o espaço de busca são $10^{27}$ possíveis, mas somente $10^{12}$
-        são programas bem tipados.
-    \item PolyGP utiliza Cálculo Lambda Tipado (sem abstração lambda).
-        Recursão limitada apenas para o nome da função a ser evoluída.
-    \item O polimorfismo paramétrico (Damas-Milner) tem papel fundamental: como funções podem ser aplicadas à argumentos
-        de vários tipos, então há um grande reuso do material genético.
+    \item A recursão polimórfica em linguagens de programação foi proposta por \parencite{my:84}
+como uma extensão do sistema Damas-Milner \parencite{da:82}.
+    \item A modificação permite que o identificador da definição tenha um tipo polimórfico $\sigma$.
+    \item Foi mostrado que a inferência no sistema Milner-Mycroft é redutível (em tempo polinomial) ao problema da
+semi-unificação, de maneira independente, por \parencite{he:88} e \parencite{kf:88}
 \end{itemize}
-\end{frame}
 
-\begin{frame}
-\frametitle{Objetivo: condições sintáticas}
-O objetivo é verificar o impacto do uso de condições sintáticas
-que evintam explorar programas que não são possíveis soluções.\\
-
-Por exemplo, a função \mintinline{haskell}{if c e1 e2}
-pode ter a exata mesma sub-árvore para \mintinline{haskell}{e1} e \mintinline{haskell}{e2}, ou seja,
-o valor de retorno do \mintinline{haskell}{then} é o mesmo do \mintinline{haskell}{else}. Portanto, pode-se
-considerar a condição \mintinline{haskell}{e1} $\not =\: $\mintinline{haskell}{e2}.\\
-
-As condições podem ser custosas computacionalmente, pois podem necessitar comparar partes de
-programas e aplicar durante todo o processo evolucionário causaria um considerável aumento de tempo da
-evolução.
-\end{frame}
-
-\section{Representação}
-\begin{frame}[fragile]
-\frametitle{Representação: Cálculo Lambda}
-    \begin{itemize}
-        \item Programas em Cálculo Lambda (sem abstração lambda).
-    \end{itemize}
-\begin{minted}[fontsize=\small]{haskell}
-data Expr = NamedFunction Id [Id] Expr Type |
-            Lit Literal Type | Var Id Type |
-            Primi Id Type | App Expr Expr Type |
-            List [Expr] Type | ARG Type
- \end{minted}
-
- \begin{minted}[fontsize=\small]{haskell}
-data Type = Dummy TVar | Generic TVar |
-            Temporary TVar | TArrow Type Type |
-            TList Type | TConst TConst
- \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Geração de programas}
-    \begin{itemize}
-        \item \small{O algoritmo de geraçao de programas funciona selecionando aleatoriamente funções primitivas (cujos os argumentos são 
-temporariamente completados com \mintinline{haskell}{ARG}s)
-            ou terminais, e aplicando as necessárias unificações e substituições de tipo.}
-    \end{itemize}
-    \begin{enumerate}
-    \item \mintinline[fontsize=\small]{haskell}{ARG::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{if::Bool->[G2]->[G2]->[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) ARG::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) ARG::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if ARG::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null ARG::[T1])::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail ARG::[T1])::T1)::Bool) []::[G2]) []::[G2])::[G2]}.
-    \item \mintinline[fontsize=\small, breaklines]{haskell}{(((if (null (tail l::[G1])::G1)::Bool) []::[G2]) []::[G2])::[G2]}.
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Operador de \textit{crossover}}
-    \begin{itemize}
-        \item blah
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Operadores de mutação}
-    \begin{itemize}
-        \item \textit{New-sub-tree}: troca uma sub-árvore de tipo $\tau$ por uma nova (gerada aleatoriamente)
-            que não infrinja o tamanho máximo da árvore e que o tipo unifique com o tipo $\tau$.
-        \item \textit{Swap-sub-tree}: Se uma expressão tem dois argumentos cujos tipos unifiquem, 
-            ex: \mintinline{haskell}{((fun e1) e2)} tal que o tipo de \mintinline{haskell}{e1} unifica com
-            o tipo de \mintinline{haskell}{e2}, então permuta-se (\textit{swap}) a posição das sub-árvores.
-        \item Os operadores de mutação não inserem indivíduos repetidos na população.
-    \end{itemize}
-\end{frame}
-
-\section{Algoritmo Evolucionário}
-\begin{frame}[fragile]
-\frametitle{Algoritmo Evolucionário}
-\begin{itemize}
-    \item População inicial \mintinline{haskell}{pop} de indivíduos únicos.
-    \item Os operadores de mutação e \textit{crossover} garantem a unicidade 
-        dos indivíduos durante toda a evolução.
-\end{itemize}
-Algoritmo evolucionário simplificado:
-\begin{minted}{haskell}
-evolution pop 0 = return $ pop 
-evolution pop n = do
-                  evaluedPop <- evalPopulation pop 
-                  popInter <- tourment popFitness
-                  popCrossed <- crossPop popInter
-                  popMutated <- mutationPop popCrossed
-                  r <- evolution popMutated (n - 1)
-                  return $ r
-\end{minted}
-\end{frame}
-
-\begin{frame}
-\frametitle{Lidando com Computações Ruins}
-\begin{itemize}
-    \item Durante a computação dos programas, duas situações ruins podem acontecer: o programa não terminar
-dentro do limite de chamadas recursivas (provavelmente um \textit{loop} sem fim) ou o programa realizar
-uma computação sem definição, como tirar a cabeça de uma lista vazia.
-    \item Em ambos os cenários 
-a computação é continuada para um valor arbitrário do tipo retorno esperado
-e é aplicado uma penalização no \textit{fitness}.
-\end{itemize}
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|l|l|l|}
-\cline{2-6}
-                            & Int & Bool  & Char & {[}Int{]} & {[}Char{]} \\ \hline
-\multicolumn{1}{|l|}{Valor} & 100 & False & 'z'  & {[}100{]} & {[}'z'{]}  \\ \hline
-\end{tabular}
-\caption{Valores \textit{default} para computações ruins.}
-\label{errotable}
-\end{table}
-\end{frame}
-
-\section{Experimentos}
-\begin{frame}[fragile]
-\frametitle{Problema map}
-Mapear uma função sobre uma lista:\\
-\begin{minted}{haskell}
-map c2i ['a'..'g'] = [0..6]
-\end{minted}
-\begin{minted}[escapeinside=||,mathescape=true]{haskell}
- |T$\:=\:\{$|l::[a], |[]|::[a], f::G1->G2|$\}$|
- \end{minted}
- \begin{minted}[escapeinside=||,mathescape=true]{haskell}
- |F$\:=\:\{$|head::[a]-> a, tail::[a]->[a],
-     (:)::a->[a]->[a], null::[a]->Bool,
-     map::(G1->G2)->[G1]->[G2],
-     if::Bool->a->a-> a, f::G1->G2|$\}$|
- \end{minted}
-  \begin{minted}[escapeinside=||,mathescape=true]{haskell}
- |CS$\:=\:\{$|if c e1 e2 |\text{tal que}| e1 |$\not =$| e2,
-     head l |\text{tal que}| l |$\not =$| |[]|,
-     tail l |\text{tal que}| l |$\not =$| |[]| |$\}$|
- \end{minted}
-\end{frame}
-
-\begin{frame}
-\frametitle{Função \textit{fitness} do problema map}
-\begin{align}
-\label{fitmap}
-f(l,\: l') = & -2\: \cdot \mid length(l) - length(l') \mid  \nonumber\\
-& + \sum_{e\: \in\: l} 10\:
-\cdot (2^{dist(e,\: l')})\\
-& -(10 + 2 \cdot \: length(l)) \cdot rtError \nonumber\\
-& -(10 + 2 \cdot \: length(l)) \cdot reError, \nonumber
-\end{align}
-onde ${dist(e,\: l')}$ é $\infty$ quando $e \not \in l'$, ou caso contrário é a distância de $e$ até o
-elemento de indíce $e$. $rtError$ e $reError$ representam, respectivamente, erros de computações
-indefinidas e computações que excederam o limite de chamadas recursivas, e tem valor $1$ quando acontecem
-e $0$ caso contrário.
-
-Fitness normalizado!!!
-\end{frame}
-
-\begin{frame}
-\frametitle{Parâmetros de teste do problema map}
-    \begin{itemize}
-        \item Populações de $250$, $500$ e $1000$ indivíduos.
-        \item Com e sem as condições.
-        \item Taxa de mutação de $4\%$.
-        \item Taca de \textit{crossover} de $100\%$.
-        \item Número de gerações de $200$.
-        \item Limite de chamadas recursivas de $9$.
-        \item Altura máxima das árvores de $6$.
-        \item Geração da população pelo método \textit{grow}.
-        \item $50$ execuções de teste.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Convergência do problema map}
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=.9\textwidth]{fitness.pdf}
-    \caption{Média do fitness médio de 50 testes.}
+\begin{minipage}{.49\textwidth}
+\begin{scprooftree}{0.7}
+    \AxiomC{$\Gamma, x : \tau' \vdash e:\tau$}
+    \AxiomC{$\Gamma, x : \tau' \:\vdash e':\tau'$}
+    \LeftLabel{\texttt{letrec}}
+    \BinaryInfC{$\Gamma \vdash (let \:x \: =\: e'\: in\: e):\tau$}
+\end{scprooftree}
+\end{minipage}
+\begin{minipage}{.49\textwidth}
+\begin{scprooftree}{0.7}
+    \AxiomC{$\Gamma, x : \sigma \vdash e:\tau$}
+    \AxiomC{$\Gamma, x : \sigma \:\vdash e':\sigma$}
+    \LeftLabel{\texttt{letrec+}}
+    \BinaryInfC{$\Gamma \vdash (let \:x \: =\: e'\: in\: e):\tau$}
+\end{scprooftree}
+\end{minipage}
+    \label{lets}
 \end{figure}
 \end{frame}
 
+\section{Semi-unificação}
 \begin{frame}
-\frametitle{Desvio Padrão da convergência}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.9\textwidth]{erro.pdf}
-    \caption{Desvio padrão do fitness médio de 50 testes.}
-\end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Boxplot da convergência}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.9\textwidth]{box.pdf}
-    \caption{Boxplot do \textit{fitness} da última geração.}
-    \label{fig:boxplotmap}
-\end{figure}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Taxa de acerto}
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|l|l|l|l|}
-\cline{2-7}
-                                     & nores250 & nores500 & nores100 & res250  & res500  & res1000   \\ \hline
-\multicolumn{1}{|l|}{Acerto} & 24$\%$  & 42$\%$  & 78$\%$  & 78$\%$ & 96$\%$ & 100$\%$ \\ \hline
-\end{tabular}
-\caption{Taxa de acerto da solução ótima.}
-\label{taxal}
-\end{table}
-Exemplo de resultado:
-\begin{minted}[fontsize=\small]{haskell}
-map f l = if null l then [] else f (head l) : map f (tail l)
-\end{minted}
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{Avaliações de \textit{fitness} para encontrar o ótimo}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{boxopts.pdf}
-    \caption{{Boxplot do número de avaliações de \textit{fitness} para encontrar a solução
-    ótima.}}
-\label{fig:boxplotmap}
-\end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Tempo médio de execução}
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|l|l|l|l|}
-\cline{2-7}
-                            & nores250 & nores500 & nores1000 & res250 & res500 & res1000 \\ \hline
-\multicolumn{1}{|l|}{Média} & 6.01s    & 13,74s   & 31.58s    & 8,28s  & 20,9s  & 51,38s  \\ \hline
-\end{tabular}
-\caption{Média do tempo de execução.}
-\label{tem_map}
-\end{table}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Considerações finais}
+\frametitle{Semi-unificação}
     \begin{itemize}
-            \item blah
+        \item A semi-unificação é uma generalização da unificação:
+            uma substituição $S$ que satisfaça a sequência de inequações
+            \begin{align*}
+                S(\tau^{1}) \leq S(\tau^{2}) , ..., S(\tau^{n-1}) \leq S(\tau^{n}),
+            \end{align*}
+            onde $\leq$ é a relação de instância entre tipos: $\tau' \leq \tau$ se, e somente se, existe uma substituição
+            $S'$ tal que $S'(\tau') = \tau$.
+        \item O caso geral do problema foi mostrado indecidível \parencite{kf:90}.
+        \item Isso implica que não há algoritmo para decidir a tipabilidade (\textit{typability}) de um
+termo no sistema Milner-Mycroft, ou seja, o sistema também é indecidível.
+        \item Alguns casos decidíveis da semi-unificação foram encontrados: para uma inequação
+\parencite{ka:88}, para duas variáveis \parencite{le:90} e semi-unificação acíclica \parencite{kf:94}.
     \end{itemize}
 \end{frame}
+
+\section{Outros Sistemas com R.P.}
+\begin{frame}
+\frametitle{Outros Sistemas com Recursão Polimórfica I}
+    \begin{itemize}
+        \item Tentou-se extensões da linguagem ML que permitem recursão polimórfica, porém \parencite{kf:93} demonstrou que a inferência nessas também é
+            indecidível.
+        \item A primeira forma de recursão polimórfica decidível foi proposta por \parencite{he:89}, que utilizaria o fato da semi-unificação com uma única inequação ser decidível para
+            representar recursões polimórficas com apenas uma chamada recursiva e não aninhadas.
+        \item O primeiro sistema de tipos a permitir recursão polimórfica, na realidade, é o Sistema-F \parencite{gi:72}. Em \parencite{ti:90} mostra-se que é possível simular a recursão
+            polimórfica com o uso de tipos Rank 3 ou superior.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Outros Sistemas com Recursão Polimórfica II}
+    \begin{itemize}
+        \item \parencite{ji:95} apresenta uma combinação de Rank 2 com \textit{intersection types}, que é capaz de tipar algumas expressões recursivas e é decidível.
+        \item Uma outra abordagem com Rank foi proposta por meio de \textit{Principal Typings}, por \parencite{ji:96}, capaz de tipar alguns casos de recursão polimórfica.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Outros Sistemas com Recursão Polimórfica III}
+    \begin{itemize}
+                \item \parencite{da:07} propõem, com base no sistema com Rank 2 \textit{intersection type}, o sistema $\vdash^{P}_2$ capaz de tipar, de maneira decidível,
+              exemplos mais interessantes de recursão polimórfica.
+        \item  Em \parencite{co:08} apresenta-se a relação direta entre recursão polimórfica em sistemas de tipos e em \textit{Abstract Interpretation}, o que resultou num sistema de tipos com
+recursão polimórfica decidível.
+        \item \parencite{da:11} apresenta a recursão bimórfica, que permite associar um tipo para a chamada recursiva e outro para as chamadas externas da função. Além disso, 
+            é possível utilizar chamadas recursivas aninhadas. Mostrou-se que a inferência de tipos nesse sistema é decidível.
+    \end{itemize}
+\end{frame}
+
+\section{Semi-algoritmos}
+\begin{frame}
+    \frametitle{Semi-algoritmo \textit{W+}}
+    \begin{itemize}
+        \item Em \parencite{he:93} é apresentado um semi-algoritmo para encontrar o semiunificador mais geral de um sistema de equações e inequações (SEI).
+        \item Na prática programas têm \textit{small types} e esse casos são tratáveis:
+            \\
+            Teorema 1:
+            Tipabilidade com \textit{small types} no sistema Milner-Mycroft é decidível em tempo
+            polinomial. Prova em \parencite{he:93}.
+        \item O semi-algoritmo para resolver SEI de \parencite{he:93} foi utilizado na construção do semi-algoritmo \textit{W+} 
+            em \parencite{em:99}, o qual foi provado ser consistente (\textit{Soundness}) e ter uma 
+            completude fraca (\textit{weak completeness}) com as regras do sistema Milner-Mycroft
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Semi-algoritmo \textit{MMo}}
+    \begin{itemize}
+        \item Foi proposto por \parencite{ca:03} um (semi-)algoritmo chamado \textit{MMo}, o qual foi testado numa boa gama de programas e nunca foi encontrado um
+            caso que entra em \textit{loop} ou que rejeita um programa correto.
+        \item Apensar dos testes, o grau de incompletude do \textit{MMo} não é conhecido e não se sabe o conjunto de casos
+            que consegue tipar.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
 \end{document}
