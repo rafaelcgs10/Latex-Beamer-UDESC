@@ -8,7 +8,7 @@
 \usepackage[portuges]{babel}
 
 
-\title[Uso de Coq para verificaÃ§Ã£o de propriedades de sistemas de tipos]{Uso de Coq para verificaÃ§Ã£o de propriedades de sistemas de tipos}
+\title[Uso de Coq para verificação de propriedades de sistemas de tipos]{Uso de Coq para verificação de propriedades de sistemas de tipos}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
@@ -28,38 +28,72 @@
 
 \end{frame}
 
-\section{IntroduÃ§Ã£o}
+\section{Introdução}
 \begin{frame}
-\frametitle{O que sÃ£o assistentes de provas?}
+\frametitle{O que são assistentes de provas?}
 \begin{itemize}
-    \item Assistentes de provas ou provadores interativos sÃ£o programas para o desenvolvimento de provas
+    \item Assistentes de provas ou provadores interativos são programas para o desenvolvimento de provas
           formais.
-    \item O nÃºcleo de um assistente de provas Ã© um verificador, que verifica a consistÃªncia lÃ³gica da prova.
-    \item Fornecem de maneira interativa de visualizar as informaÃ§Ãµes sobre o estado atual da prova.
-    \item A verficaÃ§Ã£o humana de provas Ã© demorada e sujeita a falhas: Ãšltimo Teorema de Fermat.
+    \item O núcleo de um assistente de provas é um verificador, que verifica a consistência lógica da prova.
+    \item Fornecem de maneira interativa de visualizar as informações sobre o estado atual da prova.
+    \item A verificação humana de provas é demorada e sujeita a falhas: Último Teorema de Fermat.
 
-      Assistentes de provas permitem provar coisas que nÃ£o seriam realizÃ¡veis somente com papel e caneta
+      Assistentes de provas permitem provar coisas que não seriam realizáveis somente com papel e caneta!
 \end{itemize}
 \end{frame}
 
 \section{Coq}
 \begin{frame}
-\frametitle{O que Ã© Coq?}
+\frametitle{O que é Coq?}
 \begin{itemize}
-    \item Coq Ã© um assistentes de provas (dÃ£) desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
-    \item Coq Ã© fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
-    \item Coq suporta programaÃ§Ã£o com tipos dependentes.
+    \item Coq é um assistentes de provas desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
+    \item Coq é fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
+    \item Coq suporta programação com tipos dependentes.
     \item Coq tem vÃ¡rias linguagens:
         \begin{enumerate}
-            \item Gallina: linguagem de programaÃ§Ã£o funcional total e com tipos dependentes.
-            \item Vernecular: linguagem de comandos. Enunciar teoremas, funÃ§Ãµesâ€¦
-            \item Tatic: linguagem para criar provas com a ajuda do assistente/verificador.
-            \item LTac: criaÃ§Ã£o de novas tÃ¡ticas e procedimentos de prova.
+            \item Gallina: linguagem de programação funcional total e com tipos dependentes.
+            \item Vernecular: linguagem de comandos. Enunciar teoremas, funções...
+            \item Tatic: linguagem das táticas usada para criar provas com a ajuda do essistente/verificador.
+            \item LTac: criação de novas táticas e procedimentos de prova.
         \end{enumerate}
 \end{itemize}
 \end{frame}
 
 \section{A linguagem}
+
+\begin{frame}[fragile]
+\frametitle{A linguagem: STLC}
+\begin{itemize}
+  \item Cálculo Lambda Simplesmente Tipado: \textit{Simple Typed Lambda Calculus} (STLC).
+\end{itemize}
+\begin{verbatim}
+t ::= x                       variable
+    | \x:T1.t2                abstraction
+    | t1 t2                   application
+    | true                    constant true
+    | false                   constant false
+    | if t1 then t2 else t3   conditional
+
+T ::= Bool
+    | T1 -> T2
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Formalização de STLC em Coq}
+\begin{verbatim}
+Inductive ty : Type :=
+  | TBool  : ty
+  | TArrow : ty -> ty -> ty.
+
+Inductive tm : Type :=
+  | tvar : string -> tm
+  | tapp : tm -> tm -> tm
+  | tabs : string -> ty -> tm -> tm
+  | ttrue : tm
+  | tfalse : tm
+  | tif : tm -> tm -> tm -> tm.
+\end{verbatim}
+\end{frame}
+
 \end{document}
-
-
