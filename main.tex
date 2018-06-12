@@ -8,13 +8,13 @@
 \usepackage[portuges]{babel}
 
 
-\title[Assistente de Provas Coq]{Assistente de Provas Coq}
+\title[Uso de Coq para verifica√ß√£o de propriedades de sistemas de tipos]{Uso de Coq para verifica√ß√£o de propriedades de sistemas de tipos}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{17 de Novembro de 2017}
+\date{22 de Junho de 2018}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -28,193 +28,36 @@
 
 \end{frame}
 
-\section{IntroduÁ„o}
+\section{Introdu√ß√£o}
 \begin{frame}
-\frametitle{O que s„o assistentes de provas?}
+\frametitle{O que s√£o assistentes de provas?}
 \begin{itemize}
-    \item Assistentes de provas ou provadores interativos s„o programas para o desenvolvimento de provas
+    \item Assistentes de provas ou provadores interativos s√£o programas para o desenvolvimento de provas
           formais.
-    \item Fornecerem informaÁıes ao programador e verificam a consistÍncia lÛgica da prova.\\
-          Portanto, erros s„o detectados de maneira imediata.
-    \item Provadores autom·ticos fazem todo o trabalho. Assistentes de provas podem utilizar provadores autom·ticos,
-          mas ainda necessitam do humano.
+    \item O n√∫cleo de um assistente de provas √© um verificador, que verifica a consist√™ncia l√≥gica da prova.
+    \item Fornecem de maneira interativa de visualizar as informa√ß√µes sobre o estado atual da prova.
+    \item A verfica√ß√£o humana de provas √© demorada e sujeita a falhas: √öltimo Teorema de Fermat.
+
+      Assistentes de provas permitem provar coisas que n√£o seriam realiz√°veis somente com papel e caneta
 \end{itemize}
 \end{frame}
 
+\section{Coq}
 \begin{frame}
-\frametitle{Para que servem os assistentes de provas?}
+\frametitle{O que √© Coq?}
 \begin{itemize}
-        \begin{columns}
-            \begin{column}{0.35\textwidth}
-            \item Facilitam provar coisas: 
-            \end{column}
-            \begin{column}{0.41\textwidth}  %%<--- here
-        \begin{figure}
-            \includegraphics[width=1.0\textwidth]{map.png}
-        \end{figure}
-            \end{column}
-        \end{columns}
-    \item A verificaÁ„o autom·tica È ˙til para evitar o gasto dispendioso de verificar uma prova
-          escrita em linguagem humana.
-    \item … possÌvel verificar programas. ProgramaÁ„o certificada.
-    \item Uma ferramenta para MÈtodos Formais.
-\end{itemize}
-\end{frame}
-
-\section{Coq }
-\begin{frame}
-\frametitle{O que È Coq?}
-\begin{itemize}
-    \item Assistente de provas baseado no C·lculo de ConstruÁıes (CoC) - C·lculo Lambda Tipado e Tunado. Estendido para
-        C·lculo de ConstruÁıes Indutivas.
-    \item LÛgica de ordem superior.
-    \item Programas verificados (ou provas) em Coq podem ser extraÌdos para outras linguagens como Haskell, OCaml e Scheme.
-    \item ProgramaÁ„o com tipos dependentes.
+    \item Coq √© um assistentes de provas (d√£) desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
+    \item Coq √© fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
+    \item Coq suporta programa√ß√£o com tipos dependentes.
+    \item Coq tem v√°rias linguagens:
         \begin{enumerate}
-            \item Gallina: linguagem de programa\c{c}c\~ao funcional e linguagem de l\'ogica de ordem superior.
-            \item Vernecular: linguagem para enunciar teoremas, definir fun\c{c}\~oes ...
+            \item Gallina: linguagem de programa√ß√£o funcional total e com tipos dependentes.
+            \item Vernecular: linguagem de comandos. Enunciar teoremas, fun√ß√µes‚Ä¶
             \item Tatic: linguagem para criar provas com a ajuda do assistente/verificador.
+            \item LTac: cria√ß√£o de novas t√°ticas e procedimentos de prova.
         \end{enumerate}
 \end{itemize}
 \end{frame}
 
-\section{Apredendo Coq}
-\begin{frame}
-\frametitle{Software Foundations}
-            \centering
-    \includegraphics[width=1.0\textwidth]{sf.png}
-\end{frame}
-
-\begin{frame}
-\frametitle{Software Foundations}
-            \centering
-    \includegraphics[width=1.0\textwidth]{index.png}
-\end{frame}
-
-\begin{frame}
-\frametitle{Functional Programming in Coq}
-\begin{itemize}
-    \item O paradigma de programaÁ„o funcional È baseado no simples conceito: se uma funÁ„o n„o tem efeito colateral, ent„o
-        tudo o que precisamos saber sobre funÁıes s„o os seus mapeamentos. - (e se ignorarmos outras propriedades como a eficiÍncia!).
-    \item O termo funcional enfatiza que funÁıes s„o \textit{first class values}, ou seja, elas podem ser passadas para funÁıes e retornada por funÁıes.
-    \item Polimorfismo, Tipos de Dados AlgÈbricos e Tipos Recursivo (indutivos).
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Functional Programming in Coq}
-\begin{itemize}
-   \item Prova por simplificaÁ„o: consulta a definiÁ„o do termo e o troca pelo seu resultado.
-   \item Prova por reescrita: utiliza alguma igualdade (nas suposiÁıes ou j· provada) para reescrever algum termo em algum lugar.
-   \item Prova por an·lise de caso: desconstroi um termo definido indutivamente e gera um subgoal para cada caso do termo.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Proof by Induction}
-\begin{itemize}
-   \item Prova por induÁ„o: siminar a por an·lise de caso, mas fornece a hipÛtese de induÁ„o.
-   \item Se $P$ È uma propridade que queremos provar para todos n˙meros naturais $n$, ent„o prova-se:
-       \begin{enumerate}
-           \item $P(0)$.
-           \item se para qualquer $n'$, $P(n')$ È verdade, ent„o $P(S n')$ È verdade.
-       \end{enumerate}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova1.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova2.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova3.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova4.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova5.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova6.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova7.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova8.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova9.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Uma prova}
-\addtocounter{framenumber}{-1}
-        \begin{figure}
-            \centering
-            \includegraphics[width=1.05\textwidth]{prova10.png}
-        \end{figure}
-\end{frame}
-
-\begin{frame}
-\addtocounter{framenumber}{-1}
-\titlepage
-\end{frame}
-
+\section{A linguagem}
 \end{document}
-
