@@ -96,4 +96,30 @@ Inductive tm : Type :=
 \end{verbatim}
 \end{frame}
 
+\section{Semântica Small-Step}
+\begin{frame}[fragile]
+\frametitle{Semântica Small-Step}
+\begin{itemize}
+  \item A semântica \textit{small-step} é uma relação de termo para termo que define como os passos atômicos da computação ocorrem. 
+  \item No Cálculo Lambda o passo da computação é a redução-beta.
+  \item Redução-beta é definida por meio da regra de substituição.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Regras de substituição}
+Utiliza-se uma versão simplificada das regras de substuição, onde $s$ é sempre um termo fechado.
+\begin{verbatim}
+[x:=s]x               = s
+[x:=s]y               = y                      if x <> y
+[x:=s](\x:T11. t12)   = \x:T11. t12
+[x:=s](\y:T11. t12)   = \y:T11. [x:=s]t12      if x <> y
+[x:=s](t1 t2)         = ([x:=s]t1) ([x:=s]t2)
+[x:=s]true            = true
+[x:=s]false           = false
+[x:=s](if t1 then t2 else t3) =
+                if [x:=s]t1 then [x:=s]t2 else [x:=s]t3
+\end{verbatim}
+\end{frame}
+
 \end{document}
