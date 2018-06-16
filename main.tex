@@ -43,14 +43,13 @@
 \end{itemize}
 \end{frame}
 
-\section{Coq}
 \begin{frame}
 \frametitle{O que é Coq?}
 \begin{itemize}
     \item Coq é um assistentes de provas desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
     \item Coq é fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
     \item Coq suporta programação com tipos dependentes.
-    \item Coq tem vÃ¡rias linguagens:
+    \item Coq tem quatro linguagens:
         \begin{enumerate}
             \item Gallina: linguagem de programação funcional total e com tipos dependentes.
             \item Vernecular: linguagem de comandos. Enunciar teoremas, funções...
@@ -60,7 +59,20 @@
 \end{itemize}
 \end{frame}
 
-\section{A linguagem}
+\begin{frame}[fragile]
+\frametitle{Objetivo do SEC}
+\begin{itemize}
+  \item Formalizar uma linguagem de programação funcional em Coq.
+    \begin{itemize}
+    \item Sintaxe: termos e tipos;
+    \item Semântica: \textit{Small Step};
+    \item Sistemas de tipos: Regras de inferência de tipo;
+    \end{itemize}
+   \item Provar propriedades do sistema de tipos
+\end{itemize}
+\end{frame}
+
+\section{A linguagem: STLC}
 
 \begin{frame}[fragile]
 \frametitle{A linguagem: STLC}
@@ -81,7 +93,7 @@ T ::= Bool
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Formalização de STLC em Coq}
+\frametitle{Formalização em Coq de STLC}
 \begin{verbatim}
 Inductive ty : Type :=
   | TBool  : ty
@@ -124,7 +136,7 @@ Utiliza-se uma versão simplificada das regras de substuição, onde $s$ é sempre u
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{ Formalização das Regras de substituição em Coq como \textit{Fixpoint}}
+\frametitle{ Formalização em Coq das Regras de substituição como \textit{Fixpoint}}
 
 \begin{verbatim}
 Reserved Notation "'[' x ':=' s ']' t" (at level 20).
@@ -190,7 +202,7 @@ Regras para condicionais:
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Formalização das  Regras \textit{Small Step} em Coq}
+\frametitle{Formalização em Coq das  Regras \textit{Small Step}}
 \begin{verbatim}
 Reserved Notation "t1 '==>' t2" (at level 40).
 Inductive step : tm -> tm -> Prop :=
@@ -206,4 +218,84 @@ Inductive step : tm -> tm -> Prop :=
 where "t1 '==>' t2" := (step t1 t2).
 \end{verbatim}
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sistema de Tipos}
+\begin{itemize}
+\item Interpreta-se a tripla relação $\Gamma \vdash$ \lstinline{t : T} como:
+Sobre as suposições $\Gamma$, o termo \lstinline{t} tem o tipo \lstinline{T}.
+\item O sistema de tipos é dado pelas regras de inferência abaixo:
+\end{itemize}
+
+\begin{prooftree}
+  \AxiomC{}
+  \RightLabel{(Var)}
+  \UnaryInfC{$\Gamma$ \lstinline{,x : T} $\vdash$ \lstinline{x : T}}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma$ \lstinline{, x : T11} $\vdash$ \lstinline{t12 : T12}}
+  \RightLabel{(Abs)}
+  \UnaryInfC{$\Gamma \vdash$ \lstinline{(\x:T11.t12) : T11->T12}}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma \vdash$\lstinline{t1 : T11 -> T12}}
+  \AxiomC{$\Gamma \vdash$\lstinline{t2 : T11}}
+  \RightLabel{(App)}
+  \BinaryInfC{$\Gamma \vdash$\lstinline{t1 t2 : T12}}
+\end{prooftree}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sistema de Tipos}
+\begin{prooftree}
+  \AxiomC{}
+  \RightLabel{(True)}
+  \UnaryInfC{$\Gamma \vdash$ \lstinline{true : Bool}}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{}
+  \RightLabel{(False)}
+  \UnaryInfC{$\Gamma \vdash$ \lstinline{false : Bool}}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma \vdash$ \lstinline{t1 : Bool}}
+  \AxiomC{$\Gamma \vdash$ \lstinline{t2 : T}}
+  \AxiomC{$\Gamma \vdash$ \lstinline{t3 : T}}
+  \RightLabel{(If)}
+  \TrinaryInfC{$\Gamma \vdash$ \lstinline{if t1 the t2 else t3 : T}}
+\end{prooftree}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Formalização  em Coq do Sistema de Tipos}
+\begin{verbatim}
+Definition context := partial_map ty.
+
+Reserved Notation "Gamma '|-' t '\in' T" (at level 40).
+Inductive has_type : context -> tm -> ty -> Prop :=
+  | T_Var : forall Gamma x T, Gamma x = Some T ->
+      Gamma |- tvar x \in T
+  | T_Abs : forall Gamma x T11 T12 t12,
+      Gamma & {{x --> T11}} |- t12 \in T12 ->
+      Gamma |- tabs x T11 t12 \in TArrow T11 T12
+  | T_App : forall T11 T12 Gamma t1 t2,
+      Gamma |- t1 \in TArrow T11 T12 ->
+      Gamma |- t2 \in T11 ->
+      Gamma |- tapp t1 t2 \in T12
+where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
+\end{verbatim}
+\end{frame}
+
+\section{Propriedades do Sistema de Tipos}
+\begin{frame}[fragile]
+\frametitle{Progresso}
+A propriedade de progresso diz que todo termo fechado e bem tipado não está
+travado \textit{stuck}, ou seja, ou é um valor ou pode fazer um passo de redução.
+\end{frame}
+
 \end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
