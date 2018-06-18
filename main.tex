@@ -48,14 +48,7 @@
 \begin{itemize}
     \item Coq é um assistentes de provas desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
     \item Coq é fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
-    \item Coq suporta programação com tipos dependentes.
-    \item Coq tem quatro linguagens:
-        \begin{enumerate}
-            \item Gallina: linguagem de programação funcional total e com tipos dependentes.
-            \item Vernecular: linguagem de comandos. Enunciar teoremas, funções...
-            \item Tatic: linguagem das táticas usada para criar provas com a ajuda do essistente/verificador.
-            \item LTac: criação de novas táticas e procedimentos de prova.
-        \end{enumerate}
+    \item Coq suporta programação com tipos dependentes e lógica de alta ordem.
 \end{itemize}
 \end{frame}
 
@@ -160,13 +153,24 @@ where "'[' x ':=' s ']' t" := (subst x s t).
 A computação no Cálculo Lambda é definida pela Redução Beta, a qual substitui o
 argumento pela variável ligada na abstração lambda. A Redução Beta, aqui, é denotada por
 \lstinline{(\x:T.t12) v2 ==> [x:=v2]t12}.
-
-As regras \textit{Small Step} definem uma avaliação \textit{eager} conforme:
+Para a seguinte definição de \textit{value}:
+\begin{verbatim}
+Inductive value : tm -> Prop :=
+    v_abs : forall (x : string) (T : ty) (t : tm),
+            value (tabs x T t)
+  | v_true : value ttrue
+  | v_false : value tfalse
+\end{verbatim},
+as regras \textit{Small Step} definem uma avaliação \textit{eager} conforme:
 \begin{prooftree}
   \AxiomC{value v2}
   \RightLabel{(AppAbs)}
   \UnaryInfC{(\lstinline{\x:T.t12) v2 ==> [x:=v2]t12}}
 \end{prooftree}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{ Regras \textit{Small Step}}
 \begin{prooftree}
   \AxiomC{\lstinline{t1 ==> t1'}}
   \RightLabel{(App1)}
@@ -178,10 +182,7 @@ As regras \textit{Small Step} definem uma avaliação \textit{eager} conforme:
   \RightLabel{(App2)}
   \BinaryInfC{\lstinline{v1 t2 ==> v1 t2'}}
 \end{prooftree}
-\end{frame}
 
-\begin{frame}[fragile]
-\frametitle{ Regras \textit{Small Step}}
 Regras para condicionais:
 
 \begin{prooftree}
@@ -289,9 +290,32 @@ where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
 
 \section{Propriedades do Sistema de Tipos}
 \begin{frame}[fragile]
-\frametitle{Progresso}
+\frametitle{\textit{Soundness}}
+\begin{itemize}
+  \item A principal propriedade de um sistemas de tipos de uma linguagem de programação é \textit{Soundness}.
+  \item \textit{Soundness} diz que todos os termos bem tipados nunca entram num estado \textit{stuck}.
+  \item Estado \textit{stuck} é um termo que está na forma normal, mas não é um valor (valores aqui são true e false).
+  \item \textit{Soundness} pode ser representado por \textit{Progress} + \textit{Preservation}. 
+\end{itemize}
+\begin{verbatim}
+Definition stuck (t:tm) : Prop :=
+  (normal_form step) t /\ ~ value t.
+
+Corollary soundness : forall t t' T,
+  empty |- t \in T -> t ==>* t' ->
+  ~(stuck t').
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\textit{Progress}}
 A propriedade de progresso diz que todo termo fechado e bem tipado não está
 travado \textit{stuck}, ou seja, ou é um valor ou pode fazer um passo de redução.
+\begin{verbatim}
+Theorem progress : forall t T,
+  empty |- t \in T ->
+  value t \/ exists t', t ==> t'.
+\end{verbatim}
 \end{frame}
 
 \end{document}
