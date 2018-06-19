@@ -9,13 +9,13 @@
 \usepackage[portuges]{babel}
 
 
-\title[Uso de Coq para verificação de propriedades de sistemas de tipos]{Uso de Coq para verificação de propriedades de sistemas de tipos}
+\title[Mini-Introdução à Análise de Complexidade Quântica]{Mini-Introdução à Análise de Complexidade Quântica}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{22 de Junho de 2018}
+\date{03 de Julho de 2018}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -31,326 +31,58 @@
 
 \section{Introdução}
 \begin{frame}
-\frametitle{O que são assistentes de provas?}
+\frametitle{Computador Clássico}
 \begin{itemize}
-    \item Assistentes de provas ou provadores interativos são programas para o desenvolvimento de provas
-          formais.
-    \item O núcleo de um assistente de provas é um verificador, que verifica a consistência lógica da prova.
-    \item Fornecem de maneira interativa de visualizar as informações sobre o estado atual da prova.
-    \item A verificação humana de provas é demorada e sujeita a falhas: Último Teorema de Fermat.
-
-      Assistentes de provas permitem provar coisas que não seriam realizáveis somente com papel e caneta!
+    \item A computação convencional utiliza dados armazenados em bits: 0 ou 1 (exclusivamente).
+    \item Um dado de 3 bits representa ao mesmo tempo apenas um dos seus 8 possíveis estados.
+    \item Transistores (interruptores) são combinados para formar portas lógicas, que
+          são combinadas para formar circuitos digitas (unidades de processamento: aritmética, lógica etc).
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{O que é Coq?}
+\frametitle{Conceitos Básicos de Quântica}
 \begin{itemize}
-    \item Coq é um assistentes de provas desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
-    \item Coq é fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
-    \item Coq suporta programação com tipos dependentes e lógica de alta ordem.
+  \item A \textbf{Superposição quântica}: uma partícula pode assumir simultaneamente proporções entre dois estados.\\
+  Ex: A polarização de um fóton pode ser qualquer proporção entre vertical ou horizontal. Mas uma vez que 
+  observado, o seu estado colapsa (com base na probabilidade das proporções) para um dos extremos.
+  \item A superposição quântica pode ser utilizada para representar informação binária: \textbf{qubit}.
+  \item A computação quântica utiliza dados armazenados em qubits: 0 - 1 (qualquer proporção de ambos estados).
+  \item Um dado de 3 qubits representar ao mesmo tempo todos os 8 possíveis estados.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Objetivo do SEC}
+\begin{frame}
+\frametitle{Representação dos Qubits}
 \begin{itemize}
-  \item Formalizar uma linguagem de programação funcional em Coq.
-    \begin{itemize}
-    \item Sintaxe: termos e tipos;
-    \item Semântica: \textit{Small Step};
-    \item Sistemas de tipos: Regras de inferência de tipo;
-    \end{itemize}
-   \item Provar propriedades do sistema de tipos
+  \item Os dois estados base de um qubit são representados pelos vetores
+    \begin{align}
+      |0 \: = \begin{bmatrix} 
+              1 \\ 
+              0 \\ 
+            \end{bmatrix}
+      |1 \: = \begin{bmatrix} 
+              0 \\ 
+              1 \\ 
+            \end{bmatrix}
+    \end{align}
+  \item Para completamente representar o estado de um qubit são necessários dois números para descrever as duas proporções das duas bases:
+    \begin{align}
+      \Psi = a|0 + b|1.
+    \end{align}
+  \item Para representar o estado de dois qubits são necessários quatro números:
+    \begin{align}
+      \Psi = a|00 + b |01.
+    \end{align}
 \end{itemize}
 \end{frame}
 
-\section{A linguagem: STLC}
-
-\begin{frame}[fragile]
-\frametitle{A linguagem: STLC}
+\begin{frame}
+\frametitle{Portas Quânticas}
 \begin{itemize}
-  \item Cálculo Lambda Simplesmente Tipado: \textit{Simple Typed Lambda Calculus} (STLC).
-\end{itemize}
-\begin{verbatim}
-t ::= x                       variable
-    | \x:T1.t2                abstraction
-    | t1 t2                   application
-    | true                    constant true
-    | false                   constant false
-    | if t1 then t2 else t3   conditional
-
-T ::= Bool
-    | T1 -> T2
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq de STLC}
-\begin{verbatim}
-Inductive ty : Type :=
-  | TBool  : ty
-  | TArrow : ty -> ty -> ty.
-
-Inductive tm : Type :=
-  | tvar : string -> tm
-  | tapp : tm -> tm -> tm
-  | tabs : string -> ty -> tm -> tm
-  | ttrue : tm
-  | tfalse : tm
-  | tif : tm -> tm -> tm -> tm.
-\end{verbatim}
-\end{frame}
-
-\section{Semântica e Sistemas de Tipos}
-\begin{frame}[fragile]
-\frametitle{Semântica Small-Step}
-\begin{itemize}
-  \item A semântica \textit{small-step} é uma relação de termo para termo que define como os passos atômicos da computação ocorrem. 
-  \item No Cálculo Lambda o passo da computação é a redução-beta.
-  \item Redução-beta é definida por meio da regra de substituição.
+  \item Portas quânticas são análogas as portas lógicas binárias.
 \end{itemize}
 \end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Regras de substituição}
-Utiliza-se uma versão simplificada das regras de substuição, onde $s$ é sempre um termo fechado (sem variáveis livres).
-\begin{verbatim}
-[x:=s]x               = s
-[x:=s]y               = y                      if x <> y
-[x:=s](\x:T11. t12)   = \x:T11. t12
-[x:=s](\y:T11. t12)   = \y:T11. [x:=s]t12      if x <> y
-[x:=s](t1 t2)         = ([x:=s]t1) ([x:=s]t2)
-[x:=s]true            = true
-[x:=s]false           = false
-[x:=s](if t1 then t2 else t3) =
-                if [x:=s]t1 then [x:=s]t2 else [x:=s]t3
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Formalização em Coq das Regras de substituição como \textit{Fixpoint}}
-
-\begin{verbatim}
-Reserved Notation "'[' x ':=' s ']' t" (at level 20).
-
-Fixpoint subst (x:string) (s:tm) (t:tm) : tm :=
-  match t with
-  | tvar x'      => if beq_string x x' then s else t
-  | tabs x' T t1 => tabs x' T (if beq_string x x'
-                                then t1 else ([x:=s] t1))
-  | tapp t1 t2   => tapp ([x:=s] t1) ([x:=s] t2)
-  | ttrue        => ttrue
-  | tfalse       => tfalse
-  | tif t1 t2 t3 => tif ([x:=s] t1) ([x:=s] t2) ([x:=s] t3)
-  end
-where "'[' x ':=' s ']' t" := (subst x s t).
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Regras \textit{Small Step}}
-A computação no Cálculo Lambda é definida pela Redução Beta, a qual substitui o
-argumento pela variável ligada na abstração lambda. A Redução Beta, aqui, é denotada por
-\lstinline{(\x:T.t12) v2 ==> [x:=v2]t12}.
-Para a seguinte definição de \textit{value}:
-\begin{verbatim}
-Inductive value : tm -> Prop :=
-    v_abs : forall (x : string) (T : ty) (t : tm),
-            value (tabs x T t)
-  | v_true : value ttrue
-  | v_false : value tfalse
-\end{verbatim},
-as regras \textit{Small Step} definem uma avaliação \textit{eager} conforme:
-\begin{prooftree}
-  \AxiomC{value v2}
-  \RightLabel{(AppAbs)}
-  \UnaryInfC{(\lstinline{\x:T.t12) v2 ==> [x:=v2]t12}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Regras \textit{Small Step}}
-\begin{prooftree}
-  \AxiomC{\lstinline{t1 ==> t1'}}
-  \RightLabel{(App1)}
-  \UnaryInfC{\lstinline{t1 t2 ==> t1' t2}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{\lstinline{value v1}}
-  \AxiomC{\lstinline{t2 ==> t2'}}
-  \RightLabel{(App2)}
-  \BinaryInfC{\lstinline{v1 t2 ==> v1 t2'}}
-\end{prooftree}
-
-Regras para condicionais:
-
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(IfTrue)}
-  \UnaryInfC{\lstinline{(if true then t1 else t2) ==> t1}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(IfFalse)}
-  \UnaryInfC{\lstinline{(if false then t1 else t2) ==> t2}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{\lstinline{t1 ==> t1'}}
-  \RightLabel{(If)}
-  \UnaryInfC{\lstinline{(if t1 then t2 else t3) ==> (if t1' then t2 else t3)}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq das  Regras \textit{Small Step}}
-\begin{verbatim}
-Reserved Notation "t1 '==>' t2" (at level 40).
-Inductive step : tm -> tm -> Prop :=
-  | ST_AppAbs : forall x T t12 v2,
-         value v2 ->
-         (tapp (tabs x T t12) v2) ==> [x:=v2]t12
-  | ST_App1 : forall t1 t1' t2,
-         t1 ==> t1' ->
-         tapp t1 t2 ==> tapp t1' t2
-  | ST_App2 : forall v1 t2 t2',
-         value v1 -> t2 ==> t2' ->
-         tapp v1 t2 ==> tapp v1  t2'
-where "t1 '==>' t2" := (step t1 t2).
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Sistema de Tipos}
-\begin{itemize}
-\item Interpreta-se a tripla relação $\Gamma \vdash$ \lstinline{t : T} como:
-Sobre as suposições $\Gamma$, o termo \lstinline{t} tem o tipo \lstinline{T}.
-\item O sistema de tipos é dado pelas regras de inferência abaixo:
-\end{itemize}
-
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(Var)}
-  \UnaryInfC{$\Gamma$ \lstinline{,x : T} $\vdash$ \lstinline{x : T}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma$ \lstinline{, x : T11} $\vdash$ \lstinline{t12 : T12}}
-  \RightLabel{(Abs)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{(\x:T11.t12) : T11->T12}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \vdash$\lstinline{t1 : T11 -> T12}}
-  \AxiomC{$\Gamma \vdash$\lstinline{t2 : T11}}
-  \RightLabel{(App)}
-  \BinaryInfC{$\Gamma \vdash$\lstinline{t1 t2 : T12}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Sistema de Tipos}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(True)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{true : Bool}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(False)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{false : Bool}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t1 : Bool}}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t2 : T}}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t3 : T}}
-  \RightLabel{(If)}
-  \TrinaryInfC{$\Gamma \vdash$ \lstinline{if t1 the t2 else t3 : T}}
-\end{prooftree}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{Formalização  em Coq do Sistema de Tipos}
-\begin{verbatim}
-Definition context := partial_map ty.
-
-Reserved Notation "Gamma '|-' t '\in' T" (at level 40).
-Inductive has_type : context -> tm -> ty -> Prop :=
-  | T_Var : forall Gamma x T, Gamma x = Some T ->
-      Gamma |- tvar x \in T
-  | T_Abs : forall Gamma x T11 T12 t12,
-      Gamma & {{x --> T11}} |- t12 \in T12 ->
-      Gamma |- tabs x T11 t12 \in TArrow T11 T12
-  | T_App : forall T11 T12 Gamma t1 t2,
-      Gamma |- t1 \in TArrow T11 T12 ->
-      Gamma |- t2 \in T11 ->
-      Gamma |- tapp t1 t2 \in T12
-where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
-\end{verbatim}
-\end{frame}
-
-\section{Propriedades do Sistema de Tipos}
-\begin{frame}[fragile]
-\frametitle{\textit{Soundness}}
-\begin{itemize}
-  \item A principal propriedade de um sistemas de tipos de uma linguagem de programação é \textit{Soundness}.
-  \item \textit{Soundness} diz que todos os termos bem tipados nunca entram num estado \textit{stuck}.
-  \item Estado \textit{stuck} é um termo que está na forma normal, mas não é um valor (valores aqui são true e false).
-  \item \textit{Soundness} pode ser representado por \textit{Progress} + \textit{Preservation}. 
-\end{itemize}
-\begin{verbatim}
-Definition stuck (t:tm) : Prop :=
-  (normal_form step) t /\ ~ value t.
-
-Corollary soundness : forall t t' T,
-  empty |- t \in T -> t ==>* t' ->
-  ~(stuck t').
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Progress}}
-A propriedade de progresso diz que todo termo fechado e bem tipado não está
-travado \textit{stuck}, ou seja, ou é um valor ou pode fazer um passo de redução.
-\begin{verbatim}
-Theorem progress : forall t T,
-  empty |- t \in T ->
-  value t \/ exists t', t ==> t'.
-\end{verbatim}
-
-Prova por indução estruturada nas regras de derivação.
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Preservation}}
-\begin{itemize}
-  \item \textit{Preservation} diz que o tipo de um termo é preservado durante a redução beta.
-  \item A prova do teorema \textit{preservation} também é uma indução estrturada nas regras de derivação, onde há um caso mais complexo referente a regra \textit{AppAbs} que utiliza a substituição, o qual precisa ser provada preservar os tipos. 
-  \item Prova-se um lema demostrando a preservação dos tipos na substituição $[x:=s]t$ se o termo $s$ for fechado. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Soundness}}
-\begin{verbatim}
-Corollary soundness : forall t t' T,
-  empty |- t \in T -> t ==>* t' -> ~(stuck t').
-Proof.
-  intros t t' T Hhas_type Hmulti. unfold stuck.
-  intros [Hnf Hnot_val]. unfold normal_form in Hnf.
-  induction Hmulti.
-  - apply progress in Hhas_type.
-    destruct Hhas_type; contradiction.
-  - apply preservation with (t':=y0) in Hhas_type. 
-    auto.
-    auto.
-Qed.
-\end{verbatim}
-\end{frame}
-
 
 
 \end{document}
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
