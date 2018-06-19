@@ -316,7 +316,38 @@ Theorem progress : forall t T,
   empty |- t \in T ->
   value t \/ exists t', t ==> t'.
 \end{verbatim}
+
+Prova por indução estruturada nas regras de derivação.
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\textit{Preservation}}
+\begin{itemize}
+  \item \textit{Preservation} diz que o tipo de um termo é preservado durante a redução beta.
+  \item A prova do teorema \textit{preservation} também é uma indução estrturada nas regras de derivação, onde há um caso mais complexo referente a regra \textit{AppAbs} que utiliza a substituição, o qual precisa ser provada preservar os tipos. 
+  \item Prova-se um lema demostrando a preservação dos tipos na substituição $[x:=s]t$ se o termo $s$ for fechado. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\textit{Soundness}}
+\begin{verbatim}
+Corollary soundness : forall t t' T,
+  empty |- t \in T -> t ==>* t' -> ~(stuck t').
+Proof.
+  intros t t' T Hhas_type Hmulti. unfold stuck.
+  intros [Hnf Hnot_val]. unfold normal_form in Hnf.
+  induction Hmulti.
+  - apply progress in Hhas_type.
+    destruct Hhas_type; contradiction.
+  - apply preservation with (t':=y0) in Hhas_type. 
+    auto.
+    auto.
+Qed.
+\end{verbatim}
+\end{frame}
+
+
 
 \end{document}
 %%% Local Variables:
