@@ -76,7 +76,7 @@
     \end{itemize}
 \end{frame}
 
-\section{Primeiros passos}
+\section{Estrutura e comandos básicos}
 \begin{frame}
     \frametitle{Como utilizar \LaTeX?}
     \begin{enumerate}
@@ -102,7 +102,6 @@
     \end{itemize}
 \end{frame}
 
-\section{Estrutura de um arquivo \textbf{.tex}}
 \begin{frame}[fragile]
     \frametitle{Preâmbulo}
     Tudo entre \lstinline|\documentclass| e \lstinline|\begin{document}|.
@@ -126,27 +125,132 @@
   \begin{itemize}
     \item \lstinline|\section|, \lstinline|\subsection|, \lstinline|\subsubsection|.
     \item Quebrar em parágrafos: Linha em branco ou utilizar \lstinline| \\ |. 
-    \item 
+    \item Estilo de fonte: \lstinline|\textbf{texto em negrito}| e \lstinline|\textbf{texto em itálico}|.
+    \item Tamanho da fonte: \lstinline|\tiny{texto}|, \lstinline|\small{texto}|, \lstinline|\large{texto}|...
+    \item Nota de rodapé: \lstinline|\footnote{Uma nota de rodapé}|.
+    \item Referenciar o partes do texto: \lstinline|{\label{chave}| e \lstinline|\ref{chave}|.
+    \item Aspas duplas: \lstinline|``texto''|.
   \end{itemize}
 \end{frame}
 
-\section{Corpos flutuantes}
+\begin{frame}[fragile]
+    \frametitle{Modo matemática}
+  \begin{itemize}
+    \item O modo matemática \textit{inline} é um escopo especial entre \lstinline|$ $| para fórmulas matemáticas.
+    \item \lstinline|$ 3 + \pi \cdot \sum_{i=0}^{10} i^2 $|
+    \item $ 3 + \pi \cdot \sum_{i=1}^{10} i^2 $
+    \item Para fazer uma fórmula/equação em próprio espaço utilize o ambiente align. Para não dar um número
+      para cada equação utilize align*.
+  \end{itemize}
+
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+\begin{lstlisting}
+  \begin{align*}
+    fat \: 3 & = fat 2 * fat 1 \\
+    fat \: 2 & = fat 1 * fat 0 \\
+    fat \: 1 & = 1 \\
+    fat \: 0 & = 1 
+  \end{align*}
+\end{lstlisting}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+  \begin{align*}
+    fat \: 3 & = fat 2 * fat 1 \\
+    fat \: 2 & = fat 1 * fat 0 \\
+    fat \: 1 & = 1 \\
+    fat \: 0 & = 1 
+  \end{align*}
+    \end{column}
+\end{columns}
+  
+\end{frame}
+
+\section{Objetos flutuantes}
 
 \begin{frame}[fragile]
     \frametitle{Imagens}
   \begin{itemize}
-    \item a 
+    \item Objetos flutuantes são imagens, tabelas, algoritmos...
+    \item \LaTeX tenta evitar que objetos flutuantes causem páginas que partes em branco, assim
+      onde está o código referente ao objeto flutuante não será necessariamente o local após a compilação.
+    \item Parâmetros para \textit{permissão} de posicionamento:
+    \begin{itemize}
+      \item h = here , t = top , b = bottom , ! = sugestão para boa posição.
+    \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  Um bom exemplo de como inserir uma figura:
+  \begin{lstlisting}
+     \begin{figure}[th!]
+       \centering
+       \includegraphics[width=.3\textwidth]{fig1.jpg}
+       \caption{A typical figure}
+       \label{fig:exampleFig1}
+     \end{figure}
+  \end{lstlisting}
+     \begin{figure}[th!]
+       \centering
+       \includegraphics[width=.3\textwidth]{fig1.jpg}
+       \caption{A typical figure}
+       \label{fig:exampleFig1}
+     \end{figure}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Tabelas}
   \begin{itemize}
-    \item a 
+    \item O ambiente table serve para criar tabelas. 
+    \item Utiliza os mesmos parâmetros para posicionamento que as figuras, também é possível adicionar caption e label.
+    \item Para definir de fato uma tabela utiliza-se ambiente tabular.
+    \item O alinhamento do texto da coluna é definido pelos paramentos: l para esquerda; c para centralizado e r para direita. 
+      \lstinline|\begin{tabular}{lllll}| são quatro colunas justificadas para a esquerda.
+    \item \lstinline|&| separa as colunas e  \lstinline| \\ | as linhas.
+    \item Para tornar visível a linha que separa as colunas adicione $|$ (pipes) entre os parâmetros que justificam as colunas. 
+    \item Para tornar visível a linha que separa as linhas utilize \lstinline|\hline| após o \lstinline| \\ | de pular linha.
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  Um bom exemplo de como inserir uma tabela:
+  \begin{lstlisting}
+\begin{table}[h!]
+   \begin{center}
+     \begin{tabular}{ l | c | r }
+       \hline
+       1 & 2 & 3 \\ \hline
+       4 & 5 & 6 \\ \hline
+       7 & 8 & 9 \\
+       \hline
+     \end{tabular}
+   \end{center}
+\end{table}
+  \end{lstlisting}
+
+\begin{table}[h!]
+   \begin{center}
+     \begin{tabular}{ l | c | r }
+       \hline
+       1 & 2 & 3 \\ \hline
+       4 & 5 & 6 \\ \hline
+       7 & 8 & 9 \\
+       \hline
+     \end{tabular}
+   \end{center}
+\end{table}
+\end{frame}
+
 \section{Referências bibliográficas}
+
+\begin{frame}[fragile]
+    \frametitle{Referências bibliográficas}
+  \begin{itemize}
+    \item O ambiente table serve para criar tabelas. 
+    \item Utiliza os mesmos parâmetros para posicionamento que as figuras, também é possível adicionar caption e label.
+  \end{itemize}
+\end{frame}
 
 \end{document}
 
