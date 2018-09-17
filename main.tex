@@ -247,9 +247,21 @@
 \begin{frame}[fragile]
     \frametitle{Referências bibliográficas}
   \begin{itemize}
-    \item O ambiente table serve para criar tabelas. 
-    \item Utiliza os mesmos parâmetros para posicionamento que as figuras, também é possível adicionar caption e label.
+    \item As referências são armazenadas em arquivos \textbf{.bib} e devem ser compiladas com o bibtex. 
+    \item Geralmente uma compilação completa é:  pdflatex article.tex ; bibtex referecias.bib ; pdflatex article.tex .
+    \item Uma referência bibliográfica no arquivo .bib é uma estrutura com várias informações: Começa com um @ e o tipo de documento (Book, InCollection, Article..).
+    \item A primeira expressão da referência é a chave.
+    \item Para citar uma referência use \lstinline|\cite{knuth:84}|.
   \end{itemize}
+  \begin{lstlisting}
+@Book{knuth:84,
+  author = 	 {Donald E. Knuth},
+  title = 	 {The {\TeX} Book},
+  publisher = 	 {Addison-Wesley},
+  year = 	 {1984},
+  edition = 	 {15th}
+}
+  \end{lstlisting}
 \end{frame}
 
 \end{document}
