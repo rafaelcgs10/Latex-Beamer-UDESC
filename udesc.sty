@@ -107,17 +107,17 @@
         \@tempdimb=2.8375ex%
         \multiply\@tempdimb by\beamer@sectionmax%
         \pgfdeclareimage[height=1.2\@tempdimb]{logo}{udesc_logo}%
-        \pgfdeclareimage[height=1.2\@tempdimb]{logo2}{grupo_logo}%
+        \pgfdeclareimage[height=1.3\@tempdimb]{logo2}{grupo_logo}%
         \logo{\pgfuseimage{logo}}%
         \ifdim\@tempdimb>0pt%
-        \advance\@tempdimb by 2.125ex%
-        \begin{beamercolorbox}[wd=.5\paperwidth,ht=\@tempdimb,left]{subsection in head/foot}%
+        \advance\@tempdimb by 2.225ex%
+        \begin{beamercolorbox}[wd=.6\paperwidth,ht=\@tempdimb,left]{subsection in head/foot}%
         \insertlogo%
         \logo{\pgfuseimage{logo2}}%
         \insertlogo%
         \end{beamercolorbox}%
-        \begin{beamercolorbox}[right, wd=.5\paperwidth]{subsection in head/foot}%
-        \vbox to\@tempdimb{\vfil\insertsectionnavigation{.3\paperwidth}\vfil}%
+        \begin{beamercolorbox}[right, wd=.4\paperwidth]{subsection in head/foot}%
+        \vbox to\@tempdimb{\vfil\insertsectionnavigation{.4\paperwidth}\vfil}%
         \end{beamercolorbox}%
         \fi%
 }
