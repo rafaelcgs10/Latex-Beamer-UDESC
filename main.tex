@@ -2,6 +2,7 @@
 
 \usepackage{graphicx,hyperref,udesc,url}
 \usepackage[latin1]{inputenc}
+\usepackage{bussproofs}
 %\usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage[portuges]{babel}
@@ -36,12 +37,108 @@
     \item São uma coleção de regras que explicam como derivar novas fórmulas.
     \item Um sistema de prova pode ser utilizado na formalização de diversas lógicas,
       como Lógica Proposicional e Lógica de Predicados.
-    \item Existem diversos sistemas de provas: Dedução Natural e Cálculo de Hilbert.
+    \item Os principais sistemas de provas são a Dedução Natural e o Cálculo de Hilbert.
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Dedução Natural}
+\begin{center}
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$(ax)$}
+            \UnaryInfC{$u : A$}
+        \end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A \rightarrow B$}
+            \AxiomC{$A$}
+            \RightLabel{$(\rightarrow^-)$}
+            \BinaryInfC{$B$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$B$}
+            \RightLabel{$(\rightarrow^+) \: u : A$}
+            \UnaryInfC{$A \rightarrow B$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
+        
+\begin{center}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A \wedge B$}
+            \RightLabel{$(\wedge_l^-)$}
+            \UnaryInfC{$A$}
+       \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$  A \wedge B$}
+            \RightLabel{$(\wedge_r^-)$}
+            \UnaryInfC{$B$}
+       \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A$}
+            \AxiomC{$B$}
+            \RightLabel{$(\wedge^+)$}
+            \BinaryInfC{$A \wedge B$}
+       \end{prooftree}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.5\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A \vee B$}
+            \AxiomC{$A \rightarrow C$}
+            \AxiomC{$B \rightarrow C$}
+            \RightLabel{$(\vee^-)$}
+            \TrinaryInfC{$C$}
+       \end{prooftree}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A$}
+            \RightLabel{$(\vee_l^+)$}
+            \UnaryInfC{$A \vee B$}
+       \end{prooftree}
+\end{minipage}
+\begin{minipage}{.2\textwidth}
+        \begin{prooftree}
+            \AxiomC{$B$}
+            \RightLabel{$(\wedge_r^+)$}
+            \UnaryInfC{$A \vee B$}
+       \end{prooftree}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\bot$}
+            \RightLabel{$(efq)$}
+            \UnaryInfC{$A$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\neg \neg A$}
+            \RightLabel{$(raa)$}
+            \UnaryInfC{$A$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
 \end{frame}
 
 \begin{frame}
@@ -60,8 +157,17 @@
 \frametitle{Cálculo Lambda Tipado}
 \end{frame}
 
-
 \section{Extração de Programas}
+
 \begin{frame}
 \frametitle{Realizability}
 \end{frame}
+
+\section{Extração em Minlog}
+
+\begin{frame}
+\frametitle{Realizability}
+\end{frame}
+
+
+\end{document}
