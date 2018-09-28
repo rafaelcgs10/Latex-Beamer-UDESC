@@ -7,7 +7,7 @@
 \usepackage[portuges]{babel}
 
 
-\title[A Universidade, a Computação e as Barreiras]{A Universidade, a Computação \\ e as Barreiras}
+\title[Extraction of Programs from Proofs]{Extraction of Programs from Proofs}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
@@ -27,238 +27,41 @@
 
 \end{frame}
 
+\section{Isomorfismo de Curry-Howard}
+
 \begin{frame}
-\frametitle{Quem sou eu?}
+\frametitle{Sistemas de Provas}
 \begin{itemize}
-    \item Rafael Castro.
-    \item Formei em computação na UDESC em 2017/1.
-    \item Faço mestrado aqui na UDESC em Computação Aplicada.
-    \item Criei os Colóquios com o Renan (apontar para o Renan).
-\end{itemize}
-  \begin{figure}
-     \centering \includegraphics[width=0.3\textwidth]{nero.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{A Universidade - Expectativas}
-  \begin{figure}
-     \centering \includegraphics[width=0.9\textwidth]{expetation.jpeg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{A Universidade - Realidade}
-  \begin{figure}
-     \centering \includegraphics[width=0.9\textwidth]{zoeira_realidade.jpeg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Motivação}
-\begin{itemize}
-    \item A parte infeliz ficou para trás, agora é só estudar o que eu gosto.
-    \item O foco deste colóquio é a entrada no curso de Ciência da Computação.
-    \item Alta taxa de desistência: ``O curso não era o que esperava'' e ``Dificuldade de acompanhar as matérias'' com $48\%$ e $24\%$
-        , respectivamente, como causas da desistência.
-    \item Reaproveitar um texto que eu escrevi quando estava no CACiC em 2015.
-    \item Motivação financeira: 
+    \item Sistemas/Cálculos de provas servem para construir provas de uma maneira muito formal.
+    \item São uma coleção de regras que explicam como derivar novas fórmulas.
+    \item Um sistema de prova pode ser utilizado na formalização de diversas lógicas,
+      como Lógica Proposicional e Lógica de Predicados.
+    \item Existem diversos sistemas de provas: Dedução Natural e Cálculo de Hilbert.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Motivação financeira}
-\begin{itemize}
-    \item A renda bruta dos 31 professores efetivos: R$ \$ $451.079
-    \item A renda bruta dos 4 colaboradores: R$ \$ $19.137 (não achei todos)
-    \item Vamos supor que o gasto com professores emprestados de outros departamentos empate com o que é emprestado.
-    \item Bacharelado em Ciência da Computação tem 308 alunos
-    \item Tecnologia em Análise e Desenvolvimento de Sistemas tem 264 alunos 
-    \item Mestrado em Computação Aplicada mais ou menos 30 (contando os especiais).
-    \item Por aluno: R$ \$ $781
-    \item Sem falar outros gastos: outros funcionários, luz, equipamentos, estrutura...
-    \item E o que você custa para a sua família?
-\end{itemize}
-\end{frame}
-
-\section{A Universidade}
-\begin{frame}
-\frametitle{O que é a universidade e para que serve?}
-    \begin{itemize}
-        \item O artigo 207 da constituição garante o chamado tripé da universidade, que
-            é a indissociabilidade entre ensino, pesquisa e extensão.
-    \begin {itemize}
-        \item O ensino acontece por meio das aulas, exercício dos docentes.
-        \item A pesquisa é aplicação dos conhecimentos básicos, passado pelos docentes, com a finalidade principal de produzir algo novo.
-        \item A extensão busca articular com a sociedade os conhecimentos desenvolvidos por meio da pesquisa e do ensino.
-        \item Supostamente é um tripé de três pernas... mas depois vou apresentar a quarta perna para vocês!
-    \end{itemize}
-\end{itemize}
+\frametitle{Dedução Natural}
 \end{frame}
 
 \begin{frame}
-\frametitle{Para que serve a universidade?}
-    \begin{itemize}
-    \item O papel primordial das universidades: produzir conhecimento.
-    \item Papeis secudários: produzir especialistas, resolver problemas da sociedade por meio de inovações,
-        transmitir conhecimento por meio de eventos de divulgação, criar pensamento crítico social e produzir mão de obra.
-    \item O papel dos cursos: criar especialistas (bachareis, licenciados, mestres e doutores).
-\end{itemize}
+\frametitle{Exemplo de Prova em DN}
 \end{frame}
 
 \begin{frame}
-\frametitle{Para quê entrar numa universidade?}
-    \begin{itemize}
-        \item O mito:a universidade serve principalmente para alimentar o mercado de trabalho.
-        \item Consequências desse mito:
-                    \begin{itemize}
-                       \item Pipocou universidades particulares de balde.
-                       \item Fazem pouca pesquisa.
-                       \item O professor é só algo no meio atrapalhando a troca.
-                    \end{itemize}
-            \begin{figure}
-               \centering \includegraphics[width=0.4\textwidth]{takemoney.jpg}
-            \end{figure}
-        \item Principal motivo: satisfação pessoal (MINHA VISÃO).\\
-              Provavelmente os professores estão aqui por satisfação pessoal: pesquisar o que gosta, ensinar, contribuir com
-              a comunidade com projetos de extensão...
-    \end{itemize}
+\frametitle{Cálculo Lambda}
 \end{frame}
 
 \begin{frame}
-\frametitle{Para quem é a universidade?}
-    \begin{figure}
-       \centering \includegraphics[width=0.7\textwidth]{prouni.jpeg}
-    \end{figure}
+\frametitle{Exemplo de Computação em CL}
 \end{frame}
 
 \begin{frame}
-\frametitle{Professores na universidade}
-    \begin{itemize}
-        \item A função do professor não é fazer você saber o contéudo.
-        \item Os professores nas universidades podem ser um tanto diferentes em relação aos do ensino médio. 
-        \item Os professores nas universidades tem que ligar com dar aula, fazer pesquisa, orientar alunos (IC, TCC e estágio) e 
-            AINDA precisam fazer trabalhos administrativos (WTF???).
-        \item Também são heterogêneos na universidade: alguns são bem próximos ao alunos, alguns não... alguns sabem bem o conteúdo, alguns não...
-            alguns querem ensinar, alguns não...
-    \end{itemize}
+\frametitle{Cálculo Lambda Tipado}
 \end{frame}
 
+
+\section{Extração de Programas}
 \begin{frame}
-\frametitle{Dica de sobrevivência 1}
-    Você é o principal resposável pela sua educação.
-    \pause
-    \begin{figure}
-       \centering \includegraphics[width=0.4\textwidth]{mais.jpeg}
-    \end{figure}
-    \begin{itemize}
-        \item Professor ruim não é desculpa para não entender um assunto e/ou reprovar na matéria.
-        \item USE LIVROS!!!111!!!
-        \item Nível de dependência: ensino médio $>$ graduação $>$ metrado $>$ doutorado.
-    \end{itemize}
+\frametitle{Realizability}
 \end{frame}
-
-\section{A Computação}
-\begin{frame}
-    \frametitle{A Computação}
-    \begin{figure}
-       \centering \includegraphics[width=0.35\textwidth]{gloriuslambda.jpg}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Por que Ciência da Computação?}
-    \begin{itemize}
-        \item Os motivos que levaram você a escolher Ciência da Computação serão relevantes a todo momento na sua formação, serão a sua base motivacional.
-        \item É possível que durante a sua graduação a sua motivação acabe mudando, pois a Ciência da Computação, provavelmente, é mais abrangente do que você imagina.
-        \item Poucas pessoas realmente sabe o que é Ciência da Computação, pois existe pouco material de divulgação científica sobre.
-        \item Demora alguns semestres para a Ciência da Computação realmente começar. Terceiro semestre pra frente tem grafos, LFA, SO, redes, compiladores... 
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Dica de sobrevivência 2}
-    Envolvave-se com o curso!
-    \begin{itemize}
-        \item Existem diversos grupos de pesquisa, algum deve servir para você.
-        \item Vá nas maratonas.
-        \item Vá nos Colóquios.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{O que é Ciência da Computação?}
-    \begin{figure}
-        \vspace*{-0.9cm}\hspace*{-1.1cm} \includegraphics[width=1.25\textwidth]{map.png}
-    \end{figure}
-\end{frame}
-
-\section{As Barreiras}
-\begin{frame}
-    \frametitle{As Barreiras}
-    \begin{figure}
-        \vspace*{-0.2cm}\hspace*{-0.1cm} \includegraphics[width=0.9\textwidth]{renanfail.jpg}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Algo de muito errado na educação básica}
-    \begin{itemize}
-        \item Instabilidade dos professores.
-        \item Alunos estão cagando e andando pros professores.
-        \item Proibir reprovação para diminuir a evasão no ensino básico.
-        \item Resultado: Alunos chegam sem saber conteúdos básicos, principalmente de matemática.\\ Na matemática se tem dívidas e não dúvidas.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Principal Barreira: estudar e aprender}
-    \begin{itemize}
-        \item Ninguém nos ensina a estudar e aprender.
-        \item A maioria das pessoas cometem erros básicos e óbvios no processo de aprendizagem.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Principais erros}
-    \begin{itemize}
-        \item Estudam muito e errado: no momento errado e de maneira errada.
-        \item Estudar só para a prova; vai saber só para a prova.
-        \item Alunos vão para aula para copiar o conteúdo do quadro e não prestam atenção na explicação.\\
-             O professor não é o autor das ideias que estão sendo expressas no quadro (salvo raras exceções)
-             e tudo que ele escreve no quadro existe em algum livro.
-         \item Tome notas. Notas são lembretes de pontos que você achou relevante da explicação.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Principais erros 2}
-    \begin{itemize}
-        \item Ver aula não é estudar. Ver aula é (normalmente) é um ato em grupo e passivo.
-            Geralmente é uma maneira muito lenta de entender um assunto. Ler um livro é bem mais rápido
-            e prático.
-        \item Não usam o professor de maneira correta: tirar dúvidas de maneira pontual e objetiva.
-        \item Não utilizam a monitoria.
-        \item Nunca pegam num livro.
-        \item Estudam em grupo. Estudar é um ato solitário e ativo.
-            Caso você já domine o assunto, talvez o que a pessoa queira na realidade é que você a ensine.
-            Ensinar é uma excelente maneira de fixar ainda mais o conteúdo. É o famoso método Learning by Teaching.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Outras barreiras}
-    \begin{itemize}
-        \item Nossa grade curricular não foi feita pensando em seguida por seres humanos normais.
-            \\ Colocaram 5 anos de curso em 4.
-        \item Se sobrecarregam de atividade extra-curricular e não sobra tempo para estudar. Ou quando tem, está exausto.
-        \item Para estudar e aprender é necessário estar bem: estar com uma boa saude emocional. Procure ajuda.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Dica de sobrevivência 3}
-    APRENDA A ESTUDAR!!! PORRA!!!
-\end{frame}
-
-\end{document}
