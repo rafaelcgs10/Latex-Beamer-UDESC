@@ -312,6 +312,48 @@ Para evitar paradoxos Church utilizou o mesmo truque que Bertrand Russel: Type T
 \end{align*}
 \end{frame}
 
+\begin{frame}
+\frametitle{Isomorfismo de Curry-Howard}
+O Isomorfismo de Curry-Howard é uma observação que provas construtivas na dedução estão numa
+correspondência natural com programas em Cálculo Lambda.
+
+\begin{center}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$A \rightarrow B$}
+            \AxiomC{$A$}
+            \RightLabel{$(\rightarrow^-)$}
+            \BinaryInfC{$B$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$B$}
+            \RightLabel{$(\rightarrow^+) \: [u : A]$}
+            \UnaryInfC{$A \rightarrow B$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.6\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A \rightarrow B$}
+            \AxiomC{$\Gamma \vdash e' : A$}
+            \RightLabel{$(\rightarrow^-)$}
+            \BinaryInfC{$e \: e' : \Gamma \vdash B$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma, x:A \vdash e:B$}
+            \RightLabel{$(\rightarrow^+)$}
+            \UnaryInfC{$\Gamma \vdash \lambda x. e : A \rightarrow B$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
+\end{frame}
+
 \section{Extração de Programas}
 
 \begin{frame}
@@ -324,6 +366,56 @@ Para evitar paradoxos Church utilizou o mesmo truque que Bertrand Russel: Type T
 \frametitle{Realizability}
 \end{frame}
 
+\begin{frame}{Extracting a Logarithm Approximation Algorithm}
+
+\begin{center}
+  $\forall n, \exists k \: r, 0 < n \rightarrow n = 2^k + r \wedge r < 2^k$
+\end{center}
+
+The intuition here is that we should increase $r$ when $r < 2^k$ or increase $k$ otherwise.  
+
+\end{frame}
+
+\begin{frame}{Sketch of the proof}
+
+  Induction over $n$:
+    \begin{enumerate}
+       \item Base case: $n = 0$. So since we have $0 < 0$, we just use \textit{efq}.
+       \item Step case: $n = Succ \: m$. 
+         \begin{enumerate}
+           \item The base case of induction is not the base of the recursion in the algorithm, because $log_2 \: 0 = -\infty$.
+           \item We do case analysis on $0 < m$, so we have $0 < m$ or $m = 0$.
+           \item This way we have two new goals on the induction step:
+              \begin{enumerate}
+                 \item if $m = 0$, then $n = 1$ (our base case of recursion) and we shall prove:
+                   \begin{align*}
+                     \exists k \: r, 1 = 2^k + r \wedge r < 2^k
+                   \end{align}
+                   So $k = r = 0$.
+                 \item if $0 < m$, then the recursion can go on and we should prove that: 
+                   \begin{align*}
+                     \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
+                   \end{align}
+              \end{enumerate}
+         \end{enumerate}
+
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Sketch of the proof}
+  Our current goal:\\
+  \begin{align*}
+    \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
+  \end{align}
+      We need to do case analysis on $Succ \: r < 2 ^k $ because that is rule for
+     increasing $k$ or $r$.
+   \begin{enumerate}
+     \item If $Succ \: r < 2 ^k$, then we chose $k = k$ and $r = Succ \: r'$.
+     \item If $(Succ \: r < 2 ^k) \rightarrow \bot$, then we chose $k = Succ \: k'$ and $r = 0$. 
+   \end{enumerate}
+
+\end{frame}
 
 \end{document}
 %%% Local Variables:
