@@ -42,11 +42,11 @@
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Dedução Natural}
+\frametitle{Fragmento Proposicional Clássico da Dedução Natural}
 \begin{center}
         \begin{prooftree}
             \AxiomC{}
-            \RightLabel{$(ax)$}
+            \RightLabel{$(\small{hip)}$}
             \UnaryInfC{$u : A$}
         \end{prooftree}
 \end{center}
@@ -63,7 +63,7 @@
 \begin{minipage}{.4\textwidth}
         \begin{prooftree}
             \AxiomC{$B$}
-            \RightLabel{$(\rightarrow^+) \: u : A$}
+            \RightLabel{$(\rightarrow^+) \: [u : A]$}
             \UnaryInfC{$A \rightarrow B$}
         \end{prooftree}
 \end{minipage}
@@ -117,7 +117,7 @@
 \begin{minipage}{.2\textwidth}
         \begin{prooftree}
             \AxiomC{$B$}
-            \RightLabel{$(\wedge_r^+)$}
+            \RightLabel{$(\vee_r^+)$}
             \UnaryInfC{$A \vee B$}
        \end{prooftree}
 \end{minipage}
@@ -139,22 +139,177 @@
         \end{prooftree}
 \end{minipage}
 \end{center}
+onde $\neg A \Rightarrow A \rightarrow \bot$.
 \end{frame}
 
 \begin{frame}
 \frametitle{Exemplo de Prova em DN}
+        \begin{prooftree}
+            \AxiomC{$$}
+            \RightLabel{(\small{hip)}}
+            \UnaryInfC{$u : (A \vee \neg A) \rightarrow \bot$}
+            \AxiomC{$$}
+            \RightLabel{(\small{hip)}}
+            \UnaryInfC{$u : (A \vee \neg A) \rightarrow \bot$}
+            \AxiomC{$$}
+            \RightLabel{(\small{hip)}}
+            \UnaryInfC{$v : A$}
+            \RightLabel{$(\vee^+_r)$}
+            \UnaryInfC{$A \vee \neg A$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$(\rightarrow^+) [v]$}
+            \UnaryInfC{$A \rightarrow \bot$}
+            \RightLabel{$(\vee^+_l)$}
+            \UnaryInfC{$(A \vee \neg A)$}
+            \RightLabel{$(\rightarrow^-)$}
+            \BinaryInfC{$\bot$}
+            \RightLabel{$(\rightarrow^+) [u]$}
+            \UnaryInfC{$((A \vee \neg A) \rightarrow \bot) \rightarrow \bot$}
+            \RightLabel{$(raa)$}
+            \UnaryInfC{$A \vee \neg A$}
+        \end{prooftree}
+ 
 \end{frame}
 
 \begin{frame}
 \frametitle{Cálculo Lambda}
+\begin{itemize}
+  \item O Cálculo Lambda é um modelo de computação criado por Alonzo Church em 1933.
+  \item O proposito inicial do Cálculo Lambda foi ser uma linguagem de macros para um lógica e assim demonstrar a indecibilidade do problema da parada.
+  \item Funciona como um sistema de reescrita: existem regras para reescrever expressões.
+  \item A primeira linguagem de programação. Uma década antes do primeiro computador.
+\end{itemize}
+Sintaxe:
+\begin{align*}
+  e \: := (e \: e') \: | \: (\lambda x.e) \: | \: x
+\end{align*}
+Reescrita:
+\begin{align*}
+  (\lambda x. e) \: e' \Rightarrow_\beta [e'/x]e
+\end{align*}
 \end{frame}
 
 \begin{frame}
-\frametitle{Exemplo de Computação em CL}
+\frametitle{Exemplos de Computação em CL}
+1)
+\begin{align*}
+  (\lambda x.x) \: y \Rightarrow_\beta y
+\end{align*}
+2)
+\begin{align*}
+  (\lambda x.x) \: (\lambda x.x) \Rightarrow_\beta \lambda x.x
+\end{align*}
+3)
+\begin{align*}
+  ((\lambda x.\lambda y . y) \: a) b \Rightarrow_\beta b
+\end{align*}
+4)
+\begin{align*}
+  (\lambda x.x x) \: (\lambda x.x x) \Rightarrow_\beta (\lambda x.x x) \: (\lambda x.x x)
+\end{align*}
 \end{frame}
 
 \begin{frame}
 \frametitle{Cálculo Lambda Tipado}
+O Cálculo Lambda é muito poderoso, permite criar o Rightarrowalente de fórmulas lógicas infinitas e assim
+a lógica representada é inconsistente.
+
+Para evitar paradoxos Church utilizou o mesmo truque que Bertrand Russel: Type Thoery.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Cálculo Lambda Tipado}
+\begin{center}
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$(\small{hip)}$}
+            \UnaryInfC{$x:A \vdash x: A$}
+        \end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.6\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A \rightarrow B$}
+            \AxiomC{$\Gamma \vdash e' : A$}
+            \RightLabel{$(\rightarrow^-)$}
+            \BinaryInfC{$e \: e' : \Gamma \vdash B$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma, x:A \vdash e:B$}
+            \RightLabel{$(\rightarrow^+)$}
+            \UnaryInfC{$\Gamma \vdash \lambda x. e : A \rightarrow B$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
+        
+\begin{center}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A * B$}
+            \RightLabel{$(fst)$}
+            \UnaryInfC{$\Gamma \vdash fst \: e : A$}
+       \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e :  A * B$}
+            \RightLabel{$(snd)$}
+            \UnaryInfC{$\Gamma \vdash snd \: e : B$}
+       \end{prooftree}
+\end{minipage}
+
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A$}
+            \AxiomC{$\Gamma \vdash e' : B$}
+            \RightLabel{$(pair)$}
+            \BinaryInfC{$\Gamma \vdash (e, e') : A \wedge B$}
+       \end{prooftree}
+\end{minipage}
+\end{center}
+\begin{align*}
+  fst (e, e') & \Rightarrow_\beta e \\
+  snd (e, e') & \Rightarrow_\beta e'
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cálculo Lambda Tipado}
+\begin{center}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A + B$}
+            \AxiomC{$\Gamma \vdash e' : A \rightarrow C$}
+            \AxiomC{$\Gamma \vdash e'' : B \rightarrow C$}
+            \RightLabel{$(+^-)$}
+            \TrinaryInfC{$\Gamma \vdash case (e, e', e'') : C$}
+       \end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : A$}
+            \RightLabel{$+^+_l$}
+            \UnaryInfC{$\Gamma \vdash (0, e) : A + B$}
+       \end{prooftree}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+        \begin{prooftree}
+            \AxiomC{$B$}
+            \RightLabel{$+^+_r$}
+            \UnaryInfC{$\Gamma \vdash (1, e) : A + B$}
+       \end{prooftree}
+\end{minipage}
+\end{center}
+
+\begin{align*}
+  case((0, e), e', e'') & \Rightarrow_\beta e' \: e \\
+  case((1, e), e', e'') & \Rightarrow_\beta e'' \: e
+\end{align*}
 \end{frame}
 
 \section{Extração de Programas}
@@ -171,3 +326,7 @@
 
 
 \end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
