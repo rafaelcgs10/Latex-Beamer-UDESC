@@ -168,14 +168,32 @@ onde $\neg A \Rightarrow A \rightarrow \bot$.
             \RightLabel{$(raa)$}
             \UnaryInfC{$A \vee \neg A$}
         \end{prooftree}
- 
 \end{frame}
+
+\begin{frame}
+\frametitle{Interpretação BHK}
+\small{A lógica intuicionista atribui um tipo diferente de semântica para fórmulas lógicas.
+Na lógica clássica a semântica é dada por tabela verdade, já na intuicionista é pela ideia de construção.}
+
+Pela interpretação B(L E Jan Brouwer) H(A Heyting) K(A Kolmogorov):
+\begin{itemize}
+    \item uma construção de $A \wedge B$ é um par $(a, b)$, que indica a existência de construções $a$ e $b$
+        que resolvem, respectivamente, $A$ e $B$;
+    \item $A \vee B$ ou é uma construção de $(0, a)$ que resolve $A$ ou é uma construção $(1, b)$ que resolve $B$;
+    \item $A \rightarrow B$ é um procedimento tal que dadas soluções de $A$, obtém-se soluções de $B$;
+    \item nada é uma construção de $\bot$. Assim, $\neg A$ é definido como $A \rightarrow \bot$, o que significa
+        que $\neg A$ é um procedimento que gera a constante lógica sempre falso ($\bot$).
+\end{itemize}
+
+A interpretação deixa livre o significado \textit{construção}.
+\end{frame}
+    
 
 \begin{frame}
 \frametitle{Cálculo Lambda}
 \begin{itemize}
   \item O Cálculo Lambda é um modelo de computação criado por Alonzo Church em 1933.
-  \item O proposito inicial do Cálculo Lambda foi ser uma linguagem de macros para um lógica e assim demonstrar a indecibilidade do problema da parada.
+  \item O proposito inicial do Cálculo Lambda foi ser uma linguagem de macros para um lógica e assim demonstrar a indecibilidade do problema da decisão.
   \item Funciona como um sistema de reescrita: existem regras para reescrever expressões.
   \item A primeira linguagem de programação. Uma década antes do primeiro computador.
 \end{itemize}
@@ -211,7 +229,7 @@ Reescrita:
 
 \begin{frame}
 \frametitle{Cálculo Lambda Tipado}
-O Cálculo Lambda é muito poderoso, permite criar o Rightarrowalente de fórmulas lógicas infinitas e assim
+O Cálculo Lambda é muito poderoso, permite criar o equivalente de fórmulas lógicas infinitas e assim
 a lógica representada é inconsistente.
 
 Para evitar paradoxos Church utilizou o mesmo truque que Bertrand Russel: Type Thoery.
@@ -358,12 +376,38 @@ correspondência natural com programas em Cálculo Lambda.
 
 \begin{frame}
 \frametitle{Realizability}
+\begin{itemize}
+  \item \textbf{Realizability} atribui significado ao Isomorfismo de Curry-Howard.
+  \item  Intuitivamente: Se $M$ é uma prova em Dedução Natural de uma fórmula $A$, então $M$ 
+    resolve o problema $A$ de acordo com a interpretação BHK.
+  \item Essa intuição é formalizada pela \textbf{Realizability} de Kleene e Kreisel.
+\end{itemize}
+    \begin{figure}
+      \begin{minipage}{.3\textwidth}
+      \includegraphics[width=0.9\textwidth]{kleene}
+      \caption{Kleene}
+      \end{minipage}
+      \begin{minipage}{.3\textwidth}
+      \includegraphics[width=0.8\textwidth]{kreisel}
+      \caption{Kreisel}
+      \end{minipage}
+    \end{figure}
 \end{frame}
 
 \section{Extração em Minlog}
 
 \begin{frame}
-\frametitle{Realizability}
+\frametitle{O sistema de provas Minlog}
+\begin{itemize}
+  \item Minlog é um assiste de provas interativo: verifica a consistência de provas.
+  \item Diferente de Coq ou Isabele, Minlog não é baseado em \textit{Type Theory} e sim
+    baseado em Dedução Natural de Primeira Ordem.
+  \item A lógica de Minlog não é a Clássica nem a Intuicionista, é a lógica Miníma.
+  \item Minlog é o assiste de provas com o mais sofisticado sistema de extração de programas:
+    \textit{Realizability} e \textit{A-Translation} permitindo extração a partir de provas clássicas.
+  \item Além de extrair o programa, Minlog extrai a prova que o programa está de acordo com a sua especificação,
+    assim Minlog é uma opção para \textit{proofs-as-programs paradigm}.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Extracting a Logarithm Approximation Algorithm}
@@ -390,24 +434,22 @@ The intuition here is that we should increase $r$ when $r < 2^k$ or increase $k$
                  \item if $m = 0$, then $n = 1$ (our base case of recursion) and we shall prove:
                    \begin{align*}
                      \exists k \: r, 1 = 2^k + r \wedge r < 2^k
-                   \end{align}
+                   \end{align*}
                    So $k = r = 0$.
                  \item if $0 < m$, then the recursion can go on and we should prove that: 
                    \begin{align*}
                      \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
-                   \end{align}
+                   \end{align*}
               \end{enumerate}
          \end{enumerate}
-
     \end{enumerate}
-
 \end{frame}
 
 \begin{frame}{Sketch of the proof}
   Our current goal:\\
   \begin{align*}
     \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
-  \end{align}
+  \end{align*}
       We need to do case analysis on $Succ \: r < 2 ^k $ because that is rule for
      increasing $k$ or $r$.
    \begin{enumerate}
