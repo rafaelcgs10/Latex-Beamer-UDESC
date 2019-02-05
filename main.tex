@@ -86,7 +86,7 @@ de programas
 \frametitle{Introdução - Motivação e Objetivo}
 \begin{itemize}
     \item O semi-algoritmo MMo proposto por (VASCONCELLOS; CAMARÃO, 2003) consegue tipar diversos casos de recursão
-polimórfica.
+polimórfica e recursão mútua.
     \item MMo não tem as suas propriedades fundamentais provadas: terminação (totalidade) e consistência (correto).
     \item \textbf{Objetivo}: investigar se o semi-algoritmo MMo tem as propriedades de totalidade e correção em relação ao seu
      sistema de tipos (especificação).
@@ -210,7 +210,7 @@ polimórfica.
     correto.
     \item Recursão por iteração (\textit{Recursion by Iteration}) é uma
     técnica similar a recursão limitada, mas começa com a definição de
-    um funcional uma definição que tem como um dos argumentos a
+    um funcional, que tem como um dos argumentos a
     função \mintinline{coq}{f} que deseja-se implementar. 
     \end{enumerate}
 \end{itemize}
@@ -219,6 +219,7 @@ polimórfica.
 \begin{frame}
 \frametitle{Fundamentos - Terminação em Coq}
     \begin{enumerate}
+      \setcounter{enumi}{3}
     \item Recursão sobre um predicado (\textit{Recursion on an Ad Hoc
         Predicate Section}) definido por um tipo indutivo, que serve para
     representar o domínio da função e fazer recursão estrutural sobre
@@ -234,6 +235,158 @@ polimórfica.
     de programação com recursão geral por meio dos tipos indutivos de Coq e,
     então, implementar os programas nesta linguagem embutida.
     \end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Fundamentos - Vantagens Terminação em Coq}
+    \begin{itemize}
+    \item Somente as quatro primeiras técnicas permitem utilizar o mecanismo de avaliação interno do Coq.
+    \item As técnicas 2 e 3 necessitam conhecer uma função capaz de computar o número de chamadas recursivas suficientes para uma dada entrada.
+    \item A principal vantagem das últimas três técnicas é a possibilidade de implementar qualquer função recursiva e evitam provas.
+    \item No aspecto da extração, a técnica mais eficiente é a primeira, pois as demais podem carregar (na extração) alguns lixos como os argumentos adicionais.
+    \end{itemize}
+\end{frame}
+
+\section{MMo}
+
+\begin{frame}
+\frametitle{MMo - Diferenças básicas}
+O MMo funciona de maneira \textit{botton-up} assim como o algoritmo
+\textit{W}, ou seja, primeiro inferem-se os termos mais internos da expressão para seguir inferindo os mais externos.
+\begin{enumerate}
+\item As variáveis contam com uma sequência de índices que servem para
+  a detecção de dependências circulares em substituições.
+\item Um contexto $\Gamma$ é um conjunto de triplas (\textit{variável},
+  $Kind\_def$, \textit{scheme}). Não há condição de
+    consistência, essa forma especial de contexto é chamada de
+    \textit{typing context}.
+\item O algoritmo \textit{W} tem como retorno uma dupla com o tipo
+  simples inferido $\tau$ e uma substituição $\mathbb{S}$, já o MMo retorna uma
+  dupla com o tipo simples inferido $\tau$ e um contexto $\Gamma$.
+\item Para cada definição num \textit{BindGroup} infere-se o respectivo
+  \textit{contextualized simple type}.
+  O conjunto com os pares de identificadores e
+  os seus respectivos tipos inferidos e requeridos (dado pelo símbolo $\Sigma$).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{MMo - Inferência de grupo de definições}
+    \small{Inferir o tipo de um grupo de definições: momento em que a recursão polimórfica e mútua são tratadas.}
+\begin{enumerate}
+  \item Computar o conjunto $\Sigma$ com todos os tipos inferidos e requeridos do grupo.
+  \item Gera-se a partir de $\Sigma$ um conjunto $\Omega$ de pares tipos inferidos (instâncias) e requeridos 
+        $(\tau', \tau)$ que precisam ser unificados.
+        \begin{itemize}
+          \item o tipo de cada suposição \mintinline[escapeinside=**,mathescape=true]{haskell}{x:*$\tau$*} em
+            cada um dos $\Gamma$ em $\Sigma$ precisa ser unificado com uma instância do seu
+            respectivo tipo inferido $\tau'$ para \mintinline[escapeinside=**,mathescape=true]{haskell}{x}.
+          \item A função \mintinline{haskell}{supInst} troca cada variável de tipo $\alpha^{s}$ de $\tau'$ por uma nova instância $\alpha^{i::s}$.
+        \end{itemize}
+  \item Verificar a existência de dependências circulares na substituição $\mathbb{S}$ gerada pela unificação de $\Omega$.
+  \item Caso exista dependência circular em $\mathbb{S}$, então o MMo termina com erro. Caso contrário, então aplica-se a
+         $\mathbb{S}$ em $\Sigma$. Se $\mathbb{S}$ for efetiva, então volta-se para segunda etapa. Se não, para.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{MMo - Dependências circulares}
+\begin{itemize}
+  \item Uma dependência circular ocorre quando uma substituição troca uma variável de tipo $\alpha^s$ por um tipo $\tau$, o qual ocorre uma variável de tipo $\alpha^{s'}$ tal que $s$ seja uma subsequência de $s'$. Ex: \mintinline[escapeinside=**,mathescape=true]{haskell}{[a*$^{1, 0} \rightarrow$* b/a*$^0$*]}.
+  \item A relação de ser subsequência pode ser indireta, portanto é necessário fazer uma verificação transitiva na substituição.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{MMo - Exemplo inferência de grupo}
+\begin{minted}{haskell}
+  data Seq a = Nil | Cons a (Seq (a,a)).
+\end{minted}
+\begin{minted}{haskell}
+  len :: Seq a -> Int
+  len Nil = 0
+  len (Cons x s) = 1 + 2 * (len s)
+\end{minted}
+
+$\Sigma$:
+\begin{minted}[escapeinside=**,mathescape=true]{haskell} 
+ *$\{$*(Nil,(Seq a, *$\emptyset$*)),
+ (Cons,(b *$\rightarrow$* Seq (b, b) *$\rightarrow$* Seq b, *$\emptyset$*)),
+ (len, (Seq c *$\rightarrow$* Int,
+     *$\{$*(+):Int *$\rightarrow$* Int *$\rightarrow$* Int, len:Seq(c, c) *$\rightarrow$* Int*$\}$*))*$\}$*
+\end{minted}
+
+$\Omega$:
+\begin{minted}[escapeinside=**,mathescape=true]{haskell}
+  *$\{$*(Seq c*$^0$**$\rightarrow$* Int, Seq(c, c) *$\rightarrow$* Int)*$\}$*
+\end{minted}
+
+$\mathbb{S}$: \mintinline[escapeinside=**,mathescape=true]{haskell}{[(c, c)/c*$^0$*]}
+
+Não tem dependência circular e não modifica os tipos de
+$\Sigma$ (ignorando renomeações de
+variáveis)
+\end{frame}
+
+\section{Formalização em Coq}
+
+\begin{frame}[fragile]
+\frametitle{Formalização em Coq - Detalhes da formalização}
+\begin{itemize}
+  \item Formalização parcial e simplificada (sem grupos).
+  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
+  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
+  \item Termos, tipos, \textit{schemes} formalizados como tipos indutivos.
+  \item Para garantir que dois tipos generalizados sejam sintaticamente iguais, a respeito
+    da equivalência $\alpha$, utiliza-se a notação \textit{De Bruijn} nos \textit{schemes}.
+  \item Uso de mônadas de estados e falhas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Formalização em Coq - Aspectos da terminação}
+\begin{itemize}
+  \item Coq é uma linguagem de programação funcional total.
+  \item De todas as funções do MMo, a que computa o conjunto $\Sigma$ é a única que não
+    é de recursão primitiva.
+  \item Até o momento não se conhece alguma relação bem fundada a respeito da efetividade
+    da substituição.
+  \item Utilizar alguma forma de limite de iteração.
+  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
+  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
+    \begin{itemize}
+    \item Seria necessário descobrir como computar esse número ou, então, associar esse valor às regras de inferência.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Formalização em Coq - Aspectos da consistência}
+\begin{itemize}
+  \item Uso das regras de Damas-Milner em \textit{syntax-directed} em DUBOIS; MÉNISSIER-MORAIN, 1999).
+    \begin{itemize}
+      \item Regras da forma \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}.
+      \item Regras de especialização $(spec)$ e generalização $(gen)$ são fundidas, respectivamente, com as regras $(var)$ e $(let)$.
+    \end{itemize}
+  \item Regra $(fix+)$ na forma \textit{syntax-directed}. 
+  \item As regras de inferência são representadas em Coq como um tipo (proposição) indutivo.
+  \item O tipo indutivo é uma certificação que pode ser diretamente utilizada num tipo dependente no MMo:
+\end{itemize}
+\begin{minted}{coq}
+Definition infer_dep : forall (e : term) (G : ctx),
+    Infer ({tau : ty &
+     {g : ctx | has_type (apply_subst_ctx s G) e tau}})
+\end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Formalização em Coq - Estabilidade da substituição}
+\begin{itemize}
+  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos e é fundamental na prova da consistência.
+  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
+  \item Casos monomórficos são fáceis. Além do caso polimórfico do \mintinline{coq}{let_ht} há também o caso do \mintinline{coq}{fix_ht}. 
+\end{itemize}
 \end{frame}
 
 \end{document}
