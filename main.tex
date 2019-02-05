@@ -4,18 +4,19 @@
 \usepackage[latin1]{inputenc}
 %\usepackage[T1]{fontenc}
 \usepackage{listings}
+\usepackage{minted}
 \usepackage{booktabs}
 \usepackage{bussproofs}
 \usepackage[portuges]{babel}
 
 
-\title[Uso de Coq para verificação de propriedades de sistemas de tipos]{Uso de Coq para verificação de propriedades de sistemas de tipos}
+\title[Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica]{Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{22 de Junho de 2018}
+\date{15 de Fevereiro de 2019}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -30,324 +31,210 @@
 \end{frame}
 
 \section{Introdução}
+\begin{frame}[fragile]
+\frametitle{Introdução - Sistemas de Tipos}
+\begin{itemize}
+    \item Sistemas de tipos são regras que ditam quais expressões podem ser
+associadas a quais tipos.
+    \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
+    \item passaram a ser utilizados como regras para identificar falhas na consistência
+de programas
+    \item Tipagem estática e dinâmica:
+      \begin{itemize}
+        \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
+        \item Dinâmica: atribuições de tipo \textbf{mudam} em \textit{run time}; mais permissível; mais permissível a erros. 
+      \end{itemize}
+      \begin{minted}{python}
+      [1, 'a', objeto, [2]]
+      \end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Introdução - Inferência de Tipos e Polimorfismo}
+\begin{itemize}
+    \item A inferência de tipos é o processo de encontrar a assinatura de tipo mais geral de um programa.
+    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
+    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
+      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
+      \begin{minted}{haskell}
+         len :: [a] -> Int
+      \end{minted}
+    \item Existem situações onde a inferência de tipos é mais difícil que a verificação. Nesses casos,
+      algoritmos podem rejeitar programas bem tipados.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Introdução - Recursão Polimórfica}
+\begin{itemize}
+    \item A recursão polimórfica acontece quando o tipo da chamada recursiva de uma função pode mudar ao longo das recursões.
+\begin{minted}{haskell}
+  data Seq a = Nil | Cons a (Seq (a,a)).
+\end{minted}
+\begin{minted}{haskell}
+  len :: Seq a -> Int
+  len Nil = 0
+  len (Cons x s) = 1 + 2 * (len s)
+\end{minted}
+    \item Haskell rejeita programas com recursão polimórfica se a assinatura de tipo não for explicitamente anotada.
+    \item Diversos exemplos de exemplos precisando de recursão polimórfica foram apresentados na literatura.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Introdução - Motivação e Objetivo}
+\begin{itemize}
+    \item O semi-algoritmo MMo proposto por (VASCONCELLOS; CAMARÃO, 2003) consegue tipar diversos casos de recursão
+polimórfica.
+    \item MMo não tem as suas propriedades fundamentais provadas: terminação (totalidade) e consistência (correto).
+    \item \textbf{Objetivo}: investigar se o semi-algoritmo MMo tem as propriedades de totalidade e correção em relação ao seu
+     sistema de tipos (especificação).
+    \item A especificação em si também é um elemento de investigação.
+    \item O método utilizado é a formalização do MMo e a sua especificação no assistente de provas Coq.
+\end{itemize}
+\end{frame}
+
+\section{Fundamentos}
+
 \begin{frame}
-\frametitle{O que são assistentes de provas?}
+\frametitle{Fundamentos - Formalismos de Sistemas de Tipos}
+\begin{itemize}
+    \item Sistemas de tipos quando definidos formalmente podem garantir importantes propriedades da
+    semântica de programas, como o famoso lema de Robin Milner ``Well-typed programs cannot go wrong''.
+    \item Damas-Milner: polimorfismo via \textit{let}. Base para diversas linguagens de programação funcional.
+    Não permite recursão polimórfica pela regra $fix$.
+    \item O primeiro sistema de tipos a permitir recursão polimórfica é o Sistema-F. 
+    \item Milner-Mycroft altera a regra de definições recursivas $fix$ para permitir recursões polimórficas.
+\end{itemize}
+\begin{center}
+  \begin{minipage}{.4\textwidth}
+    \begin{prooftree}
+      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\tau \vdash$ \mintinline{haskell}{e} $:\tau$}
+      \RightLabel{$(fix)$}
+      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\tau$}
+    \end{prooftree}
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+    \begin{prooftree}
+      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\sigma \vdash$ \mintinline{haskell}{e} $:\sigma$}
+      \RightLabel{$(fix+)$}
+      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\sigma$}
+    \end{prooftree}
+    \end{minipage}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Fundamentos - Inferência no Milner-Mycroft}
+\begin{itemize}
+    \item A inferência no sistema Milner-Mycroft é equivalente ao problema da semi-unificação.
+    \item A semi-unificação é uma generalização da unificação.
+    \item A semi-unificação é indecidível.
+      \begin{itemize}
+        \item Casos decidíveis: apenas uma igualdade, qualquer aridade e no máximo uma variável livre, duas variáveis e semi-unificação acíclica.
+      \end{itemize}
+    \item No caso geral não há como decidir a tipabilidade (\textit{typability}) de um termo no sistema Milner-Mycroft.
+    \item Se o tamanho de um tipo não é razoável ao do seu programa, é exponencial por exemplo, então esse programa é dito ter um \textit{big type} ou um
+\textit{small type} caso contrário.
+    \item \textit{Small types} no sistema Milner-Mycroft é decidível em tempo polinomial.
+    \item Buscou-se alternativas para contornar a dificuldade deste problema.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Fundamentos - Propostas de Recursão Polimórfica}
+\begin{itemize}
+    \item Somente existem semi-algoritmos e algoritmos totais, mas incompletos pois rejeitam alguns programas bem tipados.
+    \item O semi-algoritmo para resolver a semi-unificação apresentado em (HENGLEIN, 1993) foi utilizado na construção do semi-algoritmo W+ em (EMMS; LEIL, 1999).
+      \begin{itemize}
+    \item \small{Argumenta-se que assim como a inferência em Damas-Milner tem pior caso exponencial e que não acontece em situações práticas, uma diferença similar entre prática e teoria acontece na inferência do Milner-Mycroft.}
+      \end{itemize}
+    \item Diversas propostas para recursão polimórfica foram apresentadas na literatura com o uso
+      de \textit{intersection types}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Fundamentos - Assistentes de provas}
 \begin{itemize}
     \item Assistentes de provas ou provadores interativos são programas para o desenvolvimento de provas
           formais.
     \item O núcleo de um assistente de provas é um verificador, que verifica a consistência lógica da prova.
-    \item Fornecem de maneira interativa de visualizar as informações sobre o estado atual da prova.
-    \item A verificação humana de provas é demorada e sujeita a falhas: Último Teorema de Fermat.
+    \item Os principais apelos para o uso de assistentes de provas são:
+    \begin{itemize}
+    \item a verificação mecânica é rápida e evita as falhas humanas;
+    \item interatividade, permite visualizar informações sobre os estados da prova;
+    \item comandos para busca de teoremas e lemas para o progresso da
+      prova;
+    \item automatização de provas com métodos não-deterministas;
+    \item potencialização da capacidade humana de realizar provas;
+    \item extração de programas verificados.
+    \end{itemize}
 
       Assistentes de provas permitem provar coisas que não seriam realizáveis somente com papel e caneta!
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{O que é Coq?}
+\frametitle{Fundamentos - Por que Coq?}
 \begin{itemize}
-    \item Coq é um assistentes de provas desenvolvido desde 1984 pelo French Institute for Research in Computer Science and Automation (INRIA).
-    \item Coq é fruto de sistemas de tipos: baseado em \textbf{Higher order dependently typed polymorphic lambda calculus}, o nomeado Calculus of Constructions (CoC).
-    \item Coq suporta programação com tipos dependentes e lógica de alta ordem.
+    \item Existem dezenas de assistentes de provas: Automath, Agda, Twelf, ACL2, PVS, Minlog, Isabelle e Coq...
+    \item O assistente de provas Coq tem como \textit{kernel} (núcleo) o formalismo \textit{Calculus of Inductive Constructions} (CIC), uma extensão do Cálculo Lambda Tipado conhecido como \textit{Calculus of Constructions} (CoC).
+    \item CoC é classificado como um Cálculo Lambda polimórfico de ordem superior e com tipos dependentes.
+    \item \textbf{Justificativa}:
+      \begin{enumerate}
+        \item Frequente uso de Coq para formalizar aspectos de linguagens de programação. CoqPL: uma trilha dedicada ao uso de Coq no POPL. 
+        \item Projetos relevantes em Coq: CompCert é uma compilador de C; Simplicity é uma
+          linguagem de programação para \textit{blockchains}; Vellvm é uma
+          formalização da LLVM em Coq.
+        \item Materiais didáticos disponíveis!
+      \end{enumerate}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Objetivo do SEC}
+\begin{frame}
+\frametitle{Fundamentos - Terminação em Coq}
 \begin{itemize}
-  \item Formalizar uma linguagem de programação funcional em Coq.
-    \begin{itemize}
-    \item Sintaxe: termos e tipos;
-    \item Semântica: \textit{Small Step};
-    \item Sistemas de tipos: Regras de inferência de tipo;
-    \end{itemize}
-   \item Provar propriedades do sistema de tipos
+    \item Coq é uma linguagem de programação funcional total.
+    \item A garantia de terminação do Coq é uma conservadora verificação sintática: recursão primitiva.
+    \item Coq conta com algumas maneiras de estender o conjunto de programas que podem ser implementados:
+    \begin{enumerate}
+    \item Recursão bem-fundada (\textit{Well-Founded Recursion}) por meio
+      de uma relação bem-fundada (\textit{Well-Founded Relation}). Os
+      argumentos da chamada recursivas obedecem uma relação bem-fundada.
+    \item Recursão limitada (\textit{Bounded Recursion}) através
+    de um argumento, que representa o número
+    de chamadas recursivas. Esse argumento contador precisa ser computado
+    previamente e deve ser suficiente para que a computação finalize com o resultado
+    correto.
+    \item Recursão por iteração (\textit{Recursion by Iteration}) é uma
+    técnica similar a recursão limitada, mas começa com a definição de
+    um funcional uma definição que tem como um dos argumentos a
+    função \mintinline{coq}{f} que deseja-se implementar. 
+    \end{enumerate}
 \end{itemize}
 \end{frame}
 
-\section{A linguagem: STLC}
-
-\begin{frame}[fragile]
-\frametitle{A linguagem: STLC}
-\begin{itemize}
-  \item Cálculo Lambda Simplesmente Tipado: \textit{Simple Typed Lambda Calculus} (STLC).
-\end{itemize}
-\begin{verbatim}
-t ::= x                       variable
-    | \x:T1.t2                abstraction
-    | t1 t2                   application
-    | true                    constant true
-    | false                   constant false
-    | if t1 then t2 else t3   conditional
-
-T ::= Bool
-    | T1 -> T2
-\end{verbatim}
+\begin{frame}
+\frametitle{Fundamentos - Terminação em Coq}
+    \begin{enumerate}
+    \item Recursão sobre um predicado (\textit{Recursion on an Ad Hoc
+        Predicate Section}) definido por um tipo indutivo, que serve para
+    representar o domínio da função e fazer recursão estrutural sobre
+    provas do princípio indutivo deste predicado.
+    \item Recursão por mônada inspirada em Teoria de Domínios, cujos
+    combinadores de ordem superior servem para representar até mesmo funções
+    que não terminam. Uma obrigação de prova é a continuidade da
+    computação na mônada.
+    \item Recursão geral baseada numa mônada de um tipo co-indutivo.
+    É similar ao anterior, mas utiliza os tipos co-indutivos para representar
+    a noção de não terminação, com a vantagem de não ter obrigações de provas.
+    \item Linguagem embutida: formalizar completamente uma linguagem
+    de programação com recursão geral por meio dos tipos indutivos de Coq e,
+    então, implementar os programas nesta linguagem embutida.
+    \end{enumerate}
 \end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq de STLC}
-\begin{verbatim}
-Inductive ty : Type :=
-  | TBool  : ty
-  | TArrow : ty -> ty -> ty.
-
-Inductive tm : Type :=
-  | tvar : string -> tm
-  | tapp : tm -> tm -> tm
-  | tabs : string -> ty -> tm -> tm
-  | ttrue : tm
-  | tfalse : tm
-  | tif : tm -> tm -> tm -> tm.
-\end{verbatim}
-\end{frame}
-
-\section{Semântica e Sistemas de Tipos}
-\begin{frame}[fragile]
-\frametitle{Semântica Small-Step}
-\begin{itemize}
-  \item A semântica \textit{small-step} é uma relação de termo para termo que define como os passos atômicos da computação ocorrem. 
-  \item No Cálculo Lambda o passo da computação é a redução-beta.
-  \item Redução-beta é definida por meio da regra de substituição.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Regras de substituição}
-Utiliza-se uma versão simplificada das regras de substuição, onde $s$ é sempre um termo fechado (sem variáveis livres).
-\begin{verbatim}
-[x:=s]x               = s
-[x:=s]y               = y                      if x <> y
-[x:=s](\x:T11. t12)   = \x:T11. t12
-[x:=s](\y:T11. t12)   = \y:T11. [x:=s]t12      if x <> y
-[x:=s](t1 t2)         = ([x:=s]t1) ([x:=s]t2)
-[x:=s]true            = true
-[x:=s]false           = false
-[x:=s](if t1 then t2 else t3) =
-                if [x:=s]t1 then [x:=s]t2 else [x:=s]t3
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Formalização em Coq das Regras de substituição como \textit{Fixpoint}}
-
-\begin{verbatim}
-Reserved Notation "'[' x ':=' s ']' t" (at level 20).
-
-Fixpoint subst (x:string) (s:tm) (t:tm) : tm :=
-  match t with
-  | tvar x'      => if beq_string x x' then s else t
-  | tabs x' T t1 => tabs x' T (if beq_string x x'
-                                then t1 else ([x:=s] t1))
-  | tapp t1 t2   => tapp ([x:=s] t1) ([x:=s] t2)
-  | ttrue        => ttrue
-  | tfalse       => tfalse
-  | tif t1 t2 t3 => tif ([x:=s] t1) ([x:=s] t2) ([x:=s] t3)
-  end
-where "'[' x ':=' s ']' t" := (subst x s t).
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Regras \textit{Small Step}}
-A computação no Cálculo Lambda é definida pela Redução Beta, a qual substitui o
-argumento pela variável ligada na abstração lambda. A Redução Beta, aqui, é denotada por
-\lstinline{(\x:T.t12) v2 ==> [x:=v2]t12}.
-Para a seguinte definição de \textit{value}:
-\begin{verbatim}
-Inductive value : tm -> Prop :=
-    v_abs : forall (x : string) (T : ty) (t : tm),
-            value (tabs x T t)
-  | v_true : value ttrue
-  | v_false : value tfalse
-\end{verbatim},
-as regras \textit{Small Step} definem uma avaliação \textit{eager} conforme:
-\begin{prooftree}
-  \AxiomC{value v2}
-  \RightLabel{(AppAbs)}
-  \UnaryInfC{(\lstinline{\x:T.t12) v2 ==> [x:=v2]t12}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{ Regras \textit{Small Step}}
-\begin{prooftree}
-  \AxiomC{\lstinline{t1 ==> t1'}}
-  \RightLabel{(App1)}
-  \UnaryInfC{\lstinline{t1 t2 ==> t1' t2}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{\lstinline{value v1}}
-  \AxiomC{\lstinline{t2 ==> t2'}}
-  \RightLabel{(App2)}
-  \BinaryInfC{\lstinline{v1 t2 ==> v1 t2'}}
-\end{prooftree}
-
-Regras para condicionais:
-
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(IfTrue)}
-  \UnaryInfC{\lstinline{(if true then t1 else t2) ==> t1}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(IfFalse)}
-  \UnaryInfC{\lstinline{(if false then t1 else t2) ==> t2}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{\lstinline{t1 ==> t1'}}
-  \RightLabel{(If)}
-  \UnaryInfC{\lstinline{(if t1 then t2 else t3) ==> (if t1' then t2 else t3)}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq das  Regras \textit{Small Step}}
-\begin{verbatim}
-Reserved Notation "t1 '==>' t2" (at level 40).
-Inductive step : tm -> tm -> Prop :=
-  | ST_AppAbs : forall x T t12 v2,
-         value v2 ->
-         (tapp (tabs x T t12) v2) ==> [x:=v2]t12
-  | ST_App1 : forall t1 t1' t2,
-         t1 ==> t1' ->
-         tapp t1 t2 ==> tapp t1' t2
-  | ST_App2 : forall v1 t2 t2',
-         value v1 -> t2 ==> t2' ->
-         tapp v1 t2 ==> tapp v1  t2'
-where "t1 '==>' t2" := (step t1 t2).
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Sistema de Tipos}
-\begin{itemize}
-\item Interpreta-se a tripla relação $\Gamma \vdash$ \lstinline{t : T} como:
-Sobre as suposições $\Gamma$, o termo \lstinline{t} tem o tipo \lstinline{T}.
-\item O sistema de tipos é dado pelas regras de inferência abaixo:
-\end{itemize}
-
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(Var)}
-  \UnaryInfC{$\Gamma$ \lstinline{,x : T} $\vdash$ \lstinline{x : T}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma$ \lstinline{, x : T11} $\vdash$ \lstinline{t12 : T12}}
-  \RightLabel{(Abs)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{(\x:T11.t12) : T11->T12}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \vdash$\lstinline{t1 : T11 -> T12}}
-  \AxiomC{$\Gamma \vdash$\lstinline{t2 : T11}}
-  \RightLabel{(App)}
-  \BinaryInfC{$\Gamma \vdash$\lstinline{t1 t2 : T12}}
-\end{prooftree}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Sistema de Tipos}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(True)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{true : Bool}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{(False)}
-  \UnaryInfC{$\Gamma \vdash$ \lstinline{false : Bool}}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t1 : Bool}}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t2 : T}}
-  \AxiomC{$\Gamma \vdash$ \lstinline{t3 : T}}
-  \RightLabel{(If)}
-  \TrinaryInfC{$\Gamma \vdash$ \lstinline{if t1 the t2 else t3 : T}}
-\end{prooftree}
-\end{frame}
-
-
-\begin{frame}[fragile]
-\frametitle{Formalização  em Coq do Sistema de Tipos}
-\begin{verbatim}
-Definition context := partial_map ty.
-
-Reserved Notation "Gamma '|-' t '\in' T" (at level 40).
-Inductive has_type : context -> tm -> ty -> Prop :=
-  | T_Var : forall Gamma x T, Gamma x = Some T ->
-      Gamma |- tvar x \in T
-  | T_Abs : forall Gamma x T11 T12 t12,
-      Gamma & {{x --> T11}} |- t12 \in T12 ->
-      Gamma |- tabs x T11 t12 \in TArrow T11 T12
-  | T_App : forall T11 T12 Gamma t1 t2,
-      Gamma |- t1 \in TArrow T11 T12 ->
-      Gamma |- t2 \in T11 ->
-      Gamma |- tapp t1 t2 \in T12
-where "Gamma '|-' t '\in' T" := (has_type Gamma t T).
-\end{verbatim}
-\end{frame}
-
-\section{Propriedades do Sistema de Tipos}
-\begin{frame}[fragile]
-\frametitle{\textit{Soundness}}
-\begin{itemize}
-  \item A principal propriedade de um sistemas de tipos de uma linguagem de programação é \textit{Soundness}.
-  \item \textit{Soundness} diz que todos os termos bem tipados nunca entram num estado \textit{stuck}.
-  \item Estado \textit{stuck} é um termo que está na forma normal, mas não é um valor (valores aqui são true e false).
-  \item \textit{Soundness} pode ser representado por \textit{Progress} + \textit{Preservation}. 
-\end{itemize}
-\begin{verbatim}
-Definition stuck (t:tm) : Prop :=
-  (normal_form step) t /\ ~ value t.
-
-Corollary soundness : forall t t' T,
-  empty |- t \in T -> t ==>* t' ->
-  ~(stuck t').
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Progress}}
-A propriedade de progresso diz que todo termo fechado e bem tipado não está
-travado \textit{stuck}, ou seja, ou é um valor ou pode fazer um passo de redução.
-\begin{verbatim}
-Theorem progress : forall t T,
-  empty |- t \in T ->
-  value t \/ exists t', t ==> t'.
-\end{verbatim}
-
-Prova por indução estruturada nas regras de derivação.
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Preservation}}
-\begin{itemize}
-  \item \textit{Preservation} diz que o tipo de um termo é preservado durante a redução beta.
-  \item A prova do teorema \textit{preservation} também é uma indução estrturada nas regras de derivação, onde há um caso mais complexo referente a regra \textit{AppAbs} que utiliza a substituição, o qual precisa ser provada preservar os tipos. 
-  \item Prova-se um lema demostrando a preservação dos tipos na substituição $[x:=s]t$ se o termo $s$ for fechado. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{\textit{Soundness}}
-\begin{verbatim}
-Corollary soundness : forall t t' T,
-  empty |- t \in T -> t ==>* t' -> ~(stuck t').
-Proof.
-  intros t t' T Hhas_type Hmulti. unfold stuck.
-  intros [Hnf Hnot_val]. unfold normal_form in Hnf.
-  induction Hmulti.
-  - apply progress in Hhas_type.
-    destruct Hhas_type; contradiction.
-  - apply preservation with (t':=y0) in Hhas_type. 
-    auto.
-    auto.
-Qed.
-\end{verbatim}
-\end{frame}
-
-
 
 \end{document}
 %%% Local Variables:
