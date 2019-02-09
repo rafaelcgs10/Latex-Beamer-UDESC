@@ -135,8 +135,7 @@ polimórfica e recursão mútua.
         \item Casos decidíveis: apenas uma igualdade, qualquer aridade e no máximo uma variável livre, duas variáveis e semi-unificação acíclica.
       \end{itemize}
     \item No caso geral não há como decidir a tipabilidade (\textit{typability}) de um termo no sistema Milner-Mycroft.
-    \item Se o tamanho de um tipo não é razoável ao do seu programa, é exponencial por exemplo, então esse programa é dito ter um \textit{big type} ou um
-\textit{small type} caso contrário.
+    \item \textit{Big type} vs \textit{small type}.
     \item \textit{Small types} no sistema Milner-Mycroft é decidível em tempo polinomial.
     \item Buscou-se alternativas para contornar a dificuldade deste problema.
     \end{itemize}
@@ -148,7 +147,7 @@ polimórfica e recursão mútua.
     \item Somente existem semi-algoritmos e algoritmos totais, mas incompletos pois rejeitam alguns programas bem tipados.
     \item O semi-algoritmo para resolver a semi-unificação apresentado em (HENGLEIN, 1993) foi utilizado na construção do semi-algoritmo W+ em (EMMS; LEIL, 1999).
       \begin{itemize}
-    \item \small{Argumenta-se que assim como a inferência em Damas-Milner tem pior caso exponencial e que não acontece em situações práticas, uma diferença similar entre prática e teoria acontece na inferência do Milner-Mycroft.}
+    \item Damas-Milner tem pior caso exponencial. Não acontece em situações práticas. Prática vs teoria no Milner-Mycroft.
       \end{itemize}
     \item Diversas propostas para recursão polimórfica foram apresentadas na literatura com o uso
       de \textit{intersection types}.
@@ -158,10 +157,10 @@ polimórfica e recursão mútua.
 \begin{frame}
 \frametitle{Fundamentos - Assistentes de provas}
 \begin{itemize}
-    \item Assistentes de provas ou provadores interativos são programas para o desenvolvimento de provas
+    \item São programas para o desenvolvimento de provas
           formais.
-    \item O núcleo de um assistente de provas é um verificador, que verifica a consistência lógica da prova.
-    \item Os principais apelos para o uso de assistentes de provas são:
+    \item O núcleo é um verificador, que verifica a consistência lógica da prova.
+    \item Os principais apelos são:
     \begin{itemize}
     \item a verificação mecânica é rápida e evita as falhas humanas;
     \item interatividade, permite visualizar informações sobre os estados da prova;
@@ -179,12 +178,12 @@ polimórfica e recursão mútua.
 \begin{frame}
 \frametitle{Fundamentos - Por que Coq?}
 \begin{itemize}
-    \item Existem dezenas de assistentes de provas: Automath, Agda, Twelf, ACL2, PVS, Minlog, Isabelle e Coq...
-    \item O assistente de provas Coq tem como \textit{kernel} (núcleo) o formalismo \textit{Calculus of Inductive Constructions} (CIC), uma extensão do Cálculo Lambda Tipado conhecido como \textit{Calculus of Constructions} (CoC).
-    \item CoC é classificado como um Cálculo Lambda polimórfico de ordem superior e com tipos dependentes.
+    \item Existem dezenas: Automath, Agda, Twelf, ACL2, PVS, Minlog, Isabelle e Coq...
+    \item O núcleo do Coq é o \textit{Calculus of Inductive Constructions} (CIC). Extensão do \textit{Calculus of Constructions} (CoC).
+    \item CoC é um Cálculo Lambda polimórfico de ordem superior e com tipos dependentes.
     \item \textbf{Justificativa}:
       \begin{enumerate}
-        \item Frequente uso de Coq para formalizar aspectos de linguagens de programação. CoqPL: uma trilha dedicada ao uso de Coq no POPL. 
+        \item Frequente uso de Coq para formalizar aspectos de linguagens de programação. CoqPL. 
         \item Projetos relevantes em Coq: CompCert é uma compilador de C; Simplicity é uma
           linguagem de programação para \textit{blockchains}; Vellvm é uma
           formalização da LLVM em Coq.
@@ -201,15 +200,12 @@ polimórfica e recursão mútua.
     \item Coq conta com algumas maneiras de estender o conjunto de programas que podem ser implementados:
     \begin{enumerate}
     \item Recursão bem-fundada (\textit{Well-Founded Recursion}) por meio
-      de uma relação bem-fundada (\textit{Well-Founded Relation}). Os
-      argumentos da chamada recursivas obedecem uma relação bem-fundada.
+      de uma relação bem-fundada (\textit{Well-Founded Relation}). Uma relação bem-fundada.
     \item Recursão limitada (\textit{Bounded Recursion}) através
     de um argumento, que representa o número
-    de chamadas recursivas. Esse argumento contador precisa ser computado
-    previamente e deve ser suficiente para que a computação finalize com o resultado
+    de chamadas recursivas. Suficiente para que a computação finalize com o resultado
     correto.
-    \item Recursão por iteração (\textit{Recursion by Iteration}) é uma
-    técnica similar a recursão limitada, mas começa com a definição de
+    \item Recursão por iteração (\textit{Recursion by Iteration}). Similar a recursão limitada. Definição de
     um funcional, que tem como um dos argumentos a
     função \mintinline{coq}{f} que deseja-se implementar. 
     \end{enumerate}
@@ -221,19 +217,16 @@ polimórfica e recursão mútua.
     \begin{enumerate}
       \setcounter{enumi}{3}
     \item Recursão sobre um predicado (\textit{Recursion on an Ad Hoc
-        Predicate Section}) definido por um tipo indutivo, que serve para
-    representar o domínio da função e fazer recursão estrutural sobre
+        Predicate Section}). Representa o domínio da função. Recursão estrutural sobre
     provas do princípio indutivo deste predicado.
-    \item Recursão por mônada inspirada em Teoria de Domínios, cujos
-    combinadores de ordem superior servem para representar até mesmo funções
+    \item Recursão por mônada inspirada em Teoria de Domínios. Combinadores de ordem superior representam funções
     que não terminam. Uma obrigação de prova é a continuidade da
     computação na mônada.
     \item Recursão geral baseada numa mônada de um tipo co-indutivo.
     É similar ao anterior, mas utiliza os tipos co-indutivos para representar
     a noção de não terminação, com a vantagem de não ter obrigações de provas.
     \item Linguagem embutida: formalizar completamente uma linguagem
-    de programação com recursão geral por meio dos tipos indutivos de Coq e,
-    então, implementar os programas nesta linguagem embutida.
+    de programação.
     \end{enumerate}
 \end{frame}
 
@@ -254,25 +247,20 @@ polimórfica e recursão mútua.
 O MMo funciona de maneira \textit{botton-up} assim como o algoritmo
 \textit{W}, ou seja, primeiro inferem-se os termos mais internos da expressão para seguir inferindo os mais externos.
 \begin{enumerate}
-\item As variáveis contam com uma sequência de índices que servem para
-  a detecção de dependências circulares em substituições.
+\item As variáveis com sequência de índices. Detecção de dependências circulares em substituições.
 \item Um contexto $\Gamma$ é um conjunto de triplas (\textit{variável},
   $Kind\_def$, \textit{scheme}). Não há condição de
-    consistência, essa forma especial de contexto é chamada de
-    \textit{typing context}.
-\item O algoritmo \textit{W} tem como retorno uma dupla com o tipo
-  simples inferido $\tau$ e uma substituição $\mathbb{S}$, já o MMo retorna uma
+    consistência. \textit{Typing context}.
+\item o MMo retorna uma
   dupla com o tipo simples inferido $\tau$ e um contexto $\Gamma$.
 \item Para cada definição num \textit{BindGroup} infere-se o respectivo
-  \textit{contextualized simple type}.
-  O conjunto com os pares de identificadores e
+  conjunto com os pares de identificadores e
   os seus respectivos tipos inferidos e requeridos (dado pelo símbolo $\Sigma$).
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
 \frametitle{MMo - Inferência de grupo de definições}
-    \small{Inferir o tipo de um grupo de definições: momento em que a recursão polimórfica e mútua são tratadas.}
 \begin{enumerate}
   \item Computar o conjunto $\Sigma$ com todos os tipos inferidos e requeridos do grupo.
   \item Gera-se a partir de $\Sigma$ um conjunto $\Omega$ de pares tipos inferidos (instâncias) e requeridos 
