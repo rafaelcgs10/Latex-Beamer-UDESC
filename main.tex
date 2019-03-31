@@ -32,22 +32,30 @@
 
 \end{frame}
 
-\section{Fundamentos}
+\section{Introdução e Fundamentos}
+\begin{frame}
+\frametitle{Betina}
+\begin{figure}[h]
+\label{bloch}
+\centering
+\includegraphics[width=0.8\textwidth]{betina.jpg}
+\end{figure}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Classe de Problemas na Computação Tradicional}
-  \begin{itemize}
-    \item NP: Problemas de decisão verificáveis em tempo polinomial.
-    \item P: Problemas de decisão computáveis em tempo polinomial.
-
+\frametitle{Motivação}
+\begin{figure}[h]
+\label{bloch}
+\centering
+\includegraphics[width=1.0\textwidth]{lol.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Superposição}
 \begin{itemize}
-  \item A \textbf{Superposição quântica}: uma partícula pode assumir simultaneamente proporções entre dois estados.\\
-  Ex: A polarização de um fóton pode ser qualquer proporção entre vertical ou horizontal. Mas uma vez que 
-  observado, o seu estado colapsa (com base na probabilidade das proporções) para um dos extremos.
+  \item A \textbf{Superposição quântica}: uma partícula pode assumir proporções entre dois estados.\\
+  Ex: A polarização de um fóton (vertical ou horizontal). 
   \item A superposição quântica pode ser utilizada para representar informação binária: \textbf{qubit}.
   \item A computação quântica utiliza dados armazenados em qubits: 0 - 1 (qualquer proporção de ambos estados).
 \end{itemize}
@@ -89,14 +97,12 @@ Isso é conhecido como a notação de \textit{Dirac Ket} para vetores.
     \label{sum1}
       |a|^2 + |b|^2 = 1
   \end{align}
-\item O estado de um quibit pode ser visto como um valor com quatro graus de
-liberdade. Devido a restrição da equação \ref{sum1} os possíveis valores de um
-quibit se limitam uma equação de uma esfera de três dimensões.
+\item Devido a restrição da equação \ref{sum1} os possíveis valores de um
+  quibit se limitam uma equação de uma esfera de três dimensões.
 \begin{figure}[h]
 \label{bloch}
 \centering
 \includegraphics[width=0.25\textwidth]{bloch.png}
-\caption{Esfera de Bloch. Fonte: Wikipedia.}
 \end{figure}
 \end{itemize}
 \end{frame}
@@ -104,7 +110,7 @@ quibit se limitam uma equação de uma esfera de três dimensões.
 \begin{frame}
 \frametitle{Operações em Qubits}
 \begin{itemize}
-  \item Operações em qubit são festas por produtos de matrizes unitárias, também chamado
+  \item Operações em qubit são feitas por produtos de matrizes unitárias, também chamado
   de transformação unitária.
   \item Uma transformação de um qubit é uma translação no espaço de estado.
   \item O qubit $\ket{0}$ está no polo norte da Esfera de Bloch é
@@ -137,17 +143,22 @@ quibit se limitam uma equação de uma esfera de três dimensões.
   \item Um par (ou mais) de partículas tem o seu estado associados de
   maneira que não é possível descrever o estado de uma delas
   individualmente.
-  \item Por exemplo, dois \textit{spins} ($A$ e $B$) emaranhados por
-seus campos magnéticos, ambos preparados no estado $\ket{0}$ e, então,
-o \textit{spin} $A$ é colocado na superposição
-$\frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1}$ por meio da
-aplicação de um campo magnético oscilante. Se aplicado um outro campo
-magnético no \textit{spin} $B$ que vai nega-lo (mudar para
-$\ket{1}$) somente se o \textit{spin} $A$ estiver no estado $\ket{0}$,
-então o \textit{spin} $B$ está nos estados $\ket{0}$ e $\ket{1}$ ao
-mesmo tempo, devido ao emaranhamento com o \textit{spin} $A$. O sistema
-final é uma superposição
-$\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
+\item
+  \begin{enumerate}
+    \item Dois \textit{spins} ($A$ e $B$) emaranhados por
+      seus campos magnéticos, ambos preparados no estado $\ket{0}$.
+    \item O \textit{spin} $A$ é colocado na superposição
+      $\frac{1}{\sqrt{2}} \ket{0} + \frac{1}{\sqrt{2}} \ket{1}$ por meio da
+      aplicação de um campo magnético oscilante.
+    \item Aplica-se outro campo magnético no \textit{spin} $B$ que vai nega-lo (mudar para
+      $\ket{1}$) somente se o \textit{spin} $A$ estiver no estado $\ket{0}$.
+    \item O \textit{spin} $B$ está numa superposição de $\ket{0}$ e $\ket{1}$,
+      devido ao emaranhamento com o \textit{spin} $A$.\\
+      O sistema final é uma superposição
+      $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
+  \end{enumerate}
+  \item O emaranhamento quântico é a chave para o paralelismo quântico!
+    \\ A computação de um qubit afeta o estado de outro qubit.
 \end{itemize}
 \end{frame}
 
@@ -213,7 +224,7 @@ $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
 \begin{frame}
 \frametitle{Circuitos Quânticos 1}
 \begin{itemize}
-  \item Circuitos (clássicos e quânticos) são um modelo de computação.
+  \item Circuitos clássicos e quânticos (com as devidas restrições) são um modelo de computação.
   \item Um circuito quântico é uma sequência de portas lógicas quânticas que
     operam sobre uma entrada de $n$ qubits.
   \item  \cite{be:97} provou que Circuitos Quânticos (com as devidas restrições)
@@ -229,13 +240,8 @@ $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
 \begin{frame}
 \frametitle{Circuitos Quânticos 2}
 \begin{itemize}
-  \item Portas Pauli-X/Y/Z, a raiz quadrada do NOT, a família de portas
-    \textit{phase shift}, a porta \textit{swap} e porta Toffoli.
-  \item Toffoli funciona de maneira simular à CNOT: atua em três bits
-    e aplica o NOT no terceiro se, e somente se, os dois primeiros são
-    um.
-  \item Chama-se de \textit{conjunto universal de portas quânticas}
-    (CUPQ) um conjunto portas quânticas capaz de construir circuitos
+  \item \textit{Conjunto universal de portas quânticas}
+    (CUPQ) é um conjunto portas quânticas capaz de construir circuitos
     que representam tudo que um computador quântico pode fazer.
   \item Foi demostrado por \cite{shi:03} que as portas Toffoli e
     Hadamard são um CUPQ.
@@ -244,43 +250,35 @@ $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
 \end{itemize}
 \end{frame}
 
-
-\begin{frame}
-\frametitle{Resultados de uma Computação Quântica}
-\begin{itemize}
-  \item Os resultados estão associados com
-  uma probabilidade sobre a observação. Portanto, não é correto
-  afirmar que algoritmos quânticos resolvem problemas da classe NP,
-  \item Há diversas interpretações do que significa essa incerteza.
-  \item Na Interpretação de Copenhagen os sistemas físicos tem
-  propriedades não-determináveis (pois existem paralelamente) até
-  serem observados (colapso da função de onda) e somente é possível
-  afirmar probabilidades de resultados do ato de observar.
-  \item A Interpretação de Muitos Mundos afirma que todos os possíveis
-  resultados são objetivamente reais e o ato de observa (ou evento)
-  cria novos ramos nas linhas temporais dos múltiplos universos e que
-  as probabilidades dizem o quão provável é estar em algum desses
-  vários mundos do ponto de vista observador.
-\end{itemize}
-\end{frame}
-
 \section{Classes de Problemas}
+\begin{frame}
+  \frametitle{Classe de Problemas na Computação Tradicional}
+  \begin{itemize}
+  \item NP \textbf{(nondeterministic polynomial time)}:
+    Problemas de decisão verificáveis em tempo polinomial.\\ \small{Eficientes no
+    modelo computacional ``Máquina de Turing Não-Determinista''}.
+    \item P: Problemas de decisão computáveis em tempo polinomial.\\ \small{Eficientes no
+    modelo computacional ``Máquina de Turing Determinista''}.
+  \end{itemize}
+  \begin{figure}[h]
+    \label{classpnp}
+    \centering
+    \includegraphics[width=0.45\textwidth]{classpnp.png}
+  \end{figure}
+  \centering{\textbf{P vs NP}}\\
+  Exemplos de problemas: SAT, Caixeiro viajante...
+\end{frame}
 
 \begin{frame}
 \frametitle{Classe Probabilística BPP} 
 \begin{itemize}
   \item A classe BPP (\textit{Bounded-Error Probabilistic
-    Polynomial-Time}) são os problemas de decisão que podem ser
-  resolvidos em tempo polinomial por uma Máquina de Turing
-  Probabilística.
+      Polynomial-Time}): Polinomial por uma Máquina de Turing Probabilística (com um
+    mecanismo de aleatoriedade).
   \item Somente é aceitável no máximo $1/3$ de chance de fornecer a
   resposta errada (seja sim ou não).
   \item A classe BPP funciona como um análogo probabilístico da classe P.
-  \item A verificação de primalidade de números é um exemplo de
-    problema que estava na classe BPP, pois existem vários algoritmos
-    probabilísticos como o bem conhecido Miller-Rabin. Porém,
-    acabou-se encontrado um algoritmo determinista eficiente, logo
-    passou a ser da classe P.
+  \item A verificação de primalidade: BPP $\rightarrow$ P.
 \end{itemize}
 \end{frame}
 
@@ -294,19 +292,16 @@ $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
   chance de erro.
   \item Definida por Circuitos Quânticos.
   \item O número de qubits permitidos no circuito deve ser polinomial
-    ao tamanho do problema, por exemplo algoritmo de Shor para
+    ao tamanho do problema.\\ O algoritmo de Shor para
     fatoração de números primos de $n$-bits requer um circuito de
     $2n$-qubits.
 \end{itemize}
 \end{frame}
 
-
 \begin{frame}
 \frametitle{Relação Entre as Classes} 
 \begin{itemize}
-  \item BPP $\subseteq$ BQP, pois basta utilizar a porta Hadamard como
-  um mecanismo de escolha probabilístico num qubit setado em
-  $\ket{0}$.
+  \item BPP $\subseteq$ BQP, pois como fonte de aleatoriedade basta utilizar a porta Hadamard.
   \item A classe PP é similar a BPP, mas com requisito de probabilidade
   difícil o suficiente para não ser possível aumentar a chance de
   acerto ao rodar o algoritmo várias vezes.
@@ -317,32 +312,15 @@ $\frac{1}{\sqrt{2}} \ket{01} + \frac{1}{\sqrt{2}} \ket{10}$.
 \end{frame}
 
 \begin{frame}
-\frametitle{O Maior Problema da Teoria da Complexidade Quântica} 
+\frametitle{\small{O Maior Problema da Teoria da Complexidade Quântica}} 
+\begin{centering}
+\large{Computadores quânticos são mais eficientes que computadores probabilísticos clássicos?}
+\end{centering}
 \begin{itemize}
-  \item Computadores quânticos são fundamentalmente mais eficientes que
-computadores probabilísticos clássicos? ou seja, se BPP $\not =$ BQP.
+  \item BPP $\not =$ BQP
   \item A evidência mais popular que isso é verdade é o algoritmo
   quântico Shor e o fato que até hoje ninguém descobriu um eficiente
   algoritmo probabilístico que realiza o mesmo trabalho.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{BPP $\not \subseteq$ BQP por oráculo} 
-\begin{itemize}
-   \item A principal evidência, teórica, disso é o algoritmo de Simon
-   \cite{si:94}.
-   \item Suponha que exista uma função
-   $f:\{0, 1\}^n \rightarrow \{0, 1\}^n$, a qual somente é possível
-   acessar como um \textit{black box} (ou oráculo), apenas fornecendo
-   entradas e olhando as saídas. O objetivo é descobrir uma
-   mascara-XOR $s$, tal que para todos os pares distintos $(x, y)$
-   tem-se que $f(x)=f(y)$ se, e somente se, $x \oplus y = s$ (aqui
-   $\oplus$ é XOR bit a bit).
-   \item Simon demonstrou, com o seu algoritmo, que um computador
-   quântico resolve esse problema com no máximo $n$ perguntas ao
-   \textit{black-box}, enquanto um computador clássico precisa de até
-   $2^{n/2}$.
 \end{itemize}
 \end{frame}
 
@@ -355,13 +333,11 @@ computadores probabilísticos clássicos? ou seja, se BPP $\not =$ BQP.
   NP$^{\text{NP}}$ (NP com um oráculo NP).
   \item Há a classe PH (Polynomial Hierarchy) que contém todos as
   classes com tempo polinomial estendidas com máquinas oráculos,
-  inclusive NP e (curiosamente) BPP.
+  inclusive NP e BPP.
   \item O papel do oráculo é funcionar como uma espécie de
   medida de dificuldade do problema, quanto mais um algoritmo precisa
   consultar o oráculo, mais difícil é o problema.
-  \item PH é uma generalização da classe NP, pois caso P = NP, então PH
-  engloba todos os problemas de decisão que podem ser resolvidos em
-  tempo polinomial por um computador clássico com acesso a um oráculo.
+  \item PH é uma generalização (e um superconjunto) da classe NP. 
 \end{itemize}
 \end{frame}
 
@@ -375,8 +351,7 @@ computadores probabilísticos clássicos? ou seja, se BPP $\not =$ BQP.
    Complexidade?
   \item Em 2009 Aaronson introduziu o problema da ``fourrelação'' e
    demostrou estar em BQP \cite{aa:09}.
-  \item Em Maio de 2018, os cientistas Ran Raz e Avishay Tal publicaram
-   um artigo online \cite{ra:18} demonstrando que esse problema não
+  \item Em Maio de 2018 \cite{ra:18} demostraram que esse problema não
    está em PH.
   \item Uma computador quântico precisa de apenas uma consulta a um
    oráculo para resolver esse problema, enquanto um computador
@@ -414,12 +389,9 @@ computadores probabilísticos clássicos? ou seja, se BPP $\not =$ BQP.
   \item Erroneamente muitas pessoas ou sites/revistas de notícias
   anunciam que a computação quântica é capaz de resolver de maneira
   eficiente problemas NP-Completos.
-  \item A ideia de que um computador quântico testa paralelamente todas
-  as possibilidades e misteriosamente encontra a resposta é uma
-  precipitação comum, ou seja, o status de NP $\subset$ BQP é
-  desconhecido.
-  \item Por outro lado, é sabido uma separação por oráculo de NP
-  $\not \subset$ BQP: suponha um espaço de busca de tamanho $2^n$ de
+  \item O status de NP $\subset$ BQP é desconhecido.
+  \item É sabido uma separação por oráculo de NP $\not \subset$ BQP:
+    suponha um problema com espaço de busca de tamanho $2^n$ de
   possíveis soluções e um oráculo que decide se a uma possível solução
   é a procurada.
   \item Num computador normal, no pior dos casos, é necessário $2^n$
@@ -450,6 +422,15 @@ computadores probabilísticos clássicos? ou seja, se BPP $\not =$ BQP.
     resposta já boa o suficiente.
   \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Resumindo...}
+  \begin{itemize}
+  \item Não sabemos como resolver de maneira eficiente problemas
+    NP-Completos num computador quântico. 
+  \item Não tem essa de testar todas as possibilidades ao mesmo tempo.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks, noframenumbering]
