@@ -34,7 +34,7 @@
 
 \section{Introdução e Fundamentos}
 \begin{frame}
-\frametitle{Betina}
+\frametitle{Bettina}
 \begin{figure}[h]
 \label{bloch}
 \centering
@@ -160,6 +160,12 @@ Isso é conhecido como a notação de \textit{Dirac Ket} para vetores.
   \item O emaranhamento quântico é a chave para o paralelismo quântico!
     \\ A computação de um qubit afeta o estado de outro qubit.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmo Quântico}
+\centering
+\Large Vídeo!
 \end{frame}
 
 \section{Computabilidade}
@@ -405,22 +411,10 @@ Isso é conhecido como a notação de \textit{Dirac Ket} para vetores.
 \frametitle{Speed-up da Computação Quântica} 
 \begin{itemize}
   \item O \textit{speed-up} da computação quântica para problemas de
-  busca genéricos e não estruturados é quadrático. Não é conhecido
-  como fazer \textit{speed-up} exponencial para esse tipo de problema.
-  \item O motivo para o \textit{speed-up} ser quadrático é a 2-norma:
-  \begin{itemize}
-  \item Classicamente, num espaço de $N$ possíveis soluções com apenas
-    uma correta (cada possibilidade com $1/N$ de ser a resposta), para
-    um número $m$ de tentativas, tem a probabilidade de $m/N$ de
-    adivinhar a solução. Assim, para ter uma boa chance de
-    adivinhar a resposta correta é necessário ter um $m$ próximo a $N$.
-  \item Já com a computação quântica é possível aplicar transformações
-    lineares no vetor das amplitudes, que são as raízes quadradas das
-    probabilidades por causa da 2-norma. Logo, para $m$ tentativas
-    tem-se $m/\sqrt{N}$ de probabilidade de adivinhar a resposta. Com
-    aproximadamente $\sqrt{N}$ tentativas a chance de encontrar a
-    resposta já boa o suficiente.
-  \end{itemize}
+    busca genéricos e não estruturados é quadrático.
+  \item Não é conhecido como fazer \textit{speed-up} exponencial para esse tipo de problema.
+  \item Speed-up quadrático não é suficiente para um NP-Completo ser polinomial num computador
+    quântico.
 \end{itemize}
 \end{frame}
 
