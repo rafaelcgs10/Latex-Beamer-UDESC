@@ -9,6 +9,16 @@
 \usepackage{bussproofs}
 \usepackage[portuges]{babel}
 
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
 
 \title[Sistemas de Tipos]{Sistemas de Tipos}
 
@@ -59,7 +69,7 @@
         \item Bertrand Russell
         \item Teorias de Tipos são uma resposta
           ao paradoxo de Russel presente na \textit{naive set theory}.
-        \item Uma teoria alternativa a Teoria dos Conjuntos para uma função
+        \item Uma teoria alternativa a Teoria dos Conjuntos para uma fundação
           formal da matemática.
         \end{itemize}
       \end{column}
@@ -95,7 +105,7 @@
   \end{block}
 \end{frame}
 
-\section{Usos informais}
+\section{Usos informais em linguagens de programação}
 \begin{frame}[fragile]
 \frametitle{Questões preliminares}
 O que são tipos (em linguagens de programação)?
@@ -104,7 +114,7 @@ O que são tipos (em linguagens de programação)?
   \item Classificações dos dados de um programa: carácter, inteiro, função etc.
 \end{itemize}
 \pause
-Por que (algumas) linguagens de programação utilizam tipos?
+Por que linguagens de programação utilizam tipos?
 \pause
 \begin{columns}
   \begin{column}{0.5\textwidth}
@@ -128,14 +138,18 @@ void spam() {
 \end{column}
 \end{columns}
 \pause
-Os tipos fazem parte da construção semântica dos programas.
+Os tipos fazem parte da construção semântica dos programas. \\
+
+Existem linguagens de programação sem tipos (\textit{untyped}), como
+linguagens assembly, BCPL, Tcl, Brainfuck.
+
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Tipagem estática vs dinâmica}
 \begin{itemize}
   \item Na tipagem estática a verificação dos tipos é feita em por análise do código durante a compilação.
-  \item Na tipagem dinâmica as verificações dos tipos é feita somente na execução.\\ Se uma parte do código com
+  \item Na tipagem dinâmica a verificação dos tipos é feita somente na execução.\\ Se uma parte do código com
     erro (de tipo) não for executada, o erro ficará oculto.
 \end{itemize}
 \pause
@@ -165,7 +179,8 @@ Estática:
 
 Dinâmica:
 \begin{itemize}
-  \item Vantagens: Mais permissível; Mais fácil de aprender; geralmente tem mais interatividade (REPL).
+\item Vantagens: Mais permissível; Mais fácil de aprender; geralmente tem mais interatividade (REPL);
+    geralmente suportam \textit{duck typing}.
   \item Desvantagens: Testes são muito mais importantes; abre espaço para erros inesperados em execução;
     geralmente são menos eficientes. 
 \end{itemize}
@@ -194,78 +209,149 @@ Em JavaScript:
 \end{minted}
 \end{frame}
 
+\section{Sistemas de tipos formais em linguagens de programação}
 \begin{frame}[fragile]
-\frametitle{Introdução - Sistemas de Tipos}
+\frametitle{Questões preliminares}
+O que são tipos (na matemática)? \\
+\pause
+Tipos são propriedades atribuídas a certas construções/objetos.\\
+Ex: 1 tem o tipo natural. \\~\\
+\pause
+Qual a diferença entre tipos e conjuntos? 
+\pause
 \begin{itemize}
-    \item Sistemas de tipos são regras que ditam quais expressões podem ser
-associadas a quais tipos.
-    \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
-    \item passaram a ser utilizados como regras para identificar falhas na consistência
-de programas
-    \item Tipagem estática e dinâmica:
-      \begin{itemize}
-        \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
-        \item Dinâmica: atribuições de tipo \textbf{mudam} em \textit{run time}; mais permissível; mais permissível a erros. 
-      \end{itemize}
-      \begin{minted}{python}
-      [1, 'a', objeto, [2]]
-      \end{minted}
+  \item Teoria dos Tipos é uma teoria matemática sobre construções.
+  \item Teoria dos Conjuntos é uma teoria matemática sobre coleções. 
 \end{itemize}
+.
+\pause
+\\O que são sistemas de tipos (formais)? \\
+\pause
+Sistemas de tipos são relações que ditam quais expressões/construções podem ser
+associadas a quais tipos. \\~\\
+\pause
+Por que definir sistemas de tipos formalmente?\\
+\pause
+Para garantir boas propriedades semânticas de programas. \\
+Ex: Evita que você crie JavaScript.
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Introdução - Inferência de Tipos e Polimorfismo}
-\begin{itemize}
-    \item A inferência de tipos é o processo de encontrar a assinatura de tipo mais geral de um programa.
-    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
-    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
-      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
-      \begin{minted}{haskell}
-         len :: [a] -> Int
-      \end{minted}
-    \item Existem situações onde a inferência de tipos é mais difícil que a verificação. Nesses casos,
-      algoritmos podem rejeitar programas bem tipados.
-\end{itemize}
+\frametitle{Exemplo básico de sistema de tipo formal}
+\large{A linguagem de programação:}\\~\\
+Gramática informal dos programas:
+\begin{align*}
+  e := x \:|\: \lambda x. e \: | \: e\:e' 
+\end{align*}
+Gramática informal dos tipos:
+\begin{align*}
+  \tau := \alpha \:|\: \tau \rightarrow \tau' 
+\end{align*}
+Exemplos de programas:
+\begin{align*}
+  x \\
+  x\:y \\
+  \lambda x. x \\
+  (\lambda x. x)\: y\\
+  \lambda x. \lambda y. \lambda z. y
+\end{align*}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fundamentos - Formalismos de Sistemas de Tipos}
-\begin{itemize}
-    \item Sistemas de tipos quando definidos formalmente podem garantir importantes propriedades da
-    semântica de programas, como o famoso lema de Robin Milner ``Well-typed programs cannot go wrong''.
-    \item Damas-Milner: polimorfismo via \textit{let}. Base para diversas linguagens de programação funcional.
-    Não permite recursão polimórfica pela regra $fix$.
-    \item O primeiro sistema de tipos a permitir recursão polimórfica é o Sistema-F. 
-    \item Milner-Mycroft altera a regra de definições recursivas $fix$ para permitir recursões polimórficas.
-\end{itemize}
+\begin{frame}[fragile]
+\frametitle{Exemplo básico de sistema de tipo formal}
+Relação de tipagem:
 \begin{center}
-  \begin{minipage}{.4\textwidth}
-    \begin{prooftree}
-      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\tau \vdash$ \mintinline{haskell}{e} $:\tau$}
-      \RightLabel{$(fix)$}
-      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\tau$}
-    \end{prooftree}
-    \end{minipage}
-    \begin{minipage}{.4\textwidth}
-    \begin{prooftree}
-      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\sigma \vdash$ \mintinline{haskell}{e} $:\sigma$}
-      \RightLabel{$(fix+)$}
-      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\sigma$}
-    \end{prooftree}
-    \end{minipage}
+        \begin{prooftree}
+            \AxiomC{}
+            \RightLabel{$(var)$}
+            \UnaryInfC{$x:\tau, \Gamma \vdash x: \tau$}
+        \end{prooftree}
+\end{center}
+\begin{center}
+\begin{minipage}{.55\textwidth}
+        \begin{prooftree}
+            \AxiomC{$\Gamma \vdash e : \tau \rightarrow \tau'$}
+            \AxiomC{$\Gamma \vdash e' : \tau$}
+            \RightLabel{$(abs)$}
+            \BinaryInfC{$\Gamma \vdash e \: e' :\tau'$}
+        \end{prooftree}
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+        \begin{prooftree}
+            \AxiomC{$x:\tau, \Gamma \vdash e:\tau'$}
+            \RightLabel{$(app)$}
+            \UnaryInfC{$\Gamma \vdash \lambda x. e : \tau \rightarrow \tau'$}
+        \end{prooftree}
+\end{minipage}
+\end{center}
+\pause
+Exemplos de tipagem:
+\begin{center}
+\begin{minipage}{.43\textwidth}
+\begin{prooftree}
+    \AxiomC{$x:a \vdash x:a$}
+    \RightLabel{$(abs)$}
+    \UnaryInfC{$ \vdash \lambda x . x:{a \rightarrow a}$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}{.47\textwidth}
+  \begin{prooftree}
+    \AxiomC{$y:b \vdash y:b$}
+    \RightLabel{$(abs)$}
+    \UnaryInfC{$ y:b \vdash \lambda z . y:a \rightarrow b$}
+    \RightLabel{$(abs)$}
+    \UnaryInfC{$\vdash \lambda y.  \lambda z . y:b \rightarrow a \rightarrow b$}
+    \RightLabel{$(abs)$}
+    \UnaryInfC{$\vdash \lambda x. \lambda y . \lambda z . y: c \rightarrow b \rightarrow a \rightarrow b$}
+\end{prooftree}
+\end{minipage}
 \end{center}
 \end{frame}
-\section{Usos informais}
+
+\begin{frame}[fragile]
+\frametitle{Exercício sobre tipagem}
+Construa a árvore de tipagem para a expressão
+\begin{align*}
+  (\lambda x.x)(\lambda x.x) \\
+\end{align*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Linguagens de programação baseados em sistemas de tipos formais}
+A mais importante propriedade semântica que um sistema de tipos pode garantir para
+uma linguagem de programação é \textit{type soundness}.\\~\\
+Também chamado informalmente de \textit{type safety}. \\~\\
+Significa que erros de tipo não acontecem em programas bem-tipados. \\~\\
+
+ML é uma linguagem de programação funcional com a propriedade de \textit{type soundness}. \\
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Resposta do Exercício}
+\begin{prooftree}
+    \AxiomC{$x:a \rightarrow a \vdash x:a \rightarrow a$}
+    \RightLabel{$(abs)$}
+    \UnaryInfC{$ \vdash (\lambda x . x):{(a \rightarrow a) \rightarrow (a \rightarrow a)}$}
+    \RightLabel{$(abs)$}
+    \AxiomC{$x:a \vdash x:a$}
+    \UnaryInfC{$ \vdash (\lambda x . x):{a \rightarrow a}$}
+    \RightLabel{$(app)$}
+    \BinaryInfC{$\vdash (\lambda x.x)(\lambda x.x) : a \rightarrow a$}
+\end{prooftree}
+
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Conclusão}
+Dúvidas? \\~\\
+
+Nesta aula foi apresentado:
 \begin{itemize}
-  \item Fundamentos teóricos para formalização do MMo.
-  \item Assistentes de provas Coq.
-  \item Como o MMo funciona.
-  \item Formalização do MMo parcial.
-  \item Principais dificuldades encontradas.
-  \item Alternativas para a prova de terminação.
+  \item O que são e para que servem sistemas de tipos em linguagens de programação.
+  \item O que são e para que servem sistemas de tipos \textit{formais} em linguagens de programação.
 \end{itemize}
 \end{frame}
 
