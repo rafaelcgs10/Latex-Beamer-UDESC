@@ -10,13 +10,13 @@
 \usepackage[portuges]{babel}
 
 
-\title[Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica]{Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica}
+\title[Sistemas de Tipos]{Sistemas de Tipos}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{15 de Fevereiro de 2019}
+\date{10 de Julho de 2019}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -30,7 +30,170 @@
 
 \end{frame}
 
-\section{Introdução}
+\begin{frame}[fragile]
+\frametitle{Plano de Aula - Sistema de Tipos}
+\begin{block}{Objetivos}
+  Explicar o que são e para que servem sistemas de tipos na
+  Ciência da Computação.
+\end{block}
+\begin{block}{Conteúdos}
+  \begin{itemize}
+    \item Breve visão histórica.
+    \item Usos informais em linguagens de programação.
+    \item Sistemas de tipos formais em linguagens de programação.
+    \item Outras aplicações de sistemas de tipos.
+  \end{itemize}
+\end{block}
+\begin{block}{Método}
+  Exposição do conteúdo com exemplos, questionamentos e exercícios.
+\end{block}
+\end{frame}
+
+\section{Breve visão histórica}
+\begin{frame}[fragile]
+  \frametitle{Visão histórica - Russel}
+  \begin{block}{Teoria dos Tipos}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+        \item Bertrand Russell
+        \item Teorias de Tipos são uma resposta
+          ao paradoxo de Russel presente na \textit{naive set theory}.
+        \item Uma teoria alternativa a Teoria dos Conjuntos para uma função
+          formal da matemática.
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \includegraphics[width=0.8\textwidth]{russel.jpg}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Visão histórica - Church}
+  \begin{block}{Teoria dos Tipos}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+        \item Alonzo Church
+        \item Aplicou a teoria de tipos de Russel no
+          modelo de computação chamado Cálculo Lambda, a
+          fim de evitar paradoxos e computações sem fim.
+        \item Essa junção entre Teoria de Tipos e Cálculo Lambda é o
+          fundamento teórico para sistemas de tipos em linguagens de programação.
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \includegraphics[width=0.8\textwidth]{church.jpg}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+\section{Usos informais}
+\begin{frame}[fragile]
+\frametitle{Questões preliminares}
+O que são tipos (em linguagens de programação)?
+\pause
+\begin{itemize}
+  \item Classificações dos dados de um programa: carácter, inteiro, função etc.
+\end{itemize}
+\pause
+Por que (algumas) linguagens de programação utilizam tipos?
+\pause
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+\begin{minted}{c}
+void foo() {
+  int n = 1;
+  char m = '2';
+  printf("%d\n", n + m);
+}
+\end{minted}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{minted}{c}
+void spam() {
+  int n;
+  scanf("%d", &n);
+  printf("%d\n", n);
+  return 0;
+}
+\end{minted}
+\end{column}
+\end{columns}
+\pause
+Os tipos fazem parte da construção semântica dos programas.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Tipagem estática vs dinâmica}
+\begin{itemize}
+  \item Na tipagem estática a verificação dos tipos é feita em por análise do código durante a compilação.
+  \item Na tipagem dinâmica as verificações dos tipos é feita somente na execução.\\ Se uma parte do código com
+    erro (de tipo) não for executada, o erro ficará oculto.
+\end{itemize}
+\pause
+\begin{itemize}
+  \item Estática: atribuições de tipo não mudam em \textit{run time}.
+  \item Dinâmica: atribuições de tipo \textbf{podem mudar} em \textit{run time}.
+\end{itemize}
+\pause
+Exemplos de linguagens de tipagem estática?\\
+\pause
+C, C++, Java, Rust, Haskell, OCaml...\\
+\pause
+Exemplos de linguagens de tipagem dinâmica?\\
+\pause
+Python, PHP, JavaScript, Lisp, Erlang...
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Vantagens e desvantagens:  estática e dinâmica}
+Estática:
+\begin{itemize}
+  \item Vantagens: Reduz os possíveis erros em tempo de execução; Possibilita algumas otimizações de código
+   pelo compilador; Verificação automática; Útil em códigos grandes.
+ \item Desvantagens: Mais uma coisa para aprender sobre a linguagem;
+   Requerem que tipos sejam explicitados (não todas as linguagens); Podem limitar o reuso de código.
+\end{itemize}
+
+Dinâmica:
+\begin{itemize}
+  \item Vantagens: Mais permissível; Mais fácil de aprender; geralmente tem mais interatividade (REPL).
+  \item Desvantagens: Testes são muito mais importantes; abre espaço para erros inesperados em execução;
+    geralmente são menos eficientes. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Tipagem forte e fraca}
+Esse é um conceito meio nebuloso! \\
+Não é preto ou branco\\
+\begin{itemize}
+  \item Forte: as regras de tipagem são rígidas; não há cast de tipos implícitos; os casts de tipos fazem sentido.
+  \item Fraca: as regras de tipagem são flexíveis; casts automáticos podem ocorrer.
+\end{itemize}
+\pause
+Em Python:
+\begin{minted}{python}
+"Dia " + str(1) + " de Janeiro" 
+\end{minted}
+\pause
+Em JavaScript:
+\begin{minted}{js}
+[] + []; // "" 
+[] + 1; // "1" 
+1 + {}; // "1[object object]" 
+{} + [] // 0 
+\end{minted}
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Introdução - Sistemas de Tipos}
 \begin{itemize}
@@ -65,38 +228,6 @@ de programas
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Introdução - Recursão Polimórfica}
-\begin{itemize}
-    \item A recursão polimórfica acontece quando o tipo da chamada recursiva de uma função pode mudar ao longo das recursões.
-\begin{minted}{haskell}
-  data Seq a = Nil | Cons a (Seq (a,a)).
-\end{minted}
-\begin{minted}{haskell}
-  len :: Seq a -> Int
-  len Nil = 0
-  len (Cons x s) = 1 + 2 * (len s)
-\end{minted}
-    \item Haskell rejeita programas com recursão polimórfica se a assinatura de tipo não for explicitamente anotada.
-    \item Diversos exemplos de exemplos precisando de recursão polimórfica foram apresentados na literatura.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Introdução - Motivação e Objetivo}
-\begin{itemize}
-    \item O semi-algoritmo MMo proposto por (VASCONCELLOS; CAMARÃO, 2003) consegue tipar diversos casos de recursão
-polimórfica e recursão mútua.
-    \item MMo não tem as suas propriedades fundamentais provadas: terminação (totalidade) e consistência (correto).
-    \item \textbf{Objetivo}: investigar se o semi-algoritmo MMo tem as propriedades de totalidade e correção em relação ao seu
-     sistema de tipos (especificação).
-    \item A especificação em si também é um elemento de investigação.
-    \item O método utilizado é a formalização do MMo e a sua especificação no assistente de provas Coq.
-\end{itemize}
-\end{frame}
-
-\section{Fundamentos}
-
 \begin{frame}
 \frametitle{Fundamentos - Formalismos de Sistemas de Tipos}
 \begin{itemize}
@@ -124,258 +255,7 @@ polimórfica e recursão mútua.
     \end{minipage}
 \end{center}
 \end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Fundamentos - Inferência no Milner-Mycroft}
-\begin{itemize}
-    \item A inferência no sistema Milner-Mycroft é equivalente ao problema da semi-unificação.
-    \item A semi-unificação é uma generalização da unificação.
-    \item A semi-unificação é indecidível.
-      \begin{itemize}
-        \item Casos decidíveis: apenas uma igualdade, qualquer aridade e no máximo uma variável livre, duas variáveis e semi-unificação acíclica.
-      \end{itemize}
-    \item No caso geral não há como decidir a tipabilidade (\textit{typability}) de um termo no sistema Milner-Mycroft.
-    \item \textit{Big type} vs \textit{small type}.
-    \item \textit{Small types} no sistema Milner-Mycroft é decidível em tempo polinomial.
-    \item Buscou-se alternativas para contornar a dificuldade deste problema.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Fundamentos - Propostas de Recursão Polimórfica}
-\begin{itemize}
-    \item Somente existem semi-algoritmos e algoritmos totais, mas incompletos pois rejeitam alguns programas bem tipados.
-    \item O semi-algoritmo para resolver a semi-unificação apresentado em (HENGLEIN, 1993) foi utilizado na construção do semi-algoritmo W+ em (EMMS; LEIL, 1999).
-      \begin{itemize}
-    \item Damas-Milner tem pior caso exponencial. Não acontece em situações práticas. Prática vs teoria no Milner-Mycroft.
-      \end{itemize}
-    \item Diversas propostas para recursão polimórfica foram apresentadas na literatura com o uso
-      de \textit{intersection types}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Fundamentos - Assistentes de provas}
-\begin{itemize}
-    \item São programas para o desenvolvimento de provas
-          formais.
-    \item O núcleo é um verificador, que verifica a consistência lógica da prova.
-    \item Os principais apelos são:
-    \begin{itemize}
-    \item a verificação mecânica é rápida e evita as falhas humanas;
-    \item interatividade, permite visualizar informações sobre os estados da prova;
-    \item comandos para busca de teoremas e lemas para o progresso da
-      prova;
-    \item automatização de provas com métodos não-deterministas;
-    \item potencialização da capacidade humana de realizar provas;
-    \item extração de programas verificados.
-    \end{itemize}
-
-      Assistentes de provas permitem provar coisas que não seriam realizáveis somente com papel e caneta!
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Fundamentos - Por que Coq?}
-\begin{itemize}
-    \item Existem dezenas: Automath, Agda, Twelf, ACL2, PVS, Minlog, Isabelle e Coq...
-    \item O núcleo do Coq é o \textit{Calculus of Inductive Constructions} (CIC). Extensão do \textit{Calculus of Constructions} (CoC).
-    \item CoC é um Cálculo Lambda polimórfico de ordem superior e com tipos dependentes.
-    \item \textbf{Justificativa}:
-      \begin{enumerate}
-        \item Frequente uso de Coq para formalizar aspectos de linguagens de programação. CoqPL. 
-        \item Projetos relevantes em Coq: CompCert é uma compilador de C; Simplicity é uma
-          linguagem de programação para \textit{blockchains}; Vellvm é uma
-          formalização da LLVM em Coq.
-        \item Materiais didáticos disponíveis!
-      \end{enumerate}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Fundamentos - Terminação em Coq}
-\begin{itemize}
-    \item Coq é uma linguagem de programação funcional total.
-    \item A garantia de terminação do Coq é uma conservadora verificação sintática: recursão primitiva.
-    \item Coq conta com algumas maneiras de estender o conjunto de programas que podem ser implementados:
-    \begin{enumerate}
-    \item Recursão bem-fundada (\textit{Well-Founded Recursion}) por meio
-      de uma relação bem-fundada (\textit{Well-Founded Relation}). Uma relação bem-fundada.
-    \item Recursão limitada (\textit{Bounded Recursion}) através
-    de um argumento, que representa o número
-    de chamadas recursivas. Suficiente para que a computação finalize com o resultado
-    correto.
-    \item Recursão por iteração (\textit{Recursion by Iteration}). Similar a recursão limitada. Definição de
-    um funcional, que tem como um dos argumentos a
-    função \mintinline{coq}{f} que deseja-se implementar. 
-    \end{enumerate}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Fundamentos - Terminação em Coq}
-    \begin{enumerate}
-      \setcounter{enumi}{3}
-    \item Recursão sobre um predicado (\textit{Recursion on an Ad Hoc
-        Predicate Section}). Representa o domínio da função. Recursão estrutural sobre
-    provas do princípio indutivo deste predicado.
-    \item Recursão por mônada inspirada em Teoria de Domínios. Combinadores de ordem superior representam funções
-    que não terminam. Uma obrigação de prova é a continuidade da
-    computação na mônada.
-    \item Recursão geral baseada numa mônada de um tipo co-indutivo.
-    É similar ao anterior, mas utiliza os tipos co-indutivos para representar
-    a noção de não terminação, com a vantagem de não ter obrigações de provas.
-    \item Linguagem embutida: formalizar completamente uma linguagem
-    de programação.
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-\frametitle{Fundamentos - Vantagens Terminação em Coq}
-    \begin{itemize}
-    \item Somente as quatro primeiras técnicas permitem utilizar o mecanismo de avaliação interno do Coq.
-    \item As técnicas 2 e 3 necessitam conhecer uma função capaz de computar o número de chamadas recursivas suficientes para uma dada entrada.
-    \item A principal vantagem das últimas três técnicas é a possibilidade de implementar qualquer função recursiva e evitam provas.
-    \item No aspecto da extração, a técnica mais eficiente é a primeira, pois as demais podem carregar (na extração) alguns lixos como os argumentos adicionais.
-    \end{itemize}
-\end{frame}
-
-\section{MMo}
-
-\begin{frame}
-\frametitle{MMo - Diferenças básicas}
-O MMo funciona de maneira \textit{botton-up} assim como o algoritmo
-\textit{W}, ou seja, primeiro inferem-se os termos mais internos da expressão para seguir inferindo os mais externos.
-\begin{enumerate}
-\item As variáveis com sequência de índices. Detecção de dependências circulares em substituições.
-\item Um contexto $\Gamma$ é um conjunto de triplas (\textit{variável},
-  $Kind\_def$, \textit{scheme}). Não há condição de
-    consistência. \textit{Typing context}.
-\item o MMo retorna uma
-  dupla com o tipo simples inferido $\tau$ e um contexto $\Gamma$.
-\item Para cada definição num \textit{BindGroup} infere-se o respectivo
-  conjunto com os pares de identificadores e
-  os seus respectivos tipos inferidos e requeridos (dado pelo símbolo $\Sigma$).
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-\frametitle{MMo - Inferência de grupo de definições}
-\begin{enumerate}
-  \item Computar o conjunto $\Sigma$ com todos os tipos inferidos e requeridos do grupo.
-  \item Gera-se a partir de $\Sigma$ um conjunto $\Omega$ de pares tipos inferidos (instâncias) e requeridos 
-        $(\tau', \tau)$ que precisam ser unificados.
-        \begin{itemize}
-          \item o tipo de cada suposição \mintinline[escapeinside=**,mathescape=true]{haskell}{x:*$\tau$*} em
-            cada um dos $\Gamma$ em $\Sigma$ precisa ser unificado com uma instância do seu
-            respectivo tipo inferido $\tau'$ para \mintinline[escapeinside=**,mathescape=true]{haskell}{x}.
-          \item A função \mintinline{haskell}{supInst} troca cada variável de tipo $\alpha^{s}$ de $\tau'$ por uma nova instância $\alpha^{i::s}$.
-        \end{itemize}
-  \item Verificar a existência de dependências circulares na substituição $\mathbb{S}$ gerada pela unificação de $\Omega$.
-  \item Caso exista dependência circular em $\mathbb{S}$, então o MMo termina com erro. Caso contrário, então aplica-se a
-         $\mathbb{S}$ em $\Sigma$. Se $\mathbb{S}$ for efetiva, então volta-se para segunda etapa. Se não, para.
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-\frametitle{MMo - Dependências circulares}
-\begin{itemize}
-  \item Uma dependência circular ocorre quando uma substituição troca uma variável de tipo $\alpha^s$ por um tipo $\tau$, o qual ocorre uma variável de tipo $\alpha^{s'}$ tal que $s$ seja uma subsequência de $s'$. Ex: \mintinline[escapeinside=**,mathescape=true]{haskell}{[a*$^{1, 0} \rightarrow$* b/a*$^0$*]}.
-  \item A relação de ser subsequência pode ser indireta, portanto é necessário fazer uma verificação transitiva na substituição.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{MMo - Exemplo inferência de grupo}
-\begin{minted}{haskell}
-  data Seq a = Nil | Cons a (Seq (a,a)).
-\end{minted}
-\begin{minted}{haskell}
-  len :: Seq a -> Int
-  len Nil = 0
-  len (Cons x s) = 1 + 2 * (len s)
-\end{minted}
-
-$\Sigma$:
-\begin{minted}[escapeinside=**,mathescape=true]{haskell} 
- *$\{$*(Nil,(Seq a, *$\emptyset$*)),
- (Cons,(b *$\rightarrow$* Seq (b, b) *$\rightarrow$* Seq b, *$\emptyset$*)),
- (len, (Seq c *$\rightarrow$* Int,
-     *$\{$*(+):Int *$\rightarrow$* Int *$\rightarrow$* Int, len:Seq(c, c) *$\rightarrow$* Int*$\}$*))*$\}$*
-\end{minted}
-
-$\Omega$:
-\begin{minted}[escapeinside=**,mathescape=true]{haskell}
-  *$\{$*(Seq c*$^0$**$\rightarrow$* Int, Seq(c, c) *$\rightarrow$* Int)*$\}$*
-\end{minted}
-
-$\mathbb{S}$: \mintinline[escapeinside=**,mathescape=true]{haskell}{[(c, c)/c*$^0$*]}
-
-Não tem dependência circular e não modifica os tipos de
-$\Sigma$ (ignorando renomeações de
-variáveis)
-\end{frame}
-
-\section{Formalização em Coq}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Detalhes da formalização}
-\begin{itemize}
-  \item Formalização parcial e simplificada (sem grupos).
-  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
-  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
-  \item Termos, tipos, \textit{schemes} formalizados como tipos indutivos.
-  \item Para garantir que dois tipos generalizados sejam sintaticamente iguais, a respeito
-    da equivalência $\alpha$, utiliza-se a notação \textit{De Bruijn} nos \textit{schemes}.
-  \item Uso de mônadas de estados e falhas.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Aspectos da terminação}
-\begin{itemize}
-  \item Coq é uma linguagem de programação funcional total.
-  \item De todas as funções do MMo, a que computa o conjunto $\Sigma$ é a única que não
-    é de recursão primitiva.
-  \item Até o momento não se conhece alguma relação bem fundada a respeito da efetividade
-    da substituição.
-  \item Utilizar alguma forma de limite de iteração.
-  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
-  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
-    \begin{itemize}
-    \item Seria necessário descobrir como computar esse número ou, então, associar esse valor às regras de inferência.
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Aspectos da consistência}
-\begin{itemize}
-  \item Uso das regras de Damas-Milner em \textit{syntax-directed} em DUBOIS; MÉNISSIER-MORAIN, 1999).
-    \begin{itemize}
-      \item Regras da forma \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}.
-      \item Regras de especialização $(spec)$ e generalização $(gen)$ são fundidas, respectivamente, com as regras $(var)$ e $(let)$.
-    \end{itemize}
-  \item Regra $(fix+)$ na forma \textit{syntax-directed}. 
-  \item As regras de inferência são representadas em Coq como um tipo (proposição) indutivo.
-  \item O tipo indutivo é uma certificação que pode ser diretamente utilizada num tipo dependente no MMo:
-\end{itemize}
-\begin{minted}{coq}
-Definition infer_dep : forall (e : term) (G : ctx),
-    Infer ({tau : ty &
-     {g : ctx | has_type (apply_subst_ctx s G) e tau}})
-\end{minted}
-
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Estabilidade da substituição}
-\begin{itemize}
-  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos e é fundamental na prova da consistência.
-  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
-  \item Casos monomórficos são fáceis. Além do caso polimórfico do \mintinline{coq}{let_ht} há também o caso do \mintinline{coq}{fix_ht}. 
-\end{itemize}
-\end{frame}
+\section{Usos informais}
 
 \begin{frame}[fragile]
 \frametitle{Conclusão}
