@@ -48,8 +48,8 @@
 \end{block}
 \begin{block}{Conteúdos}
   \begin{itemize}
-    \item Breve visão histórica.
-    \item Usos informais em linguagens de programação.
+    \item Sistemas de tipos em linguagens de programação.
+    \item Breve visão histórica sobre Teoria de Tipos.
     \item Sistemas de tipos formais em linguagens de programação.
   \end{itemize}
 \end{block}
@@ -58,53 +58,7 @@
 \end{block}
 \end{frame}
 
-\section{Breve visão histórica}
-\begin{frame}[fragile]
-  \frametitle{Visão histórica - Russel}
-  \begin{block}{Teoria dos Tipos}
-    \begin{columns}
-      \begin{column}{0.5\textwidth}
-        \begin{itemize}
-        \item Bertrand Russell
-        \item Teorias de Tipos são uma resposta
-          ao paradoxo de Russel presente na \textit{naive set theory}.
-        \item Uma teoria alternativa a Teoria dos Conjuntos para uma fundação
-          formal da matemática.
-        \end{itemize}
-      \end{column}
-      \begin{column}{0.5\textwidth}
-        \begin{center}
-          \includegraphics[width=0.8\textwidth]{russel.jpg}
-        \end{center}
-      \end{column}
-    \end{columns}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Visão histórica - Church}
-  \begin{block}{Teoria dos Tipos}
-    \begin{columns}
-      \begin{column}{0.5\textwidth}
-        \begin{itemize}
-        \item Alonzo Church
-        \item Aplicou a teoria de tipos de Russel no
-          modelo de computação chamado Cálculo Lambda, a
-          fim de evitar paradoxos e computações sem fim.
-        \item Essa junção entre Teoria de Tipos e Cálculo Lambda é o
-          fundamento teórico para sistemas de tipos em linguagens de programação.
-        \end{itemize}
-      \end{column}
-      \begin{column}{0.5\textwidth}
-        \begin{center}
-          \includegraphics[width=0.8\textwidth]{church.jpg}
-        \end{center}
-      \end{column}
-    \end{columns}
-  \end{block}
-\end{frame}
-
-\section{Usos informais em linguagens de programação}
+\section{Sistemas de tipos em linguagens de programação}
 \begin{frame}[fragile]
 \frametitle{Questões preliminares}
 O que são tipos (em linguagens de programação)?
@@ -206,6 +160,52 @@ Em JavaScript:
 1 + {}; // "1[object object]" 
 {} + [] // 0 
 \end{minted}
+\end{frame}
+
+\section{Breve visão histórica sobre Teoria de Tipos}
+\begin{frame}[fragile]
+  \frametitle{Visão histórica - Russel}
+  \begin{block}{Teoria dos Tipos}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+        \item Bertrand Russell
+        \item Teorias de Tipos são uma resposta
+          ao paradoxo de Russel presente na \textit{naive set theory}.
+        \item Uma teoria alternativa a Teoria dos Conjuntos para uma fundação
+          formal da matemática.
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \includegraphics[width=0.8\textwidth]{russel.jpg}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Visão histórica - Church}
+  \begin{block}{Teoria dos Tipos}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+        \item Alonzo Church
+        \item Aplicou a teoria de tipos de Russel no
+          modelo de computação chamado Cálculo Lambda, a
+          fim de evitar paradoxos e computações sem fim.
+        \item Essa junção entre Teoria de Tipos e Cálculo Lambda é o
+          fundamento teórico para sistemas de tipos em linguagens de programação.
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+          \includegraphics[width=0.8\textwidth]{church.jpg}
+        \end{center}
+      \end{column}
+    \end{columns}
+  \end{block}
 \end{frame}
 
 \section{Sistemas de tipos formais em linguagens de programação}
