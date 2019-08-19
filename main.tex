@@ -55,7 +55,6 @@
   \begin{itemize}
     \item Introdução
     \item Fundamentos
-    \item Certificação da Unificação 
     \item Certificação do Algoritmo W
   \end{itemize}
 
@@ -322,7 +321,7 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
 \frametitle{Certificação do algoritmo W - A algoritmo W monádico}
    \begin{itemize}
      \item O algoritmo W foi implementado de forma monádica com a HESM.
-     \item A certificação é garantida pela assinatura com tipos dependentes:
+     \item A certificação é dada pela assinatura com tipos dependentes:
    \end{itemize}
   \begin{columns}
     \column{\dimexpr\paperwidth-10pt}
@@ -340,11 +339,99 @@ Program Fixpoint W (e:term) (G:ctx) {struct e} :
 \end{frame}
 
 \begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Prova de consistência}
+\begin{itemize}
+  \item Enunciado por \mintinline{coq}{has_type} sobre o resultado do algoritmo W.
+  \item Trivial para a maioria dos casos:
+    \begin{itemize}
+      \item O caso da aplicação: requer o lema da estabilidade da substituição.
+      \item O caso do termo \textit{let}: requer vários lemas e definições auxiliares, incluindo sobre listas
+    disjuntas\footnote{Cujo predicado chama-se \mintinline{coq}{are_disjoints}}, sub-listas e substituições de renomeação.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Certificação do algoritmo W - Substituição de renomeação}
+  \begin{small}
+  \begin{itemize}
+  \item A substituição de renomeação é uma substituição com tais características em que:
+    \begin{itemize}
+    \item Cada variável no domínio (\mintinline{coq}{id}) mapeia para uma variável (\mintinline{coq}{id}).
+    \item O domínio e a imagem da substituição são disjuntos. 
+    \item Duas distintas variáveis no domínio têm diferentes imagens.
+    \end{itemize}
+  \item Definido pelo tipo \mintinline{coq}{ren_subst}, implementado como uma lista de associatividade entre identificadores.
+  \item Condições são formalizadas no tipo indutivo: \mintinline{coq}{is_rename_subst}.
+  \item A prova do caso \textit{let}\footnote{Para a prova de consistência do algoritmo W e do lema da estabilidade da tipagem sobre a substituição}
+        requer a demostração da existência de uma substituição
+        de renomeação em especial: o domínio é uma lista de variáveis \mintinline{coq}{l}
+        e que não mapeia para as listas de variáveis \mintinline{coq}{l1} e \mintinline{coq}{l2}.
+  \end{itemize}
+  \end{small}
+\end{frame}
+
+\begin{frame}[fragile]
 \frametitle{Certificação do algoritmo W - Estabilidade da substituição}
 \begin{itemize}
-  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos e é fundamental na prova da consistência.
+  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
   \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
-  \item Casos monomórficos são fáceis. Além do caso polimórfico do \mintinline{coq}{let_ht} há também o caso do \mintinline{coq}{fix_ht}. 
+  \item Casos monomórficos são fáceis.
+  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
+    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
+    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
+com as variáveis a serem quantificadas \mintinline{coq}{tau}
+  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
+  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+\frametitle{Certificação do algoritmo W - Prova de completude}
+A definição de completude é:
+\begin{columns}
+  \column{\dimexpr\paperwidth-10pt}
+\begin{minted}[fontsize=\scriptsize]{coq}
+Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
+  forall (tau':ty) (phi:substitution),
+  has_type (apply_subst_ctx phi G) e tau' ->
+  exists s', tau' = apply_subst s' tau /\
+  (forall x:id, x < st ->
+                apply_subst phi (var x) = apply_subst s' (apply_subst s (var x))).
+\end{minted}
+\end{columns}
+\begin{small}
+\begin{itemize}
+  \item A HESM é útil nesta prova, pois permite raciocinar sobre o estado do contador.
+  \item É necessário apresentar (computar) quem é a substituição \mintinline{coq}{s'}.
+  \item O caso da aplicação se utiliza do fato da unificação computada ser a mais geral.
+  \item A maior dificuldade novamente é o caso do termo \textit{let}, que requer
+        raciocínio sobre a criação de novas variáveis de tipo, as quais são definidas para tipos monomórficos
+        (\mintinline{coq}{new_tv_ty}), para \textit{schemes} (\mintinline{coq}{new_tv_schm}), para contextos
+        (\mintinline{coq}{new_tv_ctx}) e para substituições (\mintinline{coq}{new_tv_subst}). 
+\end{itemize}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
+\begin{itemize}
+  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
+  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
+  \item Casos monomórficos são fáceis.
+  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
+    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
+    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
+com as variáveis a serem quantificadas \mintinline{coq}{tau}
+  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
+  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Análise da prova}
+\begin{itemize}
+  \item 
 \end{itemize}
 \end{frame}
 
