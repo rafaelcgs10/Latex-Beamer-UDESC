@@ -386,6 +386,21 @@ com as variáveis a serem quantificadas \mintinline{coq}{tau}
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
+\begin{itemize}
+  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
+  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
+  \item Casos monomórficos são fáceis.
+  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
+    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
+    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
+com as variáveis a serem quantificadas \mintinline{coq}{tau}
+  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
+  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
+\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile, plain]
 \frametitle{Certificação do algoritmo W - Prova de completude}
 A definição de completude é:
@@ -406,44 +421,64 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
   \item É necessário apresentar (computar) quem é a substituição \mintinline{coq}{s'}.
   \item O caso da aplicação se utiliza do fato da unificação computada ser a mais geral.
   \item A maior dificuldade novamente é o caso do termo \textit{let}, que requer
-        raciocínio sobre a criação de novas variáveis de tipo, as quais são definidas para tipos monomórficos
-        (\mintinline{coq}{new_tv_ty}), para \textit{schemes} (\mintinline{coq}{new_tv_schm}), para contextos
-        (\mintinline{coq}{new_tv_ctx}) e para substituições (\mintinline{coq}{new_tv_subst}). 
+        raciocínio sobre a criação de novas variáveis de tipo e a relação de mais geral entre tipos. 
 \end{itemize}
 \end{small}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
+\frametitle{Certificação do algoritmo W - Novas variáveis de tipo}
 \begin{itemize}
-  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
-  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
-  \item Casos monomórficos são fáceis.
-  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
-    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
-    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
-com as variáveis a serem quantificadas \mintinline{coq}{tau}
-  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
-  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
+    \item A existência de novas variáveis de tipo é tomada como garantida numa prova com papel e caneta, mas deve
+    ser demostrada numa prova mecanizada.
+    \item É suficiente mostrar que o atual estado na mônada é maior que todos os números das variáveis de livres no contexto atual.
+    \item A relação é definida para tipos monomórficos (\mintinline{coq}{new_tv_ty}), para \textit{schemes} (\mintinline{coq}{new_tv_schm}), para contextos
+        (\mintinline{coq}{new_tv_ctx}) e para substituições (\mintinline{coq}{new_tv_subst}). 
+    \item Diversos lemas sobre essa relação foram necessários.
+    \item A assinatura do algoritmo de unificação garante que o mesmo não cria novas variáveis de tipo.
+    \item A assinatura de tipos do algoritmo W garante que o estado é sempre novo em relação ao resultado do algoritmo. 
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Certificação do algoritmo W - Relação mais geral}
+  \begin{itemize}
+  \item A relação mais geral ($\geq$) é definida formalmente no Damas-Milner.
+  \item Aqui defini-se de forma mais estrita pelo tipo \mintinline{coq}{is_schm_instance}: se um \textit{scheme} $\sigma_1$ é mais geral que outro $\sigma_2$, então
+toda instância de $\sigma_2$ também é uma instância de $\sigma_1$
+  \item Essa relação é estendida para contextos.
+\item Diversos lemas sobre essas relações foram necessários, especial:
+  \begin{itemize}
+    \item ``Tipagem em um contexto mais geral'':
+se é possível construir uma prova de 
+\mintinline[escapeinside=**,mathescape=true]{coq}{*$\Gamma_2 \vdash $ *e* $:\tau$*}, 
+então também é possível construir uma prova de
+\mintinline[escapeinside=**,mathescape=true]{coq}{*$\Gamma_1 \vdash $ *e* $:\tau$*}, onde
+$\Gamma_1$ é mais geral que $\Gamma_2$.
+  \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Certificação do algoritmo W - Análise da prova}
 \begin{itemize}
-  \item 
+  \item A HESM é um tipo dependente: o programa,
+        cujo tipo é a sua especificação, e a sua prova são desenvolvidos na mesma etapa.
+  \item \mintinline{coq}{Program} permiti que elementos da prova sejam postergados como obrigações de provas e a escrita do programa
+    seja feita como em tipos simples, evitando casamentos de padrão dependentes.
+  \item As informações presentes no contexto são similares as suposições feitas na prova com papel e caneta do algoritmo W \cite{da:84} 
+  \item Evitou-se diversos lemas auxiliares \textit{deselegantes} relacionados ao estado do contador e
+    lemas que são hipóteses de indução.
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Conclusão}
 \begin{itemize}
-  \item Fundamentos teóricos para formalização do MMo.
-  \item Assistentes de provas Coq.
-  \item Como o MMo funciona.
-  \item Formalização do MMo parcial.
-  \item Principais dificuldades encontradas.
-  \item Alternativas para a prova de terminação.
+  \item Algumas modificações não triviais no certificação do algoritmo de unificação apresentado por \cite{ri:16}.
+  \item Modificou-se a \textit{Hoare State Monad} para lidar com exceções.
+  \item Apresentou-se uma certificação completa em Coq do algoritmo, cujo código pode ser extraído e executado.
+  \item Uso da HESM para a certificação de um algoritmo de inferência de tipos.
 \end{itemize}
 \end{frame}
 
