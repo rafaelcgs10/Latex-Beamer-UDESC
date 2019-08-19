@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[15pt]{beamer}
 
 \usepackage{graphicx,hyperref,udesc,url}
 \usepackage[latin1]{inputenc}
@@ -7,10 +7,13 @@
 \usepackage{minted}
 \usepackage{booktabs}
 \usepackage{bussproofs}
+\usepackage{bibentry}
+\usepackage{graphicx}
+\usepackage{booktabs} 
 \usepackage[portuges]{babel}
 
 \AtBeginSection[]{
-  \begin{frame}
+  \begin{frame}[noframenumbering]
   \vfill
   \centering
   \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
@@ -18,6 +21,14 @@
   \end{beamercolorbox}
   \vfill
   \end{frame}
+}
+
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
 }
 
 \title[Uma Certificação em Coq do Algoritmo W Monádico]{Uma Certificação em Coq do\\ Algoritmo W Monádico}
@@ -42,10 +53,10 @@
 
 \begin{frame}{Sumário}
   \begin{itemize}
-    \item Introdução.
-    \item Fundamentos.
-    \item Certificação da Unificação. 
-    \item Certificação do Algoritmo W. 
+    \item Introdução
+    \item Fundamentos
+    \item Certificação da Unificação 
+    \item Certificação do Algoritmo W
   \end{itemize}
 
 \end{frame}
@@ -55,7 +66,7 @@
 \begin{itemize}
     \item Sistemas de tipos são relações que ditam quais expressões podem ser associadas a quais tipos.
     \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
-    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas
+    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas.
     \item Tipagem estática e dinâmica:
       \begin{itemize}
         \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
@@ -127,63 +138,38 @@
   \item Provar a consistência e a completude do algoritmo W monádico.
 \end{itemize}
 \end{frame}
+
 \section{Fundamentos}
 
-\begin{frame}
-\frametitle{Fundamentos - Formalismos de Sistemas de Tipos}
-\begin{itemize}
-    \item Sistemas de tipos quando definidos formalmente podem garantir importantes propriedades da
-    semântica de programas, como o famoso lema de Robin Milner ``Well-typed programs cannot go wrong''.
-    \item Damas-Milner: polimorfismo via \textit{let}. Base para diversas linguagens de programação funcional.
-    Não permite recursão polimórfica pela regra $fix$.
-    \item O primeiro sistema de tipos a permitir recursão polimórfica é o Sistema-F. 
-    \item Milner-Mycroft altera a regra de definições recursivas $fix$ para permitir recursões polimórficas.
-\end{itemize}
-\begin{center}
-  \begin{minipage}{.4\textwidth}
-    \begin{prooftree}
-      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\tau \vdash$ \mintinline{haskell}{e} $:\tau$}
-      \RightLabel{$(fix)$}
-      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\tau$}
-    \end{prooftree}
-    \end{minipage}
-    \begin{minipage}{.4\textwidth}
-    \begin{prooftree}
-      \AxiomC{$\Gamma, $\mintinline{haskell}{x} $:\sigma \vdash$ \mintinline{haskell}{e} $:\sigma$}
-      \RightLabel{$(fix+)$}
-      \UnaryInfC{$\Gamma \vdash$ \mintinline{haskell}{fix x.e} $:\sigma$}
-    \end{prooftree}
-    \end{minipage}
-\end{center}
+\begin{frame}[fragile]
+  \frametitle{Fundamentos - Damas-Milner e algoritmo W}
+  \begin{itemize}
+  \item Damas-Milner: polimorfismo via \textit{let}: forma restrita de polimorfismo.
+  \item O algoritmo W é consistente e completo em relação as regras de Damas-Milner.
+  \item Consistência (\textit{Soundness}): O que o algoritmo W infere pode ser demostrado pelas regras de Damas-Milner.
+  \item Completude (\textit{Completeness}): Se o sistema Damas-Nilner mostra que
+    $e$ tem o tipo $\tau$, então o algoritmo infere para $e$ o tipo
+    $\tau'$, de maneira que $\tau = \mathbb{R}(\tau')$ para alguma
+    substituição $\mathbb{R}$. 
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Fundamentos - Inferência no Milner-Mycroft}
+  \frametitle{Fundamentos - Trabalhos relacionados}
+\begin{small}
 \begin{itemize}
-    \item A inferência no sistema Milner-Mycroft é equivalente ao problema da semi-unificação.
-    \item A semi-unificação é uma generalização da unificação.
-    \item A semi-unificação é indecidível.
-      \begin{itemize}
-        \item Casos decidíveis: apenas uma igualdade, qualquer aridade e no máximo uma variável livre, duas variáveis e semi-unificação acíclica.
-      \end{itemize}
-    \item No caso geral não há como decidir a tipabilidade (\textit{typability}) de um termo no sistema Milner-Mycroft.
-    \item \textit{Big type} vs \textit{small type}.
-    \item \textit{Small types} no sistema Milner-Mycroft é decidível em tempo polinomial.
-    \item Buscou-se alternativas para contornar a dificuldade deste problema.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Fundamentos - Propostas de Recursão Polimórfica}
-\begin{itemize}
-    \item Somente existem semi-algoritmos e algoritmos totais, mas incompletos pois rejeitam alguns programas bem tipados.
-    \item O semi-algoritmo para resolver a semi-unificação apresentado em (HENGLEIN, 1993) foi utilizado na construção do semi-algoritmo W+ em (EMMS; LEIL, 1999).
-      \begin{itemize}
-    \item Damas-Milner tem pior caso exponencial. Não acontece em situações práticas. Prática vs teoria no Milner-Mycroft.
-      \end{itemize}
-    \item Diversas propostas para recursão polimórfica foram apresentadas na literatura com o uso
-      de \textit{intersection types}.
+ \item \cite{du:99} forneceram provas em Coq de consistência e completude do algoritmo W. As propriedades
+  da unificação foram tomadas como axiomas
+        e \textit{binding} de variáveis é resolvido com \textit{de Bruijn indices}.
+  \item \cite{na:99} também apresentaram provas de consistência e completude do algoritmo W, mas em Isabelle/HOL.
+        As propriedades da unificação também foram assumidas como axiomas e \textit{de Bruijn indices} também foi utilizado.
+  \item \cite{ko:09a} relataram um resultado parcial na certificação em Coq da extensão polimórfica do algoritmo
+        de Wand.
+  \item \cite{ta:15} verificaram a inferência de tipos de CakeML, uma linguagem baseada em SML (Standard ML) cujo compilador
+         tem um \textit{backend} completamente verificado \cite{ki:19}.  As provas de consistência e completude da inferência de tipos
+         foram feitas no assistente de provas HOL4.
 \end{itemize}
+\end{small}
 \end{frame}
 
 \begin{frame}
@@ -202,206 +188,98 @@
     \item potencialização da capacidade humana de realizar provas;
     \item extração de programas verificados.
     \end{itemize}
-
-      Assistentes de provas permitem provar coisas que não seriam realizáveis somente com papel e caneta!
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fundamentos - Por que Coq?}
+\begin{frame}[fragile, plain]
+\frametitle{Fundamentos - \textit{Hoare State Monad}}
 \begin{itemize}
-    \item Existem dezenas: Automath, Agda, Twelf, ACL2, PVS, Minlog, Isabelle e Coq...
-    \item O núcleo do Coq é o \textit{Calculus of Inductive Constructions} (CIC). Extensão do \textit{Calculus of Constructions} (CoC).
-    \item CoC é um Cálculo Lambda polimórfico de ordem superior e com tipos dependentes.
-    \item \textbf{Justificativa}:
-      \begin{enumerate}
-        \item Frequente uso de Coq para formalizar aspectos de linguagens de programação. CoqPL. 
-        \item Projetos relevantes em Coq: CompCert é uma compilador de C; Simplicity é uma
-          linguagem de programação para \textit{blockchains}; Vellvm é uma
-          formalização da LLVM em Coq.
-        \item Materiais didáticos disponíveis!
-      \end{enumerate}
+    \item \textit{Hoare State Monad} (HSM): apresentada por \cite{sw:09}\\ Uma variante da usual mônada de estados.
+    \item Verificação de programas com efeitos de estado.
+    \item Um tipo \mintinline{coq}{HoareState p a q}: : a pré-condição, o tipo do valor de retorno e a pós-condição.
 \end{itemize}
+  \begin{columns}
+    \column{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\label{fig:hoaremonad1}                               
+\begin{minted}[fontsize=\scriptsize]{coq}
+Program Definition HoareState (pre : Pre) (a : Type) (post : Post a) : Type :=
+  forall i : {t : st | pre t}, {(x, f) : a * st | post i x f}.
+
+Program Definition ret (a : Type) : forall x,
+    @HoareState top a (fun i y f => i = f /\ y = x) := fun x s => (x, s).
+
+Program Definition bind : forall a b P1 P2 Q1 Q2,
+    (@HoareState P1 a Q1) -> (forall (x : a), @HoareState (P2 x) b (Q2 x)) ->
+    @HoareState (fun s1 => P1 s1 /\ forall x s2, Q1 s1 x s2 -> P2 x s2)
+             b
+             (fun s1 y s3 => exists x, exists s2, Q1 s1 x s2 /\ Q2 x s2 y s3) :=
+              fun a b P1 P2 Q1 Q2 c1 c2 s1 => match c1 s1 as y with
+                              | (x, s2) => c2 x s2
+                              end.
+\end{minted}
+\caption{A Mônada de Estado de Hoare.}
+\end{figure}
+\end{columns}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fundamentos - Terminação em Coq}
+\begin{frame}[fragile, plain]
+\frametitle{Fundamentos - \textit{Hoare Exception-State Monad}}
 \begin{itemize}
-    \item Coq é uma linguagem de programação funcional total.
-    \item A garantia de terminação do Coq é uma conservadora verificação sintática: recursão primitiva.
-    \item Coq conta com algumas maneiras de estender o conjunto de programas que podem ser implementados:
-    \begin{enumerate}
-    \item Recursão bem-fundada (\textit{Well-Founded Recursion}) por meio
-      de uma relação bem-fundada (\textit{Well-Founded Relation}). Uma relação bem-fundada.
-    \item Recursão limitada (\textit{Bounded Recursion}) através
-    de um argumento, que representa o número
-    de chamadas recursivas. Suficiente para que a computação finalize com o resultado
-    correto.
-    \item Recursão por iteração (\textit{Recursion by Iteration}). Similar a recursão limitada. Definição de
-    um funcional, que tem como um dos argumentos a
-    função \mintinline{coq}{f} que deseja-se implementar. 
-    \end{enumerate}
+    \item O algoritmo W tem dois tipos de efeitos: estado e exceção.
+    \item \textit{Hoare Exception-State Monad} (HESM):\\ embute-se o tipo \textit{sum} na definição de HoareState.
 \end{itemize}
+  \begin{columns}
+    \column{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\label{fig:hoaremonad1}                               
+\begin{minted}[fontsize=\scriptsize]{coq}
+Program Definition HoareState (B:Prop) (pre:Pre) (a:Type) (post:Post a) : Type :=
+  forall i : {t : st | pre t},
+    {e : sum (prod a st) B | match e with
+                             | inl (x, f) => post (proj1_sig i) x f
+                             | inr _ => True
+                             end}.
+
+Program Definition bind : forall a b P1 P2 Q1 Q2 B,
+  (@HoareState B P1 a Q1) -> (forall (x:a), @HoareState B (P2 x) b (Q2 x)) ->
+  @HoareState B (fun s1 => P1 s1 /\ forall x s2, Q1 s1 x s2 -> P2 x s2) b
+                (fun s1 y s3 => exists x, exists s2, Q1 s1 x s2 /\ Q2 x s2 y s3) :=
+    fun B a b P1 P2 Q1 Q2 c1 c2 s1 => match c1 s1 as y with
+                                      | inl (x, s2) => c2 x s2
+                                      | inr R => _
+                                      end.
+\end{minted}
+\caption{A Mônada de Estado-Exceção de Hoare.}
+\end{figure}
+\end{columns}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fundamentos - Terminação em Coq}
-    \begin{enumerate}
-      \setcounter{enumi}{3}
-    \item Recursão sobre um predicado (\textit{Recursion on an Ad Hoc
-        Predicate Section}). Representa o domínio da função. Recursão estrutural sobre
-    provas do princípio indutivo deste predicado.
-    \item Recursão por mônada inspirada em Teoria de Domínios. Combinadores de ordem superior representam funções
-    que não terminam. Uma obrigação de prova é a continuidade da
-    computação na mônada.
-    \item Recursão geral baseada numa mônada de um tipo co-indutivo.
-    É similar ao anterior, mas utiliza os tipos co-indutivos para representar
-    a noção de não terminação, com a vantagem de não ter obrigações de provas.
-    \item Linguagem embutida: formalizar completamente uma linguagem
-    de programação.
-    \end{enumerate}
-\end{frame}
+\section{Certificação da unificação}
 
 \begin{frame}
-\frametitle{Fundamentos - Vantagens Terminação em Coq}
+\frametitle{Certificação da unificação - Aspectos da certificação}
+\begin{itemize}
+    \item São programas para o desenvolvimento de provas
+          formais.
+    \item O núcleo é um verificador, que verifica a consistência lógica da prova.
+    \item Os principais apelos são:
     \begin{itemize}
-    \item Somente as quatro primeiras técnicas permitem utilizar o mecanismo de avaliação interno do Coq.
-    \item As técnicas 2 e 3 necessitam conhecer uma função capaz de computar o número de chamadas recursivas suficientes para uma dada entrada.
-    \item A principal vantagem das últimas três técnicas é a possibilidade de implementar qualquer função recursiva e evitam provas.
-    \item No aspecto da extração, a técnica mais eficiente é a primeira, pois as demais podem carregar (na extração) alguns lixos como os argumentos adicionais.
-    \end{itemize}
-\end{frame}
-
-\section{MMo}
-
-\begin{frame}
-\frametitle{MMo - Diferenças básicas}
-O MMo funciona de maneira \textit{botton-up} assim como o algoritmo
-\textit{W}, ou seja, primeiro inferem-se os termos mais internos da expressão para seguir inferindo os mais externos.
-\begin{enumerate}
-\item As variáveis com sequência de índices. Detecção de dependências circulares em substituições.
-\item Um contexto $\Gamma$ é um conjunto de triplas (\textit{variável},
-  $Kind\_def$, \textit{scheme}). Não há condição de
-    consistência. \textit{Typing context}.
-\item o MMo retorna uma
-  dupla com o tipo simples inferido $\tau$ e um contexto $\Gamma$.
-\item Para cada definição num \textit{BindGroup} infere-se o respectivo
-  conjunto com os pares de identificadores e
-  os seus respectivos tipos inferidos e requeridos (dado pelo símbolo $\Sigma$).
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-\frametitle{MMo - Inferência de grupo de definições}
-\begin{enumerate}
-  \item Computar o conjunto $\Sigma$ com todos os tipos inferidos e requeridos do grupo.
-  \item Gera-se a partir de $\Sigma$ um conjunto $\Omega$ de pares tipos inferidos (instâncias) e requeridos 
-        $(\tau', \tau)$ que precisam ser unificados.
-        \begin{itemize}
-          \item o tipo de cada suposição \mintinline[escapeinside=**,mathescape=true]{haskell}{x:*$\tau$*} em
-            cada um dos $\Gamma$ em $\Sigma$ precisa ser unificado com uma instância do seu
-            respectivo tipo inferido $\tau'$ para \mintinline[escapeinside=**,mathescape=true]{haskell}{x}.
-          \item A função \mintinline{haskell}{supInst} troca cada variável de tipo $\alpha^{s}$ de $\tau'$ por uma nova instância $\alpha^{i::s}$.
-        \end{itemize}
-  \item Verificar a existência de dependências circulares na substituição $\mathbb{S}$ gerada pela unificação de $\Omega$.
-  \item Caso exista dependência circular em $\mathbb{S}$, então o MMo termina com erro. Caso contrário, então aplica-se a
-         $\mathbb{S}$ em $\Sigma$. Se $\mathbb{S}$ for efetiva, então volta-se para segunda etapa. Se não, para.
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-\frametitle{MMo - Dependências circulares}
-\begin{itemize}
-  \item Uma dependência circular ocorre quando uma substituição troca uma variável de tipo $\alpha^s$ por um tipo $\tau$, o qual ocorre uma variável de tipo $\alpha^{s'}$ tal que $s$ seja uma subsequência de $s'$. Ex: \mintinline[escapeinside=**,mathescape=true]{haskell}{[a*$^{1, 0} \rightarrow$* b/a*$^0$*]}.
-  \item A relação de ser subsequência pode ser indireta, portanto é necessário fazer uma verificação transitiva na substituição.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{MMo - Exemplo inferência de grupo}
-\begin{minted}{haskell}
-  data Seq a = Nil | Cons a (Seq (a,a)).
-\end{minted}
-\begin{minted}{haskell}
-  len :: Seq a -> Int
-  len Nil = 0
-  len (Cons x s) = 1 + 2 * (len s)
-\end{minted}
-
-$\Sigma$:
-\begin{minted}[escapeinside=**,mathescape=true]{haskell} 
- *$\{$*(Nil,(Seq a, *$\emptyset$*)),
- (Cons,(b *$\rightarrow$* Seq (b, b) *$\rightarrow$* Seq b, *$\emptyset$*)),
- (len, (Seq c *$\rightarrow$* Int,
-     *$\{$*(+):Int *$\rightarrow$* Int *$\rightarrow$* Int, len:Seq(c, c) *$\rightarrow$* Int*$\}$*))*$\}$*
-\end{minted}
-
-$\Omega$:
-\begin{minted}[escapeinside=**,mathescape=true]{haskell}
-  *$\{$*(Seq c*$^0$**$\rightarrow$* Int, Seq(c, c) *$\rightarrow$* Int)*$\}$*
-\end{minted}
-
-$\mathbb{S}$: \mintinline[escapeinside=**,mathescape=true]{haskell}{[(c, c)/c*$^0$*]}
-
-Não tem dependência circular e não modifica os tipos de
-$\Sigma$ (ignorando renomeações de
-variáveis)
-\end{frame}
-
-\section{Formalização em Coq}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Detalhes da formalização}
-\begin{itemize}
-  \item Formalização parcial e simplificada (sem grupos).
-  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
-  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
-  \item Termos, tipos, \textit{schemes} formalizados como tipos indutivos.
-  \item Para garantir que dois tipos generalizados sejam sintaticamente iguais, a respeito
-    da equivalência $\alpha$, utiliza-se a notação \textit{De Bruijn} nos \textit{schemes}.
-  \item Uso de mônadas de estados e falhas.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Aspectos da terminação}
-\begin{itemize}
-  \item Coq é uma linguagem de programação funcional total.
-  \item De todas as funções do MMo, a que computa o conjunto $\Sigma$ é a única que não
-    é de recursão primitiva.
-  \item Até o momento não se conhece alguma relação bem fundada a respeito da efetividade
-    da substituição.
-  \item Utilizar alguma forma de limite de iteração.
-  \item Trabalho similar para o algoritmo \textit{W} por (DUBOIS; MÉNISSIER-MORAIN, 1999).
-  \item Uso da formalização da unificação feita por (RIBEIRO; CAMARÃO, 2016).
-    \begin{itemize}
-    \item Seria necessário descobrir como computar esse número ou, então, associar esse valor às regras de inferência.
+    \item a verificação mecânica é rápida e evita as falhas humanas;
+    \item interatividade, permite visualizar informações sobre os estados da prova;
+    \item comandos para busca de teoremas e lemas para o progresso da
+      prova;
+    \item automatização de provas com métodos não-deterministas;
+    \item potencialização da capacidade humana de realizar provas;
+    \item extração de programas verificados.
     \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Formalização em Coq - Aspectos da consistência}
-\begin{itemize}
-  \item Uso das regras de Damas-Milner em \textit{syntax-directed} em DUBOIS; MÉNISSIER-MORAIN, 1999).
-    \begin{itemize}
-      \item Regras da forma \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}.
-      \item Regras de especialização $(spec)$ e generalização $(gen)$ são fundidas, respectivamente, com as regras $(var)$ e $(let)$.
-    \end{itemize}
-  \item Regra $(fix+)$ na forma \textit{syntax-directed}. 
-  \item As regras de inferência são representadas em Coq como um tipo (proposição) indutivo.
-  \item O tipo indutivo é uma certificação que pode ser diretamente utilizada num tipo dependente no MMo:
-\end{itemize}
-\begin{minted}{coq}
-Definition infer_dep : forall (e : term) (G : ctx),
-    Infer ({tau : ty &
-     {g : ctx | has_type (apply_subst_ctx s G) e tau}})
-\end{minted}
-
-\end{frame}
+\section{Certificação do algoritmo W}
 
 \begin{frame}[fragile]
-\frametitle{Formalização em Coq - Estabilidade da substituição}
+\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
 \begin{itemize}
   \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos e é fundamental na prova da consistência.
   \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
@@ -419,6 +297,12 @@ Definition infer_dep : forall (e : term) (G : ctx),
   \item Principais dificuldades encontradas.
   \item Alternativas para a prova de terminação.
 \end{itemize}
+\end{frame}
+
+\begin{frame}[t, allowframebreaks, noframenumbering]
+\frametitle{References}
+\bibliographystyle{apalike}
+\bibliography{references}
 \end{frame}
 
 \end{document}
