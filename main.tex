@@ -10,13 +10,13 @@
 \usepackage[portuges]{babel}
 
 
-\title[Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica]{Um Algoritmo Verificado para Inferência de Tipos na Presença de Recursão Polimórfica}
+\title[Uma Certificação em Coq do Algoritmo W Monádico]{Uma Certificação em Coq do\\ Algoritmo W Monádico}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{15 de Fevereiro de 2019}
+\date{22 de Agosto de 2019}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -34,15 +34,13 @@
 \begin{frame}[fragile]
 \frametitle{Introdução - Sistemas de Tipos}
 \begin{itemize}
-    \item Sistemas de tipos são regras que ditam quais expressões podem ser
-associadas a quais tipos.
+    \item Sistemas de tipos são relações que ditam quais expressões podem ser associadas a quais tipos.
     \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
-    \item passaram a ser utilizados como regras para identificar falhas na consistência
-de programas
+    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas
     \item Tipagem estática e dinâmica:
       \begin{itemize}
         \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
-        \item Dinâmica: atribuições de tipo \textbf{mudam} em \textit{run time}; mais permissível; mais permissível a erros. 
+        \item Dinâmica: atribuições de tipo \textbf{podem mudar} em \textit{run time}; mais permissível; mais permissível a erros. 
       \end{itemize}
       \begin{minted}{python}
       [1, 'a', objeto, [2]]
@@ -58,42 +56,24 @@ de programas
     \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
       o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
       \begin{minted}{haskell}
-         len :: [a] -> Int
+         reverse :: [a] -> [a]
       \end{minted}
-    \item Existem situações onde a inferência de tipos é mais difícil que a verificação. Nesses casos,
-      algoritmos podem rejeitar programas bem tipados.
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Introdução - Recursão Polimórfica}
+\frametitle{Introdução - Algoritmo para Inferência de Tipos}
 \begin{itemize}
-    \item A recursão polimórfica acontece quando o tipo da chamada recursiva de uma função pode mudar ao longo das recursões.
-\begin{minted}{haskell}
-  data Seq a = Nil | Cons a (Seq (a,a)).
-\end{minted}
-\begin{minted}{haskell}
-  len :: Seq a -> Int
-  len Nil = 0
-  len (Cons x s) = 1 + 2 * (len s)
-\end{minted}
-    \item Haskell rejeita programas com recursão polimórfica se a assinatura de tipo não for explicitamente anotada.
-    \item Diversos exemplos de exemplos precisando de recursão polimórfica foram apresentados na literatura.
+    \item A inferência de tipos é o processo de encontrar a assinatura de tipo mais geral de um programa.
+    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
+    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
+      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
+      \begin{minted}{haskell}
+         reverse :: [a] -> [a]
+      \end{minted}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Introdução - Motivação e Objetivo}
-\begin{itemize}
-    \item O semi-algoritmo MMo proposto por (VASCONCELLOS; CAMARÃO, 2003) consegue tipar diversos casos de recursão
-polimórfica e recursão mútua.
-    \item MMo não tem as suas propriedades fundamentais provadas: terminação (totalidade) e consistência (correto).
-    \item \textbf{Objetivo}: investigar se o semi-algoritmo MMo tem as propriedades de totalidade e correção em relação ao seu
-     sistema de tipos (especificação).
-    \item A especificação em si também é um elemento de investigação.
-    \item O método utilizado é a formalização do MMo e a sua especificação no assistente de provas Coq.
-\end{itemize}
-\end{frame}
 
 \section{Fundamentos}
 
