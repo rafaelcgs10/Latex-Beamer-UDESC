@@ -172,25 +172,6 @@
 \end{small}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fundamentos - Assistentes de provas}
-\begin{itemize}
-    \item São programas para o desenvolvimento de provas
-          formais.
-    \item O núcleo é um verificador, que verifica a consistência lógica da prova.
-    \item Os principais apelos são:
-    \begin{itemize}
-    \item a verificação mecânica é rápida e evita as falhas humanas;
-    \item interatividade, permite visualizar informações sobre os estados da prova;
-    \item comandos para busca de teoremas e lemas para o progresso da
-      prova;
-    \item automatização de provas com métodos não-deterministas;
-    \item potencialização da capacidade humana de realizar provas;
-    \item extração de programas verificados.
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
 \begin{frame}[fragile, plain]
 \frametitle{Fundamentos - \textit{Hoare State Monad}}
 \begin{itemize}
@@ -255,28 +236,108 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
 \end{columns}
 \end{frame}
 
-\section{Certificação da unificação}
+\section{Certificação do algoritmo W}
 
 \begin{frame}
-\frametitle{Certificação da unificação - Aspectos da certificação}
+\frametitle{Certificação do algoritmo W - Unificação I}
 \begin{itemize}
-    \item São programas para o desenvolvimento de provas
-          formais.
-    \item O núcleo é um verificador, que verifica a consistência lógica da prova.
-    \item Os principais apelos são:
-    \begin{itemize}
-    \item a verificação mecânica é rápida e evita as falhas humanas;
-    \item interatividade, permite visualizar informações sobre os estados da prova;
-    \item comandos para busca de teoremas e lemas para o progresso da
-      prova;
-    \item automatização de provas com métodos não-deterministas;
-    \item potencialização da capacidade humana de realizar provas;
-    \item extração de programas verificados.
-    \end{itemize}
+    \item O algoritmo de unificação \cite{ro:65} é parte fundamental do algoritmo W.
+    \item Modifica-se a certificação da unificação realizada por \cite{ri:16}:
+      \begin{itemize}
+        \item A operação da substituição é de reformulada para ser não-incremental.
+        \item O algoritmo é reescrito para unificar somente dois tipos, ao invés de uma lista de tipos. 
+      \end{itemize}
+    \item A unificação não é recursão estrutural. A prova de terminação é feita por uma relação bem-fundada sobre uma ordenação lexicográfica.
+    \item Essas modificações resultaram em algumas alterações não triviais na prova de terminação.
 \end{itemize}
 \end{frame}
 
-\section{Certificação do algoritmo W}
+\begin{frame}
+\frametitle{Certificação do algoritmo W - Unificação II}
+\begin{itemize}
+    \item Os tipos (monomórficos) são definidos em Coq como tipos indutivos, onde os identificadores são números naturais.
+    \item A substituição de tipos é definida em Coq como uma lista de duplas de identificadores de tipo e tipos. \\
+      Acompanhado de uma operação de aplicação da substituição.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Certificação do algoritmo W - Damas-Milner em Coq I}
+\begin{itemize}
+    \item O trabalho de \cite{du:99} é a principal referência desta formalização. 
+    \item Termos e tipos da linguagem de Damas-Milner são definidos em Coq como tipos indutivos.
+    \item A linguagem dos tipos é divida em duas:
+      \begin{itemize}
+        \item Tipos monomórficos.
+        \item Tipos polimórficos: possuem um construtor a mais para representar variáveis quantificadas.
+      \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Certificação do algoritmo W - Damas-Milner em Coq II}
+\begin{itemize}
+    \item Contextos são representados como listas de duplas de identificadores e tipos polimórficos.
+    \item As regras de tipagem do sistema Damas-Milner são utilizadas na versão \textit{syntax-directed}, pelo o tipo indutivo \mintinline{coq}{has_type}.
+    \item Essas modificações resultaram em algumas alterações não triviais na prova de terminação. \\
+      \begin{itemize}
+        \item Arvores de provas tem um único formato para cada termo lambda
+        \item Quantificação e instanciação estão embutidas, respectivamente, nas regras para variáveis e \textit{lets}.
+       \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Certificação do algoritmo W - Instanciação de tipos}
+\begin{itemize}
+    \item Tipos polimórficos são instanciados para tipos monomórficos por meio de uma operação de substituição
+  especial chamada.
+    \item Definiu-se uma forma de substituição: \mintinline{coq}{inst_subst} é apenas uma lista de tipos monomórficos,
+  ao invés de uma lista de associatividade.
+    \item O número $n$ na variável quantificada associada com o tipo encontrado na $n$-ésima posição em \mintinline{coq}{inst_subst}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Certificação do algoritmo W - Generalização de tipos}
+  \begin{block}{A problemática da generalização}
+    \begin{itemize}
+      \item $\alpha$ e $\beta$ são duas variáveis de tipo sintaticamente distintas.
+      \item Não ocorrem livres no contexto considerado.
+      \item Os tipos $\alpha \rightarrow \alpha$ and $\beta \rightarrow \beta$ são quantificados, respectivamente, para
+        $\forall \alpha, \alpha \rightarrow \alpha$ e $\forall \beta, \beta \rightarrow \beta$.
+      \item Sintaticamente diferentes, mas representam exatamente o mesmo conjunto de tipos.
+    \end{itemize}
+   \end{block} 
+   \pause
+   \begin{itemize}
+   \item \textit{Binding} de variáveis costuma dificultar provas. \\
+     Utiliza-se \textit{de Bruijn indices} para lidar com as variáveis quantificadas e evitar lidar com equivalência $\alpha$.
+   \item A função de \mintinline{coq}{gen_ty} quantifica as variáveis de tipo são quantificados linearmente: se
+     \mintinline{coq}{var n} é a $m$-ésima variável de tipo, então essa é convertida em \mintinline{coq}{sc_gen m}.
+   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - A algoritmo W monádico}
+   \begin{itemize}
+     \item O algoritmo W foi implementado de forma monádica com a HESM.
+     \item A certificação é garantida pela assinatura com tipos dependentes:
+   \end{itemize}
+  \begin{columns}
+    \column{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\begin{minted}[escapeinside=!!,mathescape=true, fontsize=\footnotesize]{coq}
+Program Fixpoint W (e:term) (G:ctx) {struct e} :
+  Infer (fun i => new_tv_ctx G i) (ty * substitution)
+    (fun i x f => i <= f /\ new_tv_subst (snd x) f /\ new_tv_ty (fst x) f /\
+    new_tv_ctx (apply_subst_ctx (snd x) G) f /\
+    has_type (apply_subst_ctx ((snd x)) G) e (fst x) /\
+    completeness e G (fst x) ((snd x)) i) :=
+\end{minted}
+\end{figure}
+\end{columns}
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Certificação do algoritmo W - Estabilidade da substituição}
