@@ -9,6 +9,16 @@
 \usepackage{bussproofs}
 \usepackage[portuges]{babel}
 
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
 
 \title[Uma Certificação em Coq do Algoritmo W Monádico]{Uma Certificação em Coq do\\ Algoritmo W Monádico}
 
@@ -30,6 +40,15 @@
 
 \end{frame}
 
+\begin{frame}{Sumário}
+  \begin{itemize}
+    \item Introdução.
+    \item Fundamentos.
+    \item Certificação da Unificação. 
+    \item Certificação do Algoritmo W. 
+  \end{itemize}
+
+\end{frame}
 \section{Introdução}
 \begin{frame}[fragile]
 \frametitle{Introdução - Sistemas de Tipos}
@@ -45,7 +64,6 @@
       \begin{minted}{python}
       [1, 'a', objeto, [2]]
       \end{minted}
-    \item Propriedade de \textit{soundness}:\\ \textit{Well-typed programs cannot go wrong}.
 \end{itemize}
 \end{frame}
 
@@ -63,13 +81,52 @@
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Introdução - Algoritmo para Inferência de Tipos}
-\begin{itemize}
-    \item 
-\end{itemize}
+  \frametitle{Introdução - Algoritmo para Inferência de Tipos}
+  \begin{itemize}
+  \item O \textbf{algoritmo W} é um algoritmo para a inferência de tipos no sistema Damas-Milner.\\
+        Uma das bases para a inferência em Haskell e OCaml.
+  \item \textit{Idealmente} um algoritmo de inferência deve \textit{representar} o que o seu sistema de tipos define. 
+  \item Formalmente isso é \textit{Soundness} e \textit{Completeness}.
+  \item \textit{Essas propriedades são diretamente refletidas nas implementações?}
+  \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Introdução - Provas mecanizadas}
+  \begin{itemize}
+  \item O uso de assistentes de provas na pesquisa de linguagens de programação.
+  \item Aproximam formalização e implementação. 
+  \item Reduzem o trabalho da verificação da prova.
+  \item \textit{PoplMark Challenge} e \textit{Principles of Programming Languages} (POPL)
+  \end{itemize}
+\end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Introdução - O que é este trabalho?}
+  \pause
+  \begin{center}
+  \begin{Large}
+    Uma Certificação em Coq do\\ Algoritmo W Monádico
+  \end{Large}
+  \end{center}
+  \pause
+  \begin{itemize}
+  \item Uma completa certificação de uma implementação monádica do \textbf{algoritmo W} no
+        assistentes de provas Coq.
+  \item Certificação do algoritmo de unificação.
+  \item Uso da \textit{Hoare State Monad} (HSM) para certificar o código monádico.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Introdução - Objetivos específicos}
+\begin{itemize}
+  \item Uma implementação certificada do \textbf{algoritmo de unificação}: consistência, completude e terminação.
+  \item Modificar a \textit{Hoare State Monad} para lidar com o efeito de exceção necessário no
+        algoritmo W e avaliar as qualidades dessa técnica.
+  \item Provar a consistência e a completude do algoritmo W monádico.
+\end{itemize}
+\end{frame}
 \section{Fundamentos}
 
 \begin{frame}
