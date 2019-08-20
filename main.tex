@@ -59,36 +59,38 @@
   \end{itemize}
 
 \end{frame}
-\section{Introdução}
-\begin{frame}[fragile]
-\frametitle{Introdução - Sistemas de Tipos}
-\begin{itemize}
-    \item Sistemas de tipos são relações que ditam quais expressões podem ser associadas a quais tipos.
-    \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
-    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas.
-    \item Tipagem estática e dinâmica:
-      \begin{itemize}
-        \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
-        \item Dinâmica: atribuições de tipo \textbf{podem mudar} em \textit{run time}; mais permissível; mais permissível a erros. 
-      \end{itemize}
-      \begin{minted}{python}
-      [1, 'a', objeto, [2]]
-      \end{minted}
-\end{itemize}
-\end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Introdução - Inferência de Tipos e Polimorfismo}
-\begin{itemize}
-    \item A \textbf{inferência de tipos} é o processo de encontrar a assinatura de tipo de um programa.
-    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
-    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
-      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
-      \begin{minted}{haskell}
-         reverse :: [a] -> [a]
-      \end{minted}
-\end{itemize}
-\end{frame}
+\section{Introdução}
+
+%\begin{frame}[fragile]
+%\frametitle{Introdução - Sistemas de Tipos}
+%\begin{itemize}
+%    \item Sistemas de tipos são relações que ditam quais expressões podem ser associadas a quais tipos.
+%    \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
+%    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas.
+%    \item Tipagem estática e dinâmica:
+%      \begin{itemize}
+%        \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
+%        \item Dinâmica: atribuições de tipo \textbf{podem mudar} em \textit{run time}; mais permissível; mais permissível a erros. 
+%      \end{itemize}
+%      \begin{minted}{python}
+%      [1, 'a', objeto, [2]]
+%      \end{minted}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Introdução - Inferência de Tipos e Polimorfismo}
+%\begin{itemize}
+%    \item A \textbf{inferência de tipos} é o processo de encontrar a assinatura de tipo de um programa.
+%    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
+%    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
+%      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
+%      \begin{minted}{haskell}
+%         reverse :: [a] -> [a]
+%      \end{minted}
+%\end{itemize}
+%\end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Introdução - Algoritmo para Inferência de Tipos}
@@ -96,7 +98,7 @@
   \item O \textbf{algoritmo W} é um algoritmo para a inferência de tipos no sistema Damas-Milner.\\
         Uma das bases para a inferência em Haskell e OCaml.
   \item \textit{Idealmente} um algoritmo de inferência deve \textit{representar} o que o seu sistema de tipos define. 
-  \item Formalmente isso é \textit{Soundness} e \textit{Completeness}.
+  \item Formalmente isso é \textit{Soundness} e \textit{Completeness}. \\ Provados por Damas em seu PhD.
   \item \textit{Essas propriedades são diretamente refletidas nas implementações?}
   \end{itemize}
 \end{frame}
@@ -146,7 +148,7 @@
   \item Damas-Milner: polimorfismo via \textit{let}: forma restrita de polimorfismo.
   \item O algoritmo W é consistente e completo em relação as regras de Damas-Milner.
   \item Consistência (\textit{Soundness}): O que o algoritmo W infere pode ser demostrado pelas regras de Damas-Milner.
-  \item Completude (\textit{Completeness}): Se o sistema Damas-Nilner mostra que
+  \item Completude (\textit{Completeness}): Se o sistema Damas-Milner mostra que
     $e$ tem o tipo $\tau$, então o algoritmo infere para $e$ o tipo
     $\tau'$, de maneira que $\tau = \mathbb{R}(\tau')$ para alguma
     substituição $\mathbb{R}$. 
@@ -280,7 +282,7 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
     \item As regras de tipagem do sistema Damas-Milner são utilizadas na versão \textit{syntax-directed}, pelo o tipo indutivo \mintinline{coq}{has_type}.
     \item Essas modificações resultaram em algumas alterações não triviais na prova de terminação. \\
       \begin{itemize}
-        \item Arvores de provas tem um único formato para cada termo lambda
+        \item Árvores de provas tem um único formato para cada termo lambda
         \item Quantificação e instanciação estão embutidas, respectivamente, nas regras para variáveis e \textit{lets}.
        \end{itemize}
 \end{itemize}
@@ -290,9 +292,8 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
 \frametitle{Certificação do algoritmo W - Instanciação de tipos}
 \begin{itemize}
     \item Tipos polimórficos são instanciados para tipos monomórficos por meio de uma operação de substituição
-  especial chamada.
-    \item Definiu-se uma forma de substituição: \mintinline{coq}{inst_subst} é apenas uma lista de tipos monomórficos,
-  ao invés de uma lista de associatividade.
+  especial chamada \mintinline{coq}{inst_subst}.
+    \item \mintinline{coq}{inst_subst} é apenas uma lista de tipos monomórficos, ao invés de uma lista de associatividade.
     \item O número $n$ na variável quantificada associada com o tipo encontrado na $n$-ésima posição em \mintinline{coq}{inst_subst}.
 \end{itemize}
 \end{frame}
@@ -355,7 +356,7 @@ Program Fixpoint W (e:term) (G:ctx) {struct e} :
   \frametitle{Certificação do algoritmo W - Substituição de renomeação}
   \begin{small}
   \begin{itemize}
-  \item A substituição de renomeação é uma substituição com tais características em que:
+  \item A substituição de renomeação é uma substituição tal que:
     \begin{itemize}
     \item Cada variável no domínio (\mintinline{coq}{id}) mapeia para uma variável (\mintinline{coq}{id}).
     \item O domínio e a imagem da substituição são disjuntos. 
@@ -379,7 +380,7 @@ Program Fixpoint W (e:term) (G:ctx) {struct e} :
   \item Casos monomórficos são fáceis.
   \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
     de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
-    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
+    Condição: a substituição \mintinline{coq}{s} não pode estar relacionada
 com as variáveis a serem quantificadas \mintinline{coq}{tau}
   \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
   que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
@@ -464,7 +465,7 @@ $\Gamma_1$ é mais geral que $\Gamma_2$.
 \begin{itemize}
   \item A HESM é um tipo dependente: o programa,
         cujo tipo é a sua especificação, e a sua prova são desenvolvidos na mesma etapa.
-  \item \mintinline{coq}{Program} permiti que elementos da prova sejam postergados como obrigações de provas e a escrita do programa
+  \item \mintinline{coq}{Program} permite que elementos da prova sejam postergados como obrigações de provas e a escrita do programa
     seja feita como em tipos simples, evitando casamentos de padrão dependentes.
   \item As informações presentes no contexto são similares as suposições feitas na prova com papel e caneta do algoritmo W \cite{da:84} 
   \item Evitou-se diversos lemas auxiliares \textit{deselegantes} relacionados ao estado do contador e
@@ -479,6 +480,24 @@ $\Gamma_1$ é mais geral que $\Gamma_2$.
   \item Modificou-se a \textit{Hoare State Monad} para lidar com exceções.
   \item Apresentou-se uma certificação completa em Coq do algoritmo, cujo código pode ser extraído e executado.
   \item Uso da HESM para a certificação de um algoritmo de inferência de tipos.
+\end{itemize}
+\begin{block}{Dificuldades}
+  \begin{itemize}
+    \item A certificação de algoritmos de inferência de tipos requer um grande corpo de lemas e definições.
+    \item \textit{Binding} de variáveis é difícil de lidar.
+    \item Os casos polimórficos são os mais complicados.
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Trabalhos futuros}
+\begin{itemize}
+  \item Não há certificação do algoritmo de Wand (inferência por solução de restrições).
+  \item Certificação da inferência de tipos em uma linguagem de escala industrial.
+  \item Verificar propriedades do caso de exceção com a HESM. \\
+    Ex: Caso a inferência falhe, o retorno poderia ser um dado com as informações do erro e uma prova de que o
+    termo não é tipável.
 \end{itemize}
 \end{frame}
 
