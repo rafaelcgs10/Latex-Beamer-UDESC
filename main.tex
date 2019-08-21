@@ -305,7 +305,7 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
       \item $\alpha$ e $\beta$ são duas variáveis de tipo sintaticamente distintas.
       \item Não ocorrem livres no contexto considerado.
       \item Os tipos $\alpha \rightarrow \alpha$ and $\beta \rightarrow \beta$ são quantificados, respectivamente, para
-        $\forall \alpha, \alpha \rightarrow \alpha$ e $\forall \beta, \beta \rightarrow \beta$.
+        $\forall \alpha. \alpha \rightarrow \alpha$ e $\forall \beta. \beta \rightarrow \beta$.
       \item Sintaticamente diferentes, mas representam exatamente o mesmo conjunto de tipos.
     \end{itemize}
    \end{block} 
@@ -402,9 +402,25 @@ com as variáveis a serem quantificadas \mintinline{coq}{tau}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile, plain]
-\frametitle{Certificação do algoritmo W - Prova de completude}
-A definição de completude é:
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Definição de completude}
+Dados $\Gamma$ e
+  \mintinline{haskell}{e}, seja $\Gamma'$ uma instância de $\Gamma$ e
+  $\sigma$ um \textit{scheme} tal que
+\begin{align*}
+    \Gamma' \vdash \mintinline{haskell}{e} : \sigma,
+\end{align*}
+então
+\begin{enumerate}
+\item $W$($\Gamma$, \mintinline{haskell}{e})  termina com sucesso.
+  \item Se $W$($\Gamma$, \mintinline{haskell}{e}) $=$
+    ($\mathbb{S}, \tau$) então, para alguma substituição $\mathbb{R}$,
+    \begin{align*}
+      \Gamma' = \mathbb{R}\mathbb{S}\Gamma \: \: \text{e} \: \: \mathbb{R}\mintinline{haskell}{gen}(\mathbb{S}\Gamma, \tau) \geq \sigma.
+    \end{align*}
+\end{enumerate}
+
+A reformulação de completude é:
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
 \begin{minted}[fontsize=\scriptsize]{coq}
@@ -416,7 +432,11 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
                 apply_subst phi (var x) = apply_subst s' (apply_subst s (var x))).
 \end{minted}
 \end{columns}
-\begin{small}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Certificação do algoritmo W - Prova de completude}
 \begin{itemize}
   \item A HESM é útil nesta prova, pois permite raciocinar sobre o estado do contador.
   \item É necessário apresentar (computar) quem é a substituição \mintinline{coq}{s'}.
@@ -424,7 +444,6 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
   \item A maior dificuldade novamente é o caso do termo \textit{let}, que requer
         raciocínio sobre a criação de novas variáveis de tipo e a relação de mais geral entre tipos. 
 \end{itemize}
-\end{small}
 \end{frame}
 
 \begin{frame}[fragile]
