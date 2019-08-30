@@ -16,7 +16,7 @@
     {\small \url{rafaelcgs10@gmail.com}}
   }
 
-\date{07/03/2018}
+\date{04/09/2019}
 
 \begin{document}
 
@@ -25,436 +25,39 @@
 
 \end{frame}
 
-\section{Isomorfismo de Curry-Howard}
+\section{Mini-bibliografia}
 
 \begin{frame}
-\frametitle{Sistemas de Provas}
+\frametitle{Mimimi}
 \begin{itemize}
-    \item Sistemas/Cálculos de provas servem para construir provas de uma maneira muito formal.
-    \item São uma coleção de regras que explicam como derivar novas fórmulas.
-    \item Um sistema de prova pode ser utilizado na formalização de diversas lógicas,
-      como Lógica Proposicional e Lógica de Predicados.
-    \item Os principais sistemas de provas são a Dedução Natural e o Cálculo de Hilbert.
+    \item Mimimi
+    \item Mimimi
+    \item Mimimi
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Fragmento Proposicional Clássico da Dedução Natural}
-\begin{center}
-        \begin{prooftree}
-            \AxiomC{}
-            \RightLabel{$(\small{hip)}$}
-            \UnaryInfC{$u : A$}
-        \end{prooftree}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A \rightarrow B$}
-            \AxiomC{$A$}
-            \RightLabel{$(\rightarrow^-)$}
-            \BinaryInfC{$B$}
-        \end{prooftree}
-\end{minipage}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$B$}
-            \RightLabel{$(\rightarrow^+) \: [u : A]$}
-            \UnaryInfC{$A \rightarrow B$}
-        \end{prooftree}
-\end{minipage}
-\end{center}
-        
-\begin{center}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A \wedge B$}
-            \RightLabel{$(\wedge_l^-)$}
-            \UnaryInfC{$A$}
-       \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$  A \wedge B$}
-            \RightLabel{$(\wedge_r^-)$}
-            \UnaryInfC{$B$}
-       \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A$}
-            \AxiomC{$B$}
-            \RightLabel{$(\wedge^+)$}
-            \BinaryInfC{$A \wedge B$}
-       \end{prooftree}
-\end{minipage}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.5\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A \vee B$}
-            \AxiomC{$A \rightarrow C$}
-            \AxiomC{$B \rightarrow C$}
-            \RightLabel{$(\vee^-)$}
-            \TrinaryInfC{$C$}
-       \end{prooftree}
-\end{minipage}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A$}
-            \RightLabel{$(\vee_l^+)$}
-            \UnaryInfC{$A \vee B$}
-       \end{prooftree}
-\end{minipage}
-\begin{minipage}{.2\textwidth}
-        \begin{prooftree}
-            \AxiomC{$B$}
-            \RightLabel{$(\vee_r^+)$}
-            \UnaryInfC{$A \vee B$}
-       \end{prooftree}
-\end{minipage}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\bot$}
-            \RightLabel{$(efq)$}
-            \UnaryInfC{$A$}
-        \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\neg \neg A$}
-            \RightLabel{$(raa)$}
-            \UnaryInfC{$A$}
-        \end{prooftree}
-\end{minipage}
-\end{center}
-onde $\neg A \Rightarrow A \rightarrow \bot$.
-\end{frame}
+\section{A visão de Dijkstra}
 
 \begin{frame}
-\frametitle{Exemplo de Prova em DN}
-        \begin{prooftree}
-            \AxiomC{$$}
-            \RightLabel{(\small{hip)}}
-            \UnaryInfC{$u : (A \vee \neg A) \rightarrow \bot$}
-            \AxiomC{$$}
-            \RightLabel{(\small{hip)}}
-            \UnaryInfC{$u : (A \vee \neg A) \rightarrow \bot$}
-            \AxiomC{$$}
-            \RightLabel{(\small{hip)}}
-            \UnaryInfC{$v : A$}
-            \RightLabel{$(\vee^+_r)$}
-            \UnaryInfC{$A \vee \neg A$}
-            \BinaryInfC{$\bot$}
-            \RightLabel{$(\rightarrow^+) [v]$}
-            \UnaryInfC{$A \rightarrow \bot$}
-            \RightLabel{$(\vee^+_l)$}
-            \UnaryInfC{$(A \vee \neg A)$}
-            \RightLabel{$(\rightarrow^-)$}
-            \BinaryInfC{$\bot$}
-            \RightLabel{$(\rightarrow^+) [u]$}
-            \UnaryInfC{$((A \vee \neg A) \rightarrow \bot) \rightarrow \bot$}
-            \RightLabel{$(raa)$}
-            \UnaryInfC{$A \vee \neg A$}
-        \end{prooftree}
-\end{frame}
-
-\begin{frame}
-\frametitle{Interpretação BHK}
-\small{A lógica intuicionista atribui um tipo diferente de semântica para fórmulas lógicas.
-Na lógica clássica a semântica é dada por tabela verdade, já na intuicionista é pela ideia de construção.}
-
-Pela interpretação B(L E Jan Brouwer) H(A Heyting) K(A Kolmogorov):
+\frametitle{Mimimi}
 \begin{itemize}
-    \item uma construção de $A \wedge B$ é um par $(a, b)$, que indica a existência de construções $a$ e $b$
-        que resolvem, respectivamente, $A$ e $B$;
-    \item $A \vee B$ ou é uma construção de $(0, a)$ que resolve $A$ ou é uma construção $(1, b)$ que resolve $B$;
-    \item $A \rightarrow B$ é um procedimento tal que dadas soluções de $A$, obtém-se soluções de $B$;
-    \item nada é uma construção de $\bot$. Assim, $\neg A$ é definido como $A \rightarrow \bot$, o que significa
-        que $\neg A$ é um procedimento que gera a constante lógica sempre falso ($\bot$).
-\end{itemize}
-
-A interpretação deixa livre o significado \textit{construção}.
-\end{frame}
-    
-
-\begin{frame}
-\frametitle{Cálculo Lambda}
-\begin{itemize}
-  \item O Cálculo Lambda é um modelo de computação criado por Alonzo Church em 1933.
-  \item O proposito inicial do Cálculo Lambda foi ser uma linguagem de macros para um lógica e assim demonstrar a indecibilidade do problema da decisão.
-  \item Funciona como um sistema de reescrita: existem regras para reescrever expressões.
-  \item A primeira linguagem de programação. Uma década antes do primeiro computador.
-\end{itemize}
-Sintaxe:
-\begin{align*}
-  e \: := (e \: e') \: | \: (\lambda x.e) \: | \: x
-\end{align*}
-Reescrita:
-\begin{align*}
-  (\lambda x. e) \: e' \Rightarrow_\beta [e'/x]e
-\end{align*}
-\end{frame}
-
-\begin{frame}
-\frametitle{Exemplos de Computação em CL}
-1)
-\begin{align*}
-  (\lambda x.x) \: y \Rightarrow_\beta y
-\end{align*}
-2)
-\begin{align*}
-  (\lambda x.x) \: (\lambda x.x) \Rightarrow_\beta \lambda x.x
-\end{align*}
-3)
-\begin{align*}
-  ((\lambda x.\lambda y . y) \: a) b \Rightarrow_\beta b
-\end{align*}
-4)
-\begin{align*}
-  (\lambda x.x x) \: (\lambda x.x x) \Rightarrow_\beta (\lambda x.x x) \: (\lambda x.x x)
-\end{align*}
-\end{frame}
-
-\begin{frame}
-\frametitle{Cálculo Lambda Tipado}
-O Cálculo Lambda é muito poderoso, permite criar o equivalente de fórmulas lógicas infinitas e assim
-a lógica representada é inconsistente.
-
-Para evitar paradoxos Church utilizou o mesmo truque que Bertrand Russel: Type Thoery.
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Cálculo Lambda Tipado}
-\begin{center}
-        \begin{prooftree}
-            \AxiomC{}
-            \RightLabel{$(\small{hip)}$}
-            \UnaryInfC{$x:A \vdash x: A$}
-        \end{prooftree}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.6\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A \rightarrow B$}
-            \AxiomC{$\Gamma \vdash e' : A$}
-            \RightLabel{$(\rightarrow^-)$}
-            \BinaryInfC{$e \: e' : \Gamma \vdash B$}
-        \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma, x:A \vdash e:B$}
-            \RightLabel{$(\rightarrow^+)$}
-            \UnaryInfC{$\Gamma \vdash \lambda x. e : A \rightarrow B$}
-        \end{prooftree}
-\end{minipage}
-\end{center}
-        
-\begin{center}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A * B$}
-            \RightLabel{$(fst)$}
-            \UnaryInfC{$\Gamma \vdash fst \: e : A$}
-       \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e :  A * B$}
-            \RightLabel{$(snd)$}
-            \UnaryInfC{$\Gamma \vdash snd \: e : B$}
-       \end{prooftree}
-\end{minipage}
-
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A$}
-            \AxiomC{$\Gamma \vdash e' : B$}
-            \RightLabel{$(pair)$}
-            \BinaryInfC{$\Gamma \vdash (e, e') : A \wedge B$}
-       \end{prooftree}
-\end{minipage}
-\end{center}
-\begin{align*}
-  fst (e, e') & \Rightarrow_\beta e \\
-  snd (e, e') & \Rightarrow_\beta e'
-\end{align*}
-\end{frame}
-
-\begin{frame}
-\frametitle{Cálculo Lambda Tipado}
-\begin{center}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A + B$}
-            \AxiomC{$\Gamma \vdash e' : A \rightarrow C$}
-            \AxiomC{$\Gamma \vdash e'' : B \rightarrow C$}
-            \RightLabel{$(+^-)$}
-            \TrinaryInfC{$\Gamma \vdash case (e, e', e'') : C$}
-       \end{prooftree}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A$}
-            \RightLabel{$+^+_l$}
-            \UnaryInfC{$\Gamma \vdash (0, e) : A + B$}
-       \end{prooftree}
-\end{minipage}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$B$}
-            \RightLabel{$+^+_r$}
-            \UnaryInfC{$\Gamma \vdash (1, e) : A + B$}
-       \end{prooftree}
-\end{minipage}
-\end{center}
-
-\begin{align*}
-  case((0, e), e', e'') & \Rightarrow_\beta e' \: e \\
-  case((1, e), e', e'') & \Rightarrow_\beta e'' \: e
-\end{align*}
-\end{frame}
-
-\begin{frame}
-\frametitle{Isomorfismo de Curry-Howard}
-O Isomorfismo de Curry-Howard é uma observação que provas construtivas na dedução estão numa
-correspondência natural com programas em Cálculo Lambda.
-
-\begin{center}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$A \rightarrow B$}
-            \AxiomC{$A$}
-            \RightLabel{$(\rightarrow^-)$}
-            \BinaryInfC{$B$}
-        \end{prooftree}
-\end{minipage}
-\begin{minipage}{.4\textwidth}
-        \begin{prooftree}
-            \AxiomC{$B$}
-            \RightLabel{$(\rightarrow^+) \: [u : A]$}
-            \UnaryInfC{$A \rightarrow B$}
-        \end{prooftree}
-\end{minipage}
-\end{center}
-
-\begin{center}
-\begin{minipage}{.6\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma \vdash e : A \rightarrow B$}
-            \AxiomC{$\Gamma \vdash e' : A$}
-            \RightLabel{$(\rightarrow^-)$}
-            \BinaryInfC{$e \: e' : \Gamma \vdash B$}
-        \end{prooftree}
-\end{minipage}
-\begin{minipage}{.3\textwidth}
-        \begin{prooftree}
-            \AxiomC{$\Gamma, x:A \vdash e:B$}
-            \RightLabel{$(\rightarrow^+)$}
-            \UnaryInfC{$\Gamma \vdash \lambda x. e : A \rightarrow B$}
-        \end{prooftree}
-\end{minipage}
-\end{center}
-\end{frame}
-
-\section{Extração de Programas}
-
-\begin{frame}
-\frametitle{Realizability}
-\begin{itemize}
-  \item \textbf{Realizability} atribui significado ao Isomorfismo de Curry-Howard.
-  \item  Intuitivamente: Se $M$ é uma prova em Dedução Natural de uma fórmula $A$, então $M$ 
-    resolve o problema $A$ de acordo com a interpretação BHK.
-  \item Essa intuição é formalizada pela \textbf{Realizability} de Kleene e Kreisel.
-\end{itemize}
-    \begin{figure}
-      \begin{minipage}{.3\textwidth}
-      \includegraphics[width=0.9\textwidth]{kleene}
-      \caption{Kleene}
-      \end{minipage}
-      \begin{minipage}{.3\textwidth}
-      \includegraphics[width=0.8\textwidth]{kreisel}
-      \caption{Kreisel}
-      \end{minipage}
-    \end{figure}
-\end{frame}
-
-\section{Extração em Minlog}
-
-\begin{frame}
-\frametitle{O sistema de provas Minlog}
-\begin{itemize}
-  \item Minlog é um assiste de provas interativo: verifica a consistência de provas.
-  \item Diferente de Coq ou Isabele, Minlog não é baseado em \textit{Type Theory} e sim
-    baseado em Dedução Natural de Primeira Ordem.
-  \item A lógica de Minlog não é a Clássica nem a Intuicionista, é a lógica Miníma.
-  \item Minlog é o assiste de provas com o mais sofisticado sistema de extração de programas:
-    \textit{Realizability} e \textit{A-Translation} permitindo extração a partir de provas clássicas.
-  \item Além de extrair o programa, Minlog extrai a prova que o programa está de acordo com a sua especificação,
-    assim Minlog é uma opção para \textit{proofs-as-programs paradigm}.
+    \item Mimimi
+    \item Mimimi
+    \item Mimimi
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Extracting a Logarithm Approximation Algorithm}
+\section{Frases de Dijkstra}
 
-\begin{center}
-  $\forall n, \exists k \: r, 0 < n \rightarrow n = 2^k + r \wedge r < 2^k$
-\end{center}
-
-The intuition here is that we should increase $r$ when $r < 2^k$ or increase $k$ otherwise.  
-
+\begin{frame}
+\frametitle{Mimimi}
+\begin{itemize}
+    \item Mimimi
+    \item Mimimi
+    \item Mimimi
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Sketch of the proof}
-
-  Induction over $n$:
-    \begin{enumerate}
-       \item Base case: $n = 0$. So since we have $0 < 0$, we just use \textit{efq}.
-       \item Step case: $n = Succ \: m$. 
-         \begin{enumerate}
-           \item The base case of induction is not the base of the recursion in the algorithm, because $log_2 \: 0 = -\infty$.
-           \item We do case analysis on $0 < m$, so we have $0 < m$ or $m = 0$.
-           \item This way we have two new goals on the induction step:
-              \begin{enumerate}
-                 \item if $m = 0$, then $n = 1$ (our base case of recursion) and we shall prove:
-                   \begin{align*}
-                     \exists k \: r, 1 = 2^k + r \wedge r < 2^k
-                   \end{align*}
-                   So $k = r = 0$.
-                 \item if $0 < m$, then the recursion can go on and we should prove that: 
-                   \begin{align*}
-                     \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
-                   \end{align*}
-              \end{enumerate}
-         \end{enumerate}
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}{Sketch of the proof}
-  Our current goal:\\
-  \begin{align*}
-    \exists k \: r, Succ \: m = 2^k + r \wedge r < 2^k
-  \end{align*}
-      We need to do case analysis on $Succ \: r < 2 ^k $ because that is rule for
-     increasing $k$ or $r$.
-   \begin{enumerate}
-     \item If $Succ \: r < 2 ^k$, then we chose $k = k$ and $r = Succ \: r'$.
-     \item If $(Succ \: r < 2 ^k) \rightarrow \bot$, then we chose $k = Succ \: k'$ and $r = 0$. 
-   \end{enumerate}
-
-\end{frame}
 
 \end{document}
 %%% Local Variables:
