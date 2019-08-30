@@ -7,6 +7,25 @@
 \usepackage{booktabs}
 \usepackage[portuges]{babel}
 
+\AtBeginSection[]{
+  \begin{frame}[noframenumbering]
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+
 \title[Extraction of Programs from Proofs]{Programming = Mathematics + Murphy's Law\\ - (E. Dijkstra)}
 
 \author[Rafael Castro, Karina Roggia]{
