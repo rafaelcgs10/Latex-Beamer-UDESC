@@ -18,6 +18,16 @@
   \end{frame}
 }
 
+\AtBeginSubsection[]{
+  \begin{frame}[noframenumbering]
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsubsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
 \newcommand\Wider[2][3em]{%
 \makebox[\linewidth][c]{%
   \begin{minipage}{\dimexpr\textwidth+#1\relax}
@@ -101,13 +111,36 @@
   \end{itemize}
 \end{frame}
 
+\subsection{Frases que todos citam, mas que ninguém sabe o contexto}
+
 \begin{frame}
-  \frametitle{Ciência da Computação ...}
+  \frametitle{Ciência da Computação é sobre ...}
   \centering
   \includegraphics[width = 0.7\textwidth]{computer-science-is-.jpg}
   \pause
   \\
   \Large{Não é do Dijkstra!}
+  \pause
+  \\
+  Michael R. Fellows, Ian Parberry (1993) "SIGACT trying to get children excited about CS"
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Simplicidade é uma grande virtude...}
+  \begin{figure}
+    \centering
+    \includegraphics[width = 1.0\textwidth]{896.jpeg}
+  \end{figure}
+  \begin{small}
+  \begin{itemize}
+    \item EWD 896 - 10 de Agosto de 1984
+    \item O texto questiona a natureza da Ciência da Computação.
+    \item Contexto: ``a computação vai curar todos os males do mundo'' - a busca pela Pedra Filosofal.
+    \item Como a computação se afirma como uma disciplina acadêmica?\\ Através da matemática.
+    \item Se é simples, não é relevante: rejeitaram um artigo do Dijkstra porque a solução era muito simples.
+  \end{itemize}
+  \end{small}
 \end{frame}
 
 
