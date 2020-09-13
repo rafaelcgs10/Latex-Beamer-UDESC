@@ -31,13 +31,13 @@
   }%
 }
 
-\title[Uma Certificação em Coq do Algoritmo W Monádico]{Uma Certificação em Coq do\\ Algoritmo W Monádico}
+\title[Monadic W in Coq]{Monadic W in Coq}
 
 \author[Rafael Castro]{
     Rafael Castro\\\medskip
     {\small \url{rafaelcgs10@gmail.com}}}
 
-\date{22 de Agosto de 2019}
+\date{25 de Set de 2020}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -51,104 +51,54 @@
 
 \end{frame}
 
-\begin{frame}{Sumário}
+\begin{frame}{Contents}
   \begin{itemize}
-    \item Introdução
-    \item Fundamentos
-    \item Certificação do Algoritmo W
+    \item Introduction
+    \item Foundations
+    \item The Monadic W in Coq
   \end{itemize}
 
 \end{frame}
 
-\section{Introdução}
-
-%\begin{frame}[fragile]
-%\frametitle{Introdução - Sistemas de Tipos}
-%\begin{itemize}
-%    \item Sistemas de tipos são relações que ditam quais expressões podem ser associadas a quais tipos.
-%    \item Nas linguagens de programação, classificavam os dados para serem tratados corretamente pelo processador;
-%    \item Passaram a ser utilizados como uma técnica para identificar falhas na consistência de programas.
-%    \item Tipagem estática e dinâmica:
-%      \begin{itemize}
-%        \item Estática: atribuições de tipo não mudam em \textit{run time}; uma forma de verificação automática. 
-%        \item Dinâmica: atribuições de tipo \textbf{podem mudar} em \textit{run time}; mais permissível; mais permissível a erros. 
-%      \end{itemize}
-%      \begin{minted}{python}
-%      [1, 'a', objeto, [2]]
-%      \end{minted}
-%\end{itemize}
-%\end{frame}
-%
-%\begin{frame}[fragile]
-%\frametitle{Introdução - Inferência de Tipos e Polimorfismo}
-%\begin{itemize}
-%    \item A \textbf{inferência de tipos} é o processo de encontrar a assinatura de tipo de um programa.
-%    \item Liberdade ao programador de escolher anotar ou não os tipos das funções.
-%    \item Polimorfismo é quando uma função pode assumir vários usos com diferentes tipos de dados. Em especial,
-%      o polimorfismo paramétrico é feito pela quantificação de variáveis de tipos.
-%      \begin{minted}{haskell}
-%         reverse :: [a] -> [a]
-%      \end{minted}
-%\end{itemize}
-%\end{frame}
+\section{Introduction}
 
 \begin{frame}[fragile]
-  \frametitle{Introdução - Algoritmo para Inferência de Tipos}
+  \frametitle{Introduction - A type inference algorithm}
   \begin{itemize}
-  \item O \textbf{algoritmo W} é um algoritmo para a inferência de tipos no sistema Damas-Milner.\\
-        Uma das bases para a inferência em Haskell e OCaml.
-  \item \textit{Idealmente} um algoritmo de inferência deve \textit{representar} o que o seu sistema de tipos define. 
-  \item Formalmente isso é \textit{Soundness} e \textit{Completeness}. \\ Provados por Damas em seu PhD.
-  \item \textit{Essas propriedades são diretamente refletidas nas implementações?}
+  \item What is type inference?
+  \item The \textbf{algorithm W} is a classical type inference algorithm, which was originally designed for the Damas-Milner type system.\\
+        The original inspiration for the systems of languages like Haskell and OCaml.
+  \item \textit{Ideally} a type inference algorithm must represent its type system defines. algoritmo de inferência deve \textit{representar} o que o seu sistema de tipos define.
+  \item Formally this is called \textit{Soundness} and \textit{Completeness}.
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Introdução - Provas mecanizadas}
-  \begin{itemize}
-  \item O uso de assistentes de provas na pesquisa de linguagens de programação.
-  \item Aproximam formalização e implementação. 
-  \item Reduzem o trabalho da verificação da prova.
-  \item \textit{PoplMark Challenge} e \textit{Principles of Programming Languages} (POPL)
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Introdução - O que é este trabalho?}
+  \frametitle{Introduction - What this work is about?}
   \pause
   \begin{center}
   \begin{Large}
-    Uma Certificação em Coq do\\ Algoritmo W Monádico
+    This a Coq certification of the monadic algorithm W
   \end{Large}
   \end{center}
   \pause
   \begin{itemize}
-  \item Uma completa certificação de uma implementação monádica do \textbf{algoritmo W} no
-        assistentes de provas Coq.
-  \item Certificação do algoritmo de unificação.
-  \item Uso da \textit{Hoare State Monad} (HSM) para certificar o código monádico.
+    \item We bundle toghether the following related work:
+      \begin{itemize}
+        \item Algorithm W in Coq (work by Dubois)
+        \item Type unification in Coq (work by Ribeiro and Camarão)
+        \item The Hoare State Monad (work by Swierstra)
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Introdução - Objetivos específicos}
-\begin{itemize}
-  \item Uma implementação certificada do \textbf{algoritmo de unificação}: consistência, completude e terminação.
-  \item Modificar a \textit{Hoare State Monad} para lidar com o efeito de exceção necessário no
-        algoritmo W e avaliar as qualidades dessa técnica.
-  \item Provar a consistência e a completude do algoritmo W monádico.
-\end{itemize}
-\end{frame}
-
-\section{Fundamentos}
+\section{Foundations}
 
 \begin{frame}[fragile]
-  \frametitle{Fundamentos - Damas-Milner e algoritmo W}
+  \frametitle{Foundations - Damas-Milner and algoritmo W}
   \begin{itemize}
-  \item Damas-Milner: polimorfismo via \textit{let}: forma restrita de polimorfismo.
-  \item O algoritmo W é consistente e completo em relação as regras de Damas-Milner.
-  \item Consistência (\textit{Soundness}): O que o algoritmo W infere pode ser demostrado pelas regras de Damas-Milner.
-  \item Completude (\textit{Completeness}): Se o sistema Damas-Milner mostra que
+  \item \textit{Soundness}: O que o algoritmo W infere pode ser demostrado pelas regras de Damas-Milner.
+  \item \textit{Completeness}: Se o sistema Damas-Milner mostra que
     $e$ tem o tipo $\tau$, então o algoritmo infere para $e$ o tipo
     $\tau'$, de maneira que $\tau = \mathbb{R}(\tau')$ para alguma
     substituição $\mathbb{R}$. 
