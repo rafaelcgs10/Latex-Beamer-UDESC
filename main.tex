@@ -68,7 +68,7 @@
   \item What is type inference?
   \item The \textbf{algorithm W} is a classical type inference algorithm, which was originally designed for the Damas-Milner type system.\\
         The original inspiration for the systems of languages like Haskell and OCaml.
-  \item \textit{Ideally} a type inference algorithm must represent its type system defines. algoritmo de inferência deve \textit{representar} o que o seu sistema de tipos define.
+  \item \textit{Ideally} a type inference algorithm must represent its type system defines.
   \item Formally this is called \textit{Soundness} and \textit{Completeness}.
   \end{itemize}
 \end{frame}
@@ -78,7 +78,7 @@
   \pause
   \begin{center}
   \begin{Large}
-    This a Coq certification of the monadic algorithm W
+    This a Coq certification of the monadic algorithm W!
   \end{Large}
   \end{center}
   \pause
@@ -95,40 +95,23 @@
 \section{Foundations}
 
 \begin{frame}[fragile]
-  \frametitle{Foundations - Damas-Milner and algoritmo W}
+  \frametitle{Foundations - Damas-Milner and algorithm W}
+  What is certifying algorithm W in Coq?
   \begin{itemize}
-  \item \textit{Soundness}: O que o algoritmo W infere pode ser demostrado pelas regras de Damas-Milner.
-  \item \textit{Completeness}: Se o sistema Damas-Milner mostra que
-    $e$ tem o tipo $\tau$, então o algoritmo infere para $e$ o tipo
-    $\tau'$, de maneira que $\tau = \mathbb{R}(\tau')$ para alguma
-    substituição $\mathbb{R}$. 
+  \item \textit{Soundness}: What algorithm W infers it can be demonstrated using the Damas-Milner typing rules
+  \item \textit{Completeness}: if Damas-Milner shows that an expression
+    $e$ has a type $\tau$, then W infers for $e$ a type
+    $\tau'$, such that $\tau = \mathbb{R}(\tau')$ for some
+    substitution $\mathbb{R}$.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Fundamentos - Trabalhos relacionados}
-\begin{small}
-\begin{itemize}
- \item \cite{du:99} forneceram provas em Coq de consistência e completude do algoritmo W. As propriedades
-  da unificação foram tomadas como axiomas
-        e \textit{binding} de variáveis é resolvido com \textit{de Bruijn indices}.
-  \item \cite{na:99} também apresentaram provas de consistência e completude do algoritmo W, mas em Isabelle/HOL.
-        As propriedades da unificação também foram assumidas como axiomas e \textit{de Bruijn indices} também foi utilizado.
-  \item \cite{ko:09a} relataram um resultado parcial na certificação em Coq da extensão polimórfica do algoritmo
-        de Wand.
-  \item \cite{ta:15} verificaram a inferência de tipos de CakeML, uma linguagem baseada em SML (Standard ML) cujo compilador
-         tem um \textit{backend} completamente verificado \cite{ki:19}.  As provas de consistência e completude da inferência de tipos
-         foram feitas no assistente de provas HOL4.
-\end{itemize}
-\end{small}
-\end{frame}
-
 \begin{frame}[fragile, plain]
-\frametitle{Fundamentos - \textit{Hoare State Monad}}
+\frametitle{Foundations - \textit{Hoare State Monad}}
 \begin{itemize}
-    \item \textit{Hoare State Monad} (HSM): apresentada por \cite{sw:09}\\ Uma variante da usual mônada de estados.
-    \item Verificação de programas com efeitos de estado.
-    \item Um tipo \mintinline{coq}{HoareState p a q}: : a pré-condição, o tipo do valor de retorno e a pós-condição.
+    \item \textit{Hoare State Monad} (HSM): presented by \cite{sw:09}\\ A variation of the usual state monad.
+    \item Useful for certifying stateful programs.
+    \item In Coq: \mintinline{coq}{HoareState p a q}: : a precondition, a returning value and a post-condition.
 \end{itemize}
   \begin{columns}
     \column{\dimexpr\paperwidth-10pt}
@@ -150,13 +133,13 @@ Program Definition bind : forall a b P1 P2 Q1 Q2,
                               | (x, s2) => c2 x s2
                               end.
 \end{minted}
-\caption{A Mônada de Estado de Hoare.}
+\caption{The Hoare State Monad.}
 \end{figure}
 \end{columns}
 \end{frame}
 
 \begin{frame}[fragile, plain]
-\frametitle{Fundamentos - \textit{Hoare Exception-State Monad}}
+\frametitle{Foundations - \textit{Hoare Exception-State Monad}}
 \begin{itemize}
     \item O algoritmo W tem dois tipos de efeitos: estado e exceção.
     \item \textit{Hoare Exception-State Monad} (HESM):\\ embute-se o tipo \textit{sum} na definição de HoareState.
