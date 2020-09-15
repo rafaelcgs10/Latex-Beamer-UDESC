@@ -173,29 +173,6 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
 \section{Certificação do algoritmo W}
 
 \begin{frame}
-\frametitle{Certificação do algoritmo W - Unificação I}
-\begin{itemize}
-    \item O algoritmo de unificação \cite{ro:65} é parte fundamental do algoritmo W.
-    \item Modifica-se a certificação da unificação realizada por \cite{ri:16}:
-      \begin{itemize}
-        \item A operação da substituição é de reformulada para ser não-incremental.
-        \item O algoritmo é reescrito para unificar somente dois tipos, ao invés de uma lista de tipos. 
-      \end{itemize}
-    \item A unificação não é recursão estrutural. A prova de terminação é feita por uma relação bem-fundada sobre uma ordenação lexicográfica.
-    \item Essas modificações resultaram em algumas alterações não triviais na prova de terminação.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Certificação do algoritmo W - Unificação II}
-\begin{itemize}
-    \item Os tipos (monomórficos) são definidos em Coq como tipos indutivos, onde os identificadores são números naturais.
-    \item A substituição de tipos é definida em Coq como uma lista de duplas de identificadores de tipo e tipos. \\
-      Acompanhado de uma operação de aplicação da substituição.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \frametitle{Certificação do algoritmo W - Damas-Milner em Coq I}
 \begin{itemize}
     \item O trabalho de \cite{du:99} é a principal referência desta formalização. 
@@ -221,36 +198,6 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Certificação do algoritmo W - Instanciação de tipos}
-\begin{itemize}
-    \item Tipos polimórficos são instanciados para tipos monomórficos por meio de uma operação de substituição
-  especial chamada \mintinline{coq}{inst_subst}.
-    \item \mintinline{coq}{inst_subst} é apenas uma lista de tipos monomórficos, ao invés de uma lista de associatividade.
-    \item O número $n$ na variável quantificada associada com o tipo encontrado na $n$-ésima posição em \mintinline{coq}{inst_subst}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Certificação do algoritmo W - Generalização de tipos}
-  \begin{block}{A problemática da generalização}
-    \begin{itemize}
-      \item $\alpha$ e $\beta$ são duas variáveis de tipo sintaticamente distintas.
-      \item Não ocorrem livres no contexto considerado.
-      \item Os tipos $\alpha \rightarrow \alpha$ and $\beta \rightarrow \beta$ são quantificados, respectivamente, para
-        $\forall \alpha. \alpha \rightarrow \alpha$ e $\forall \beta. \beta \rightarrow \beta$.
-      \item Sintaticamente diferentes, mas representam exatamente o mesmo conjunto de tipos.
-    \end{itemize}
-   \end{block} 
-   \pause
-   \begin{itemize}
-   \item \textit{Binding} de variáveis costuma dificultar provas. \\
-     Utiliza-se \textit{de Bruijn indices} para lidar com as variáveis quantificadas e evitar lidar com equivalência $\alpha$.
-   \item A função de \mintinline{coq}{gen_ty} quantifica as variáveis de tipo são quantificados linearmente: se
-     \mintinline{coq}{var n} é a $m$-ésima variável de tipo, então essa é convertida em \mintinline{coq}{sc_gen m}.
-   \end{itemize}
-\end{frame}
-
 \begin{frame}[fragile]
 \frametitle{Certificação do algoritmo W - A algoritmo W monádico}
    \begin{itemize}
@@ -270,69 +217,6 @@ Program Fixpoint W (e:term) (G:ctx) {struct e} :
 \end{minted}
 \end{figure}
 \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Prova de consistência}
-\begin{itemize}
-  \item Enunciado por \mintinline{coq}{has_type} sobre o resultado do algoritmo W.
-  \item Trivial para a maioria dos casos:
-    \begin{itemize}
-      \item O caso da aplicação: requer o lema da estabilidade da substituição.
-      \item O caso do termo \textit{let}: requer vários lemas e definições auxiliares, incluindo sobre listas
-    disjuntas\footnote{Cujo predicado chama-se \mintinline{coq}{are_disjoints}}, sub-listas e substituições de renomeação.
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Certificação do algoritmo W - Substituição de renomeação}
-  \begin{small}
-  \begin{itemize}
-  \item A substituição de renomeação é uma substituição tal que:
-    \begin{itemize}
-    \item Cada variável no domínio (\mintinline{coq}{id}) mapeia para uma variável (\mintinline{coq}{id}).
-    \item O domínio e a imagem da substituição são disjuntos. 
-    \item Duas distintas variáveis no domínio têm diferentes imagens.
-    \end{itemize}
-  \item Definido pelo tipo \mintinline{coq}{ren_subst}, implementado como uma lista de associatividade entre identificadores.
-  \item Condições são formalizadas no tipo indutivo: \mintinline{coq}{is_rename_subst}.
-  \item A prova do caso \textit{let}\footnote{Para a prova de consistência do algoritmo W e do lema da estabilidade da tipagem sobre a substituição}
-        requer a demostração da existência de uma substituição
-        de renomeação em especial: o domínio é uma lista de variáveis \mintinline{coq}{l}
-        e que não mapeia para as listas de variáveis \mintinline{coq}{l1} e \mintinline{coq}{l2}.
-  \end{itemize}
-  \end{small}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
-\begin{itemize}
-  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
-  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
-  \item Casos monomórficos são fáceis.
-  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
-    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
-    Condição: a substituição \mintinline{coq}{s} não pode estar relacionada
-com as variáveis a serem quantificadas \mintinline{coq}{tau}
-  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
-  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Estabilidade da substituição}
-\begin{itemize}
-  \item O lema da estabilidade da substituição é uma propriedade clássica em sistemas de tipos.
-  \item Se é verdade que \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\Gamma \vdash $ *e* $:\tau$*}, então para qualquer substituição $\mathbb{S}$ tem-se \mintinline[escapeinside=**,mathescape=true]{haskell}{*$\mathbb{S} \Gamma \vdash $ *e* $:\mathbb{S} \tau$*}.
-  \item Casos monomórficos são fáceis.
-  \item O caso polimórfico do \mintinline{coq}{let_ht} requer uma prova sobre a comutação
-    de uma generalização de tipo (de algum \mintinline{coq}{tau}) com uma substituição de tipo \mintinline{coq}{s}. \\
-    Condição: condição: a substituição \mintinline{coq}{s} não pode estar relacionada
-com as variáveis a serem quantificadas \mintinline{coq}{tau}
-  \item Computa-se uma substituição \mintinline{coq}{rho} que renomeia as variáveis de tipo em \mintinline{coq}{tau}
-  que devem ser generalizadas em novas variáveis de tipos que não ocorrem na substituição \mintinline{coq}{s} e não são livres no contexto considerado.
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -380,39 +264,6 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Novas variáveis de tipo}
-\begin{itemize}
-    \item A existência de novas variáveis de tipo é tomada como garantida numa prova com papel e caneta, mas deve
-    ser demostrada numa prova mecanizada.
-    \item É suficiente mostrar que o atual estado na mônada é maior que todos os números das variáveis de livres no contexto atual.
-    \item A relação é definida para tipos monomórficos (\mintinline{coq}{new_tv_ty}), para \textit{schemes} (\mintinline{coq}{new_tv_schm}), para contextos
-        (\mintinline{coq}{new_tv_ctx}) e para substituições (\mintinline{coq}{new_tv_subst}). 
-    \item Diversos lemas sobre essa relação foram necessários.
-    \item A assinatura do algoritmo de unificação garante que o mesmo não cria novas variáveis de tipo.
-    \item A assinatura de tipos do algoritmo W garante que o estado é sempre novo em relação ao resultado do algoritmo. 
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Certificação do algoritmo W - Relação mais geral}
-  \begin{itemize}
-  \item A relação mais geral ($\geq$) é definida formalmente no Damas-Milner.
-  \item Aqui defini-se de forma mais estrita pelo tipo \mintinline{coq}{is_schm_instance}: se um \textit{scheme} $\sigma_1$ é mais geral que outro $\sigma_2$, então
-toda instância de $\sigma_2$ também é uma instância de $\sigma_1$
-  \item Essa relação é estendida para contextos.
-\item Diversos lemas sobre essas relações foram necessários, especial:
-  \begin{itemize}
-    \item ``Tipagem em um contexto mais geral'':
-se é possível construir uma prova de 
-\mintinline[escapeinside=**,mathescape=true]{coq}{*$\Gamma_2 \vdash $ *e* $:\tau$*}, 
-então também é possível construir uma prova de
-\mintinline[escapeinside=**,mathescape=true]{coq}{*$\Gamma_1 \vdash $ *e* $:\tau$*}, onde
-$\Gamma_1$ é mais geral que $\Gamma_2$.
-  \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
 \frametitle{Certificação do algoritmo W - Análise da prova}
 \begin{itemize}
   \item A HESM é um tipo dependente: o programa,
@@ -440,17 +291,6 @@ $\Gamma_1$ é mais geral que $\Gamma_2$.
     \item Os casos polimórficos são os mais complicados.
   \end{itemize}
 \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Trabalhos futuros}
-\begin{itemize}
-  \item Não há certificação do algoritmo de Wand (inferência por solução de restrições).
-  \item Certificação da inferência de tipos em uma linguagem de escala industrial.
-  \item Verificar propriedades do caso de exceção com a HESM. \\
-    Ex: Caso a inferência falhe, o retorno poderia ser um dado com as informações do erro e uma prova de que o
-    termo não é tipável.
-\end{itemize}
 \end{frame}
 
 \begin{frame}[t, allowframebreaks, noframenumbering]
