@@ -141,8 +141,8 @@ Program Definition bind : forall a b P1 P2 Q1 Q2,
 \begin{frame}[fragile, plain]
 \frametitle{Foundations - \textit{Hoare Exception-State Monad}}
 \begin{itemize}
-    \item O algoritmo W tem dois tipos de efeitos: estado e exceção.
-    \item \textit{Hoare Exception-State Monad} (HESM):\\ embute-se o tipo \textit{sum} na definição de HoareState.
+    \item Algorithm W has two side effects: state and exception.
+    \item \textit{Hoare Exception-State Monad} (HESM):\\ add the \textit{sum} type to the definition of Hoare State.
 \end{itemize}
   \begin{columns}
     \column{\dimexpr\paperwidth-10pt}
@@ -165,44 +165,30 @@ Program Definition bind : forall a b P1 P2 Q1 Q2 B,
                                       | inr R => _
                                       end.
 \end{minted}
-\caption{A Mônada de Estado-Exceção de Hoare.}
+\caption{The Hoare Exception-State Monad.}
 \end{figure}
 \end{columns}
 \end{frame}
 
-\section{Certificação do algoritmo W}
+\section{Certification of algorithm W}
 
 \begin{frame}
-\frametitle{Certificação do algoritmo W - Damas-Milner em Coq I}
+\frametitle{Certification of algorithm W - Damas-Milner in Coq}
 \begin{itemize}
-    \item O trabalho de \cite{du:99} é a principal referência desta formalização. 
-    \item Termos e tipos da linguagem de Damas-Milner são definidos em Coq como tipos indutivos.
-    \item A linguagem dos tipos é divida em duas:
+    \item The work of \cite{du:99} is our main reference.
+    \item Terms and types (simple and polymorphic)
+    \item Typing rules of Damas-Milner in the \textit{syntax-directed} version, given by the inductive type \mintinline{coq}{has_type}.
       \begin{itemize}
-        \item Tipos monomórficos.
-        \item Tipos polimórficos: possuem um construtor a mais para representar variáveis quantificadas.
-      \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Certificação do algoritmo W - Damas-Milner em Coq II}
-\begin{itemize}
-    \item Contextos são representados como listas de duplas de identificadores e tipos polimórficos.
-    \item As regras de tipagem do sistema Damas-Milner são utilizadas na versão \textit{syntax-directed}, pelo o tipo indutivo \mintinline{coq}{has_type}.
-    \item Essas modificações resultaram em algumas alterações não triviais na prova de terminação. \\
-      \begin{itemize}
-        \item Árvores de provas tem um único formato para cada termo lambda
-        \item Quantificação e instanciação estão embutidas, respectivamente, nas regras para variáveis e \textit{lets}.
+        \item Each proving tree has a uniq format for each lambda term.
        \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - A algoritmo W monádico}
+\frametitle{Certification of algorithm W - Monadic W}
    \begin{itemize}
-     \item O algoritmo W foi implementado de forma monádica com a HESM.
-     \item A certificação é dada pela assinatura com tipos dependentes:
+     \item The monadic algorithm W was implemented using the HESM.
+     \item The certification is given by the type signature:
    \end{itemize}
   \begin{columns}
     \column{\dimexpr\paperwidth-10pt}
@@ -220,24 +206,25 @@ Program Fixpoint W (e:term) (G:ctx) {struct e} :
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Definição de completude}
-Dados $\Gamma$ e
-  \mintinline{haskell}{e}, seja $\Gamma'$ uma instância de $\Gamma$ e
-  $\sigma$ um \textit{scheme} tal que
+\frametitle{Certification of algorithm W - Completeness definition}
+Given $\Gamma$ and \mintinline{haskell}{e}, let $\Gamma'$ be a instance of $\Gamma$ and
+  $\sigma$ a \textit{scheme} such that
 \begin{align*}
     \Gamma' \vdash \mintinline{haskell}{e} : \sigma,
 \end{align*}
-então
+then
 \begin{enumerate}
-\item $W$($\Gamma$, \mintinline{haskell}{e})  termina com sucesso.
+\item $W$($\Gamma$, \mintinline{haskell}{e}) computes successfully.
   \item Se $W$($\Gamma$, \mintinline{haskell}{e}) $=$
-    ($\mathbb{S}, \tau$) então, para alguma substituição $\mathbb{R}$,
+    ($\mathbb{S}, \tau$) therefore, for some type substitution $\mathbb{R}$,
     \begin{align*}
       \Gamma' = \mathbb{R}\mathbb{S}\Gamma \: \: \text{e} \: \: \mathbb{R}\mintinline{haskell}{gen}(\mathbb{S}\Gamma, \tau) \geq \sigma.
     \end{align*}
 \end{enumerate}
 
-A reformulação de completude é:
+\pause
+
+The reformulation of completeness is:
 \begin{columns}
   \column{\dimexpr\paperwidth-10pt}
 \begin{minted}[fontsize=\scriptsize]{coq}
@@ -253,9 +240,12 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Prova de completude}
+\frametitle{Certification of algorithm W - Marks on the completeness proof I}
 \begin{itemize}
-  \item A HESM é útil nesta prova, pois permite raciocinar sobre o estado do contador.
+  \item HESM allows us to reason about the state.
+  \item As informações presentes no contexto são similares as suposições feitas na prova com papel e caneta do algoritmo W \cite{da:84}
+  \item Evitou-se diversos lemas auxiliares \textit{deselegantes} relacionados ao estado do contador e
+    lemas que são hipóteses de indução.
   \item É necessário apresentar (computar) quem é a substituição \mintinline{coq}{s'}.
   \item O caso da aplicação se utiliza do fato da unificação computada ser a mais geral.
   \item A maior dificuldade novamente é o caso do termo \textit{let}, que requer
@@ -264,20 +254,7 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Certificação do algoritmo W - Análise da prova}
-\begin{itemize}
-  \item A HESM é um tipo dependente: o programa,
-        cujo tipo é a sua especificação, e a sua prova são desenvolvidos na mesma etapa.
-  \item \mintinline{coq}{Program} permite que elementos da prova sejam postergados como obrigações de provas e a escrita do programa
-    seja feita como em tipos simples, evitando casamentos de padrão dependentes.
-  \item As informações presentes no contexto são similares as suposições feitas na prova com papel e caneta do algoritmo W \cite{da:84} 
-  \item Evitou-se diversos lemas auxiliares \textit{deselegantes} relacionados ao estado do contador e
-    lemas que são hipóteses de indução.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Conclusão}
+\frametitle{Conclusion}
 \begin{itemize}
   \item Algumas modificações não triviais no certificação do algoritmo de unificação apresentado por \cite{ri:16}.
   \item Modificou-se a \textit{Hoare State Monad} para lidar com exceções.
