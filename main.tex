@@ -33,11 +33,10 @@
 
 \title[Monadic W in Coq]{Monadic W in Coq}
 
-\author[Rafael Castro]{
-    Rafael Castro\\\medskip
-    {\small \url{rafaelcgs10@gmail.com}}}
+\author[Rafael Castro, Cristiano Vasconcellos, Karina Roggia]{
+    Rafael Castro, Cristiano Vasconcellos, Karina Roggia\\\medskip}
 
-\date{25 de Set de 2020}
+\date{19 de Set de 2020}
 
     \institute[UDESC]{
         Departamento de Ci\^encia da Computa\c{c}\~ao \\
@@ -55,7 +54,7 @@
   \begin{itemize}
     \item Introduction
     \item Foundations
-    \item The Monadic W in Coq
+    \item Certification of algorithm W
   \end{itemize}
 
 \end{frame}
@@ -78,7 +77,7 @@
   \pause
   \begin{center}
   \begin{Large}
-    This a Coq certification of the monadic algorithm W!
+    This a Coq certification of the\\ monadic algorithm W!
   \end{Large}
   \end{center}
   \pause
@@ -215,10 +214,10 @@ Given $\Gamma$ and \mintinline{haskell}{e}, let $\Gamma'$ be a instance of $\Gam
 then
 \begin{enumerate}
 \item $W$($\Gamma$, \mintinline{haskell}{e}) computes successfully.
-  \item Se $W$($\Gamma$, \mintinline{haskell}{e}) $=$
+  \item If $W$($\Gamma$, \mintinline{haskell}{e}) $=$
     ($\mathbb{S}, \tau$) therefore, for some type substitution $\mathbb{R}$,
     \begin{align*}
-      \Gamma' = \mathbb{R}\mathbb{S}\Gamma \: \: \text{e} \: \: \mathbb{R}\mintinline{haskell}{gen}(\mathbb{S}\Gamma, \tau) \geq \sigma.
+      \Gamma' = \mathbb{R}\mathbb{S}\Gamma \: \: \text{and} \: \: \mathbb{R}\mintinline{haskell}{gen}(\mathbb{S}\Gamma, \tau) \geq \sigma.
     \end{align*}
 \end{enumerate}
 
@@ -241,33 +240,46 @@ Definition completeness (e:term) (G:ctx) (tau:ty) (s:substitution) (st:id) :=
 
 \begin{frame}[fragile]
 \frametitle{Certification of algorithm W - Marks on the completeness proof I}
+\pause
+The soundness proof don't depends on the state, so the HESM is not very helpful!
+\pause
 \begin{itemize}
   \item HESM allows us to reason about the state.
-  \item As informações presentes no contexto são similares as suposições feitas na prova com papel e caneta do algoritmo W \cite{da:84}
-  \item Evitou-se diversos lemas auxiliares \textit{deselegantes} relacionados ao estado do contador e
-    lemas que são hipóteses de indução.
-  \item É necessário apresentar (computar) quem é a substituição \mintinline{coq}{s'}.
-  \item O caso da aplicação se utiliza do fato da unificação computada ser a mais geral.
-  \item A maior dificuldade novamente é o caso do termo \textit{let}, que requer
-        raciocínio sobre a criação de novas variáveis de tipo e a relação de mais geral entre tipos. 
+  \item The information presented in the proving context are similar to the supositions made in the paper and pen version of the proof in \cite{da:84}.
+  \item We avoided many akward lemmas: 1. Lemmas related to the state of the counter. 2. Lemmas which are induction hypothesis.
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Certification of algorithm W - Marks on the completeness proof II}
+\begin{enumerate}
+  \item
+\begin{minted}[fontsize=\fontsize{8}{0.35cm}\selectfont,escapeinside=!!,mathescape=true]{coq}
+!$\forall$! (e : term) (st st' : id) (G : ctx) (tau : ty) S,
+W st G e = Some tau S st' !$\rightarrow$! st !$\leq$! st'
+\end{minted}
+  \pause
+  \item
+\begin{minted}[fontsize=\fontsize{8pt}{0.35cm}\selectfont,escapeinside=!!,mathescape=true]{coq}
+!$\forall$! (l : term) (st1 st1' : id) (G1 : ctx) (tau1 : ty) S1,
+W st1 G1 l = Some tau1 S1 st1' !$\rightarrow$! S1(G1) !$\vdash$! l : tau1 !$\rightarrow$!
+!$\forall$! (r : term) (st2 st2' : id) (G2 : ctx) (tau2 : ty) S2,
+W st2 G2 r = Some tau2 s st' !$\rightarrow$! S2(G2) !$\vdash$! r : tau2 !$\rightarrow$!
+!$\forall$! (st3 st3' : id) (G3 : ctx) (tau3 : ty) (S3 : substitution),
+W st3 G3 (l @ r) = Some tau3 s st3' !$\rightarrow$! S3(G3) !$\vdash$! (l @ r) : tau3
+\end{minted}
+\end{enumerate}
+
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Conclusion}
 \begin{itemize}
-  \item Algumas modificações não triviais no certificação do algoritmo de unificação apresentado por \cite{ri:16}.
-  \item Modificou-se a \textit{Hoare State Monad} para lidar com exceções.
-  \item Apresentou-se uma certificação completa em Coq do algoritmo, cujo código pode ser extraído e executado.
-  \item Uso da HESM para a certificação de um algoritmo de inferência de tipos.
+  \item We modified the \textit{Hoare State Monad} to handle exception.
+  \item A complete monadic Coq certification of algorithm W.
+  \item Extraction of the Coq code to Haskell.
+  \item We showed how the HESM avoided akward lemmas in the completeness proof.
 \end{itemize}
-\begin{block}{Dificuldades}
-  \begin{itemize}
-    \item A certificação de algoritmos de inferência de tipos requer um grande corpo de lemas e definições.
-    \item \textit{Binding} de variáveis é difícil de lidar.
-    \item Os casos polimórficos são os mais complicados.
-  \end{itemize}
-\end{block}
 \end{frame}
 
 \begin{frame}[t, allowframebreaks, noframenumbering]
